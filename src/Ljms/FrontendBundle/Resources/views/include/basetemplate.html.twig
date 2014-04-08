@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+		<link href="{{ asset('css/reset.css') }}" rel="stylesheet" />
+		<title>{% block title %}{% endblock %}</title>
+		<!--[if IE 7]>
+			<link href="{{ asset('css/ie7.css') }}" rel="stylesheet" />
+		<![endif]-->
+	</head>
+	<body>
+		<div id="container">
+			<div id="header">
+				<a href="{{ path('ljms_frontend_homepage') }}"><div id="logo"></div></a>
+				<div id="auth_area">
+					{% block logout %}{% endblock %}
+				</div>
+				{% include 'LjmsFrontendBundle:include:menu.html.twig' %}
+			</div>
+			<div id="content">
+		{% block leftsidebar%}{% endblock %}
+		{% block centre%}{% endblock %}
+		{% block rightsidebar%}{% endblock %}
+
+
+
+				</div>
+			<div id="footer">
+
+				{% include 'LjmsFrontendBundle:include:menu.html.twig' %}			
+				<p>Copyright 2008 Lockport Junior Miss Softball</p>
+			</div>
+		</div>
+	</body>
+</html>
