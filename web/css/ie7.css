@@ -1,0 +1,13 @@
+#content, .menu li, #base .content, .form-group, .add_form, .total_rows, .action_select, .third_width_col:after {
+	zoom: 1;
+}
+
+.menu li {
+	display: inline;
+}
+.active_button {
+	display: inline;
+}
+.inactive_button {
+	display: inline;
+}
