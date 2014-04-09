@@ -4,8 +4,8 @@ ljms_general_homepage:
 ljms_general_about:
     pattern:  /about
     defaults: { _controller: LjmsGeneralBundle:Front:about }
-login:
-    pattern:  /login
+admin:
+    pattern:  /admin
     defaults: { _controller: LjmsGeneralBundle:Auth:index }
 login_check:
     pattern:  /login_check
