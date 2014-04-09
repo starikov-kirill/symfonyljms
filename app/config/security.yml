@@ -23,10 +23,10 @@ security:
             security: false
 
         secured_area:
-            pattern:    ^/about
+            pattern:    ^/
             anonymous: ~
             form_login:
-                login_path: login
+                login_path: /login
                 check_path: login_check
             logout:
                 path:   /logout
