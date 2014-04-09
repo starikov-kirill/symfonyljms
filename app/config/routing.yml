@@ -1,4 +1,3 @@
 ljms_frontend:
-    resource: "@LjmsFrontendBundle/Resources/config/routing.yml"
+    resource: "@LjmsGeneralBundle/Resources/config/routing.yml"
     prefix:   /
-

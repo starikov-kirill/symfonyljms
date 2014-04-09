@@ -1,7 +1,7 @@
-{% extends 'LjmsFrontendBundle:include:basetemplate.html.twig' %}
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
 {% block title %}LJMS{% endblock %}
 {% block leftsidebar%}
-{% include 'LjmsFrontendBundle:include:leftsidebar.html.twig' %}
+{% include 'LjmsGeneralBundle:Include:leftsidebar.html.twig' %}
 {% endblock %}
 {% block centre%}
 <div id="base" class="column">
@@ -14,12 +14,12 @@
 			</div>
 			<div class="column text">
 				<p>Welcome to the Lockport Junior Miss Softball web site. The LJMS Executive Board is excited to introduce the new league site. This site will have many new features that will enable us to keep you informed and updated on all league activities.</p>
-				<a class="about" href="{{ path('ljms_frontend_about') }}">more about us</a>
+				<a class="about" href="{{ path('ljms_general_about') }}">more about us</a>
 			</div>
 		</div>
 	</div>
 </div>
 {% endblock %}
 {% block rightsidebar%}
-{% include 'LjmsFrontendBundle:include:rightsidebar.html.twig' %}
+{% include 'LjmsGeneralBundle:Include:rightsidebar.html.twig' %}
 {% endblock %}

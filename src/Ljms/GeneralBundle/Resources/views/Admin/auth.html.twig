@@ -1,0 +1,36 @@
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+{% block leftsidebar%}
+{% include 'LjmsGeneralBundle:Include:leftsidebar.html.twig' %}
+{% endblock %}
+{% block centre%}
+<div id="base" class="column">
+	<div class="content">
+		<form action="{{ path('login_check') }}" class="text_center" method="post">
+			<h5>Administrator Login Only</h5>
+
+		    <div class="form-group">
+		    	<div class="form-label">
+					<label for="username">E-mail:</label>
+				</div>
+			    <div class="form-control">
+					<input type="text" id="username" name="_username" />
+			    </div>
+			</div>
+
+			<div class="form-group">
+		    	<div class="form-label">
+					 <label for="username">Password:</label>
+				</div>
+			    <div class="form-control">
+					<input type="password" id="password" name="_password" />
+			    </div>
+			</div>
+			<input value="Login" class='button' type="submit" />
+		</form>
+	</div>
+</div>
+{% endblock %}
+{% block rightsidebar%}
+{% include 'LjmsGeneralBundle:Include:rightsidebar.html.twig' %}
+{% endblock %}

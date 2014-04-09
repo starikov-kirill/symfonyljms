@@ -1,6 +1,0 @@
-ljms_frontend_homepage:
-    pattern:  /
-    defaults: { _controller: LjmsFrontendBundle:Front:index }
-ljms_frontend_about:
-    pattern:  /about
-    defaults: { _controller: LjmsFrontendBundle:Front:about }
