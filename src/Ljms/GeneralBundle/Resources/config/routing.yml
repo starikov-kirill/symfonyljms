@@ -9,3 +9,5 @@ login:
     defaults: { _controller: LjmsGeneralBundle:Auth:index }
 login_check:
     pattern:  /login_check
+logout:
+    pattern:  /logout
