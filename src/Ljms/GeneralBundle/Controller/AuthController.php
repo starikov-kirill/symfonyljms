@@ -3,25 +3,28 @@
 namespace Ljms\GeneralBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Ljms\GeneralBundle\Entity\Auth;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class AuthController extends Controller
 {
-    public function indexAction(Request $request)
+    public function loginAction(Request $request)
     {
 
-    	 $auth = new Auth();
-        $auth->setEmail('');
-        $auth->setPassword('');
+    	$request = $this->getRequest();
+        $session = $request->getSession();
 
-        $form = $this->createFormBuilder($auth)
-            ->add('Email', 'text')
-            ->add('Password', 'password')
-            ->getForm();
+        // получить ошибки логина, если таковые имеются
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+        }
 
-        return $this->render('LjmsGeneralBundle:Admin:auth.html.twig', array(
-            'form' => $form->createView(),
+        return $this->render('LjmsGeneralBundle:Admin:auth.html.twig',
+         array(
+			'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+            'error'         => $error,
         ));
     }
 }

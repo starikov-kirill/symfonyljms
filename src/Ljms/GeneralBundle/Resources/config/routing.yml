@@ -6,7 +6,7 @@ ljms_general_about:
     defaults: { _controller: LjmsGeneralBundle:Front:about }
 admin:
     pattern:  /admin
-    defaults: { _controller: LjmsGeneralBundle:Auth:index }
+    defaults: { _controller: LjmsGeneralBundle:Auth:login }
 login_check:
     pattern:  /login_check
 logout:

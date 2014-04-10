@@ -14,7 +14,9 @@
 			<div id="header">
 				<a href="{{ path('ljms_general_homepage') }}"><div id="logo"></div></a>
 				<div id="auth_area">
-					{% block logout %}{% endblock %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('logout') }}">Log out</a>
+					{% endif %}
 				</div>
 				{% include 'LjmsGeneralBundle:Include:menu.html.twig' %}
 			</div>
