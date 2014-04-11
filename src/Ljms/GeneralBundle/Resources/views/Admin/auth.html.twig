@@ -6,11 +6,11 @@
 {% block centre%}
 <div id="base" class="column">
 	<div class="content">
-		{% if error %}
-			<div>{{ error.message }}</div>
-		{% endif %}
 		<form action="{{ path('login_check') }}" class="text_center" method="post">
 			<h5>Administrator Login Only</h5>
+			{% if error %}
+				<label class="error">{{ error.message }}</label>
+			{% endif %}
 		    <div class="form-group">
 		    	<div class="form-label">
 					<label for="username">E-mail:</label>
