@@ -6,11 +6,10 @@
 	use Doctrine\ORM\Mapping as ORM;
 
 	/**
-	 * @ORM\Table(name="acme_role")
+	 * @ORM\Table(name="roles")
 	 * @ORM\Entity()
 	 */
-	class Role implements RoleInterface
-	{
+	class Role implements RoleInterface	{
 	    /**
 	     * @ORM\Column(name="id", type="integer")
 	     * @ORM\Id()

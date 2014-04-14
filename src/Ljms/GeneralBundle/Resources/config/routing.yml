@@ -14,4 +14,7 @@ logout:
 divisions:
     pattern:  /admin/divisions
     defaults: { _controller: LjmsGeneralBundle:Divisions:index }
+edit_division:
+    pattern:  /admin/edit_division/{id}
+    defaults: { _controller: LjmsGeneralBundle:Divisions:edit }
 

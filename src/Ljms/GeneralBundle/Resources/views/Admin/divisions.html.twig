@@ -8,9 +8,45 @@
 	<div class="admin_menu_info">
 		<h2>Divisions</h2>
 	</div>
-
-		
-	</div>
+	<table class="full_width_table">
+		<thead>
+			<tr>
+				<th class ="checkbox_col" ><input class="check_all" type="checkbox" name="#"></th>
+				<th><p>DIVISION</p></th>
+				<th><p>SEASON</p></th>
+				<th><p>TEAM(S)</p></th>
+				<th><p>DIRECTOR</p></th>
+				<th><p>ACTION</p></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in divisions %}
+				<tr {% if (entity.status == 0) %} class="inactive" {% endif %}>
+					<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
+					<td><p>{{ entity.name }}</p></td>
+					<td>
+						<p>
+							{% if (entity.fall_ball == 0) %}
+								Spring/Summer
+							{% else %}
+								Fall Ball
+							{% endif %}
+						</p>
+					</td>
+					<td><p>
+					{#<?php echo str_replace('|||', '</br>', htmlspecialchars($item['team_name']));?>#}
+					</p></td>
+					<td><p><?php echo htmlspecialchars($item['user_name']);?></p></td>
+					<td>
+					<a href="<?php echo base_url('admin/divisions/edit').'?'.'id='.($item['id'])?>" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+					<a href="#delete" data-item-id={{ entity.id }} data-item-page="divisions" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 </div>
 {% endblock %}
+
 
