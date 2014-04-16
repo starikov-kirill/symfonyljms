@@ -1,0 +1,73 @@
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+
+{% block centre%}
+<div class="column full_width">
+	<div class="content">
+	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+		<h2 class="title_admin">Add Division</h2>
+		{{ form_start(form, {'attr': {'id': 'add_division'}}) }}
+			{{ form_errors(form) }}
+
+		    		<div class="add_form">
+			<div class="form-group">
+				<div class="leftpart">{{ form_label(form.status, 'Status *') }}</div>
+				<div class="rightpart">{{ form_widget(form.status) }} {{ form_widget(form.fall_ball) }} Fall Ball
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="leftpart"> {{ form_label(form.name, 'Division Name *') }}</div>
+				<div class="rightpart">{{ form_widget(form.name) }}</div>
+			</div>
+
+			<div class="form-group">
+				<div class="leftpart"> {{ form_label(form.age_from, 'Ages From *') }}</div>
+				<div class="rightpart">{{ form_widget(form.age_from) }} years To * {{ form_widget(form.age_to) }}</div>
+			</div>
+
+			<div class="form-group">
+				<div class="leftpart"> {{ form_label(form.description) }}</div>
+				<div class="rightpart">{{ form_widget(form.description) }}</div>
+			</div>
+
+			<div class="form-group"> 
+				<div class="leftpart"> {{ form_label(form.rules) }}</div>
+				<div class="rightpart">{{ form_widget(form.rules) }}</div>
+			</div>
+
+			<div class="form-group">
+				<div class="leftpart"> {{ form_label(form.base_fee) }}</div>
+				<div class="rightpart">${{ form_widget(form.base_fee) }}</div>
+			</div>
+
+			<div class="form-group">
+				<div class="leftpart"> {{ form_label(form.addon_fee) }}</div>
+				<div class="rightpart">${{ form_widget(form.addon_fee) }}</div>
+			</div>
+
+			<div class="form-group">
+				<div class="leftpart"><label>Logo</label></div>
+				<div class="rightpart"></div>
+			</div>
+		</div>
+		<div class="text_center">
+			{{ form_widget(form.save) }}
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+		{{ form_end(form) }}
+</div>
+</div>
+{% endblock %}

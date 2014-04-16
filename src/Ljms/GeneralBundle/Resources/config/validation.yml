@@ -1,0 +1,16 @@
+Ljms\GeneralBundle\Entity\Divisions:
+    properties:
+        name:
+            - NotBlank: ~
+        status:
+            - NotBlank: ~
+        age_to:
+            - NotBlank: ~
+        age_from:
+            - NotBlank: ~
+        base_fee:
+            - Type: 
+                type: digit
+        addon_fee:
+            - Type: 
+                type: digit

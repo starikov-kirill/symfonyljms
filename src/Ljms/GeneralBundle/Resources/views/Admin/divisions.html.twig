@@ -8,6 +8,9 @@
 	<div class="admin_menu_info">
 		<h2>Divisions</h2>
 	</div>
+	<div class="right_button">
+	<a class="button" href="{{ path('add_division') }}">Add division</a>
+</div>
 	<table class="full_width_table">
 		<thead>
 			<tr>
@@ -38,7 +41,8 @@
 					</p></td>
 					<td><p><?php echo htmlspecialchars($item['user_name']);?></p></td>
 					<td>
-					<a href="<?php echo base_url('admin/divisions/edit').'?'.'id='.($item['id'])?>" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+					<a href="{{ path('edit_division', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+
 					<a href="#delete" data-item-id={{ entity.id }} data-item-page="divisions" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
 					</td>
 				</tr>

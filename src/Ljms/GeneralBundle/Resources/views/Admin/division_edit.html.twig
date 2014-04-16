@@ -1,1 +1,11 @@
-edit {{ id }}
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+
+{% block centre%}
+<div class="column full_width">
+	<div class="content">
+	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+		<h2 class="title_admin">Edit Division {{ id }}</h2>
+</div>
+</div>
+{% endblock %}

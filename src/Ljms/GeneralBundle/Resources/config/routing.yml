@@ -17,4 +17,8 @@ divisions:
 edit_division:
     pattern:  /admin/edit_division/{id}
     defaults: { _controller: LjmsGeneralBundle:Divisions:edit }
-
+    requirements:
+        id:  \d+
+add_division:
+    pattern:  /admin/add_division
+    defaults: { _controller: LjmsGeneralBundle:Divisions:add }

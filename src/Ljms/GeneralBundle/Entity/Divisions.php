@@ -26,7 +26,7 @@
 	    protected $status;
 
 	    /**
-	     * @ORM\Column(type="boolean")
+	     * @ORM\Column(type="boolean", nullable=true)
 	     */
 	    protected $fall_ball;
 
@@ -41,27 +41,27 @@
 	    protected $age_to;
 
 	    /**
-	     * @ORM\Column(type="text")
+	     * @ORM\Column(type="text", nullable=true)
 	     */
 	    protected $description;
 
 	    /**
-	     * @ORM\Column(type="text")
+	     * @ORM\Column(type="text", nullable=true)
 	     */
 	    protected $rules;
 
 	    /**
-	     * @ORM\Column(type="float")
+	     * @ORM\Column(type="float", nullable=true)
 	     */
 	    protected $base_fee;
 
 	    /**
-	     * @ORM\Column(type="float")
+	     * @ORM\Column(type="float", nullable=true)
 	     */
 	    protected $addon_fee;
 
 		/**
-	     * @ORM\Column(type="string", length=100)
+	     * @ORM\Column(type="string", length=100, nullable=true)
 	     */
 	    protected $logo;
 

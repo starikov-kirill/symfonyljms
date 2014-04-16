@@ -1,9 +1,9 @@
 $(document).ready(function(){
 //division validation
 var required1 = true;
-if (get_id) {
+/*if (get_id) {
     required1 = false;
-}
+}*/
     $("#add_division").validate({
 
        rules:{
@@ -14,24 +14,24 @@ if (get_id) {
                 required: true,
                 maxlength: 30,
             },
-            base_fee:{
+            'form[base_fee]':{
                 number : true,
             },
-            addon_fee:{
+            'form[addon_fee]':{
                 number : true,
             },
-            age_to:{
+            'form[age_to]':{
                age_validation: true,
             },
-           userfile:{
+           /*userfile:{
                  accept: "image/jpg,image/png,image/jpeg,image/gif",
-            },
+            },*/
        },
-        messages: {
+       /* messages: {
             userfile:{
                 accept: 'Incorrect image format! Select jpg, png or gif'
             }
-        }
+        }*/
     });
 //team validation
     $("#add_team").validate({ 
@@ -77,7 +77,7 @@ if (get_id) {
                 required: true,
                 digits : true,
             },
-            email:{
+           /* email:{
                 required: true,
                  my_email_validation: true,
                  remote : {
@@ -87,7 +87,7 @@ if (get_id) {
             },
             repeat_email:{
                  equalTo: "#email",
-            },
+            },*/
             home_phone:{
                 required: true,
                 my_phone_validation: true,
@@ -161,8 +161,8 @@ if (get_id) {
     //own validation rule age
     $.validator.addMethod('age_validation',
     function() {
-        var from = parseInt($("#age_from").val());
-        var to   = parseInt($("#age_to").val());
+        var from = parseInt($("#form_age_from").val());
+        var to   = parseInt($("#form_age_to").val());
         if (to<=from) {
                 return  false;
             } else {
