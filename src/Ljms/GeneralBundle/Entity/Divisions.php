@@ -305,4 +305,8 @@
     {
         return $this->logo;
     }
+    public function isAge_check()
+    {
+        return ($this->age_from < $this->age_to);
+    }
 }

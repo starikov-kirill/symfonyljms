@@ -5,16 +5,19 @@
 <div class="column full_width">
 	<div class="content">
 	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
-		<h2 class="title_admin">Add Division</h2>
+		<h2 class="title_admin">{% block page_name %}{% endblock %}</h2>
 		{{ form_start(form, {'attr': {'id': 'add_division'}}) }}
-			{{ form_errors(form) }}
+		<div class="alert-error">
+			{% for error in errors %}
+				<li>{{ error.message }}</li>
+			{% endfor %}
+		</div>
 
-		    		<div class="add_form">
+		<div class="add_form">
+
 			<div class="form-group">
 				<div class="leftpart">{{ form_label(form.status, 'Status *') }}</div>
-				<div class="rightpart">{{ form_widget(form.status) }} {{ form_widget(form.fall_ball) }} Fall Ball
-
-				</div>
+				<div class="rightpart">{{ form_widget(form.status) }} {% block fall_ball %}{% endblock %}</div>
 			</div>
 
 			<div class="form-group">
@@ -55,17 +58,6 @@
 		<div class="text_center">
 			{{ form_widget(form.save) }}
 		</div>
-
-
-
-
-
-
-
-
-
-
-
 
 		{{ form_end(form) }}
 </div>
