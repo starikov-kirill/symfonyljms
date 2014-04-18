@@ -480,7 +480,7 @@ tbody .quarter {
 	text-decoration: none;
 	color: #000099;
 }
-.pagination strong {
+.pagination .current {
 	padding: 2px 5px 2px 5px;
 	margin: 2px;
 	border: 1px solid #000099;

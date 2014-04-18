@@ -8,7 +8,7 @@ $(document).ready(function(){
 	 	if (confirm("Are you sure you want to delete this item?")){
 		 	var id = $(this).data("item-id");
 		 	//sending a request to the controller
-		 	$.post(base_url+'admin/'+current_method+'/delete', {id: id});
+		 	$.post('delete_'+class_name+'/'+id);
 		 	//delete the item without rebooting
 		    $(this).parents("tr").animate({ opacity: "hide" }, "slow");
 	 	}

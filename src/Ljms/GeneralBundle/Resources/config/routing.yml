@@ -22,3 +22,8 @@ edit_division:
 add_division:
     pattern:  /admin/add_division
     defaults: { _controller: LjmsGeneralBundle:Divisions:add }
+delete_division:
+    pattern:  /admin/delete_division/{id}
+    defaults: { _controller: LjmsGeneralBundle:Divisions:delete }
+    requirements:
+        id:  \d+
