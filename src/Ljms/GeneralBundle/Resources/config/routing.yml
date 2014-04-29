@@ -12,8 +12,9 @@ login_check:
 logout:
     pattern:  /logout
 divisions:
-    pattern:  /admin/divisions
-    defaults: { _controller: LjmsGeneralBundle:Divisions:index }
+    pattern:  /admin/divisions/{limit}
+    defaults: { _controller: LjmsGeneralBundle:Divisions:index, limit: 10 }
+    methods:  [GET]
 edit_division:
     pattern:  /admin/edit_division/{id}
     defaults: { _controller: LjmsGeneralBundle:Divisions:edit }
@@ -23,7 +24,41 @@ add_division:
     pattern:  /admin/add_division
     defaults: { _controller: LjmsGeneralBundle:Divisions:add }
 delete_division:
-    pattern:  /admin/delete_division/{id}
+    pattern:  /admin/divisions/delete_division/{id}
     defaults: { _controller: LjmsGeneralBundle:Divisions:delete }
+    requirements:
+        id:  \d+
+teams:
+    pattern: /admin/teams/{limit}
+    defaults: {_controller: LjmsGeneralBundle:Teams:index, limit: 10 }
+    methods:  [GET]
+edit_team:
+    pattern:  /admin/edit_team/{id}
+    defaults: { _controller: LjmsGeneralBundle:Teams:edit }
+    requirements:
+        id:  \d+
+add_team:
+    pattern:  /admin/add_team
+    defaults: { _controller: LjmsGeneralBundle:Teams:add }
+delete_team:
+    pattern:  /admin/delete_team/{id}
+    defaults: { _controller: LjmsGeneralBundle:Teams:delete }
+    requirements:
+        id:  \d+
+users:
+    pattern: /admin/users/{limit}
+    defaults: {_controller: LjmsGeneralBundle:Users:index, limit: 10 }
+    methods:  [GET]
+edit_user:
+    pattern:  /admin/edit_user/{id}
+    defaults: { _controller: LjmsGeneralBundle:Users:edit }
+    requirements:
+        id:  \d+
+add_user:
+    pattern:  /admin/add_user
+    defaults: { _controller: LjmsGeneralBundle:Users:add }
+delete_user:
+    pattern:  /admin/users/delete_user/{id}
+    defaults: { _controller: LjmsGeneralBundle:Users:delete }
     requirements:
         id:  \d+

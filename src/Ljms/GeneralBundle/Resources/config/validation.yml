@@ -19,3 +19,69 @@ Ljms\GeneralBundle\Entity\Divisions:
     getters:
         age_check:
             - "True": { message: "Incorrect years interval!" }
+
+Ljms\GeneralBundle\Entity\Teams:
+    properties:
+        name:
+            - NotBlank:
+                message: "Name field is required."
+        status:
+            - NotBlank:
+                message: "Status field is required."
+        division_id:
+            - NotBlank:
+                message: "Division field is required."
+        league_type_id:
+            - NotBlank:
+                message: "League field is required."
+        is_visitor:
+            - NotBlank:
+                message: "Is field is required."
+
+Ljms\GeneralBundle\Entity\User:
+    properties:
+        username:
+            - NotBlank:
+                message: "First Name field is required."
+        last_name:
+            - NotBlank: 
+                message: "Last Name field is required."
+        address:
+            - NotBlank:
+                message: "Adress field is required."
+        zipcode:
+            - NotBlank:
+                message: "Zipcode field is required."
+            - Type:
+                type: digit
+                message: "Zipcode fee value should be of type digit"
+        city:
+            - NotBlank:
+                message: "City field is required."
+        password:
+            - NotBlank:
+                message: "Password field is required."
+        home_phone:
+            - NotBlank:
+                message: "Home Phone field is required."
+            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
+        cell_phone:
+            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
+
+        alt_phone:
+            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
+
+        alt_phone_2:
+            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
+
+        alt_email:
+            - Email:
+                message: 'The email "{{ value }}" is not a valid email'
+        states_id:
+            - NotBlank:
+                message: "State ID vfield is required."
+        email:
+            - NotBlank:
+                message: "Email field is required."
+            - Email:
+                message: 'The email "{{ value }}" is not a valid email'

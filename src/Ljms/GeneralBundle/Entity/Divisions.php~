@@ -1,68 +1,356 @@
 <?php
-	namespace Ljms\GeneralBundle\Entity;
+namespace Ljms\GeneralBundle\Entity;
 
-	use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="divisions")
+ */
+class Divisions	{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $status;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $fall_ball;
+
+    /**
+     * @ORM\Column(type="integer", length=2)
+     */
+    protected $age_from;
+
+    /**
+     * @ORM\Column(type="integer", length=2)
+     */
+    protected $age_to;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $rules;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    protected $base_fee;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    protected $addon_fee;
 
 	/**
-	 * @ORM\Entity
-	 * @ORM\Table(name="divisions")
-	 */
-	class Divisions	{
-	    /**
-	     * @ORM\Column(type="integer")
-	     * @ORM\Id
-	     * @ORM\GeneratedValue(strategy="AUTO")
-	     */
-	    protected $id;
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $logo;
 
-	    /**
-	     * @ORM\Column(type="string", length=100)
-	     */
-	    protected $name;
+    /**
+     * @ORM\OneToMany(targetEntity="Teams", mappedBy="leagues")
+     */
+    protected $teams;
 
-	    /**
-	     * @ORM\Column(type="boolean")
-	     */
-	    protected $status;
 
-	    /**
-	     * @ORM\Column(type="boolean")
-	     */
-	    protected $fall_ball;
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
+	
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	    /**
-	     * @ORM\Column(type="integer", length=2)
-	     */
-	    protected $age_from;
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Divisions
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
 
-	    /**
-	     * @ORM\Column(type="integer", length=2)
-	     */
-	    protected $age_to;
+        return $this;
+    }
 
-	    /**
-	     * @ORM\Column(type="text")
-	     */
-	    protected $description;
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	    /**
-	     * @ORM\Column(type="text")
-	     */
-	    protected $rules;
+    /**
+     * Set status
+     *
+     * @param boolean $status
+     * @return Divisions
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
 
-	    /**
-	     * @ORM\Column(type="float")
-	     */
-	    protected $base_fee;
+        return $this;
+    }
 
-	    /**
-	     * @ORM\Column(type="float")
-	     */
-	    protected $addon_fee;
+    /**
+     * Get status
+     *
+     * @return boolean 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
-		/**
-	     * @ORM\Column(type="string", length=100)
-	     */
-	    protected $logo;
+    /**
+     * Set fall_ball
+     *
+     * @param boolean $fallBall
+     * @return Divisions
+     */
+    public function setFallBall($fallBall)
+    {
+        $this->fall_ball = $fallBall;
 
-	}
+        return $this;
+    }
+
+    /**
+     * Get fall_ball
+     *
+     * @return boolean 
+     */
+    public function getFallBall()
+    {
+        return $this->fall_ball;
+    }
+
+    /**
+     * Set age_from
+     *
+     * @param integer $ageFrom
+     * @return Divisions
+     */
+    public function setAgeFrom($ageFrom)
+    {
+        $this->age_from = $ageFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get age_from
+     *
+     * @return integer 
+     */
+    public function getAgeFrom()
+    {
+        return $this->age_from;
+    }
+
+    /**
+     * Set age_to
+     *
+     * @param integer $ageTo
+     * @return Divisions
+     */
+    public function setAgeTo($ageTo)
+    {
+        $this->age_to = $ageTo;
+
+        return $this;
+    }
+
+    /**
+     * Get age_to
+     *
+     * @return integer 
+     */
+    public function getAgeTo()
+    {
+        return $this->age_to;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Divisions
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set rules
+     *
+     * @param string $rules
+     * @return Divisions
+     */
+    public function setRules($rules)
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+    /**
+     * Get rules
+     *
+     * @return string 
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    /**
+     * Set base_fee
+     *
+     * @param float $baseFee
+     * @return Divisions
+     */
+    public function setBaseFee($baseFee)
+    {
+        $this->base_fee = $baseFee;
+
+        return $this;
+    }
+
+    /**
+     * Get base_fee
+     *
+     * @return float 
+     */
+    public function getBaseFee()
+    {
+        return $this->base_fee;
+    }
+
+    /**
+     * Set addon_fee
+     *
+     * @param float $addonFee
+     * @return Divisions
+     */
+    public function setAddonFee($addonFee)
+    {
+        $this->addon_fee = $addonFee;
+
+        return $this;
+    }
+
+    /**
+     * Get addon_fee
+     *
+     * @return float 
+     */
+    public function getAddonFee()
+    {
+        return $this->addon_fee;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     * @return Divisions
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+    public function isAge_check()
+    {
+        return ($this->age_from < $this->age_to);
+    }
+
+    /**
+     * Add teams
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teams
+     * @return Divisions
+     */
+    public function addTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
+    {
+        $this->teams[] = $teams;
+
+        return $this;
+    }
+
+    /**
+     * Remove teams
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teams
+     */
+    public function removeTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
+    {
+        $this->teams->removeElement($teams);
+    }
+
+    /**
+     * Get teams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeams()
+    {
+        return $this->teams;
+    }
+}

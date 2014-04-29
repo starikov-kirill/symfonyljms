@@ -1,0 +1,66 @@
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+{% block class %}user{% endblock %}
+{% block centre%}
+<div class="column full_width">
+	<div class="content">
+	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+	<div class="admin_menu_info">
+		<h2>System users</h2>
+	</div>
+	<div class="filter">
+		{{ form_start(form, {'method': 'GET'}) }}
+			<b>Filter by:</b> Division:
+			{{ form_widget(form.divisions) }}
+			Role:
+			{{ form_widget(form.league) }}
+			{{ form_widget(form.filter) }}
+		{{ form_end(form) }}
+	</div>
+	<div class="right_button">
+	<a class="button" href="{{ path('add_user') }}">Add user</a>
+</div>
+<div class="right_button pagination total_rows">
+	<a {% if (limit == 10) %} class="active_limit" {% endif %} href= "{{ path('users', { 'limit': 10}) }}">10</a>
+	<a {% if (limit == 20) %} class="active_limit" {% endif %} href= "{{ path('users', { 'limit': 20}) }}">20</a>
+	<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('users', { 'limit': 30}) }}">30</a>
+	<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('users', { 'limit': 'all'}) }}">All</a>
+</div>
+	<table class="full_width_table">
+		<thead>
+			<tr>
+				<th class ="checkbox_col" ><input class="check_all" type="checkbox" name="#"></th>
+				<th><p>NAME</p></th>
+				<th><p>PHONE</p></th>
+				<th><p>EMAIL</p></th>
+				<th><p>ROLE(S)</p></th>
+				<th><p>DIVISIONS</p></th>
+				<th><p>TEAMS</p></th>
+				<th><p>ACTION</p></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in users %}
+				<tr {% if (entity.isActive == 0) %} class="inactive" {% endif %}>
+					<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
+					<td><p>{{ entity.username }}</p></td>
+					<td><p>{{ entity.phone }}</p></td>
+					<td><p>{{ entity.email }}</p></td>
+					<td><p>roles</p></td>
+					<td><p>divisions</p></td>
+					<td><p>teams</p></td>
+					<td>
+					<a href="{{ path('edit_user', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+
+					<a href="#delete" data-item-id={{ entity.id }} data-item-page="users" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="pagination">
+	 	{{ knp_pagination_render(users) }}
+	 </div>
+</div>
+</div>
+{% endblock %}

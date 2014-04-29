@@ -1,0 +1,74 @@
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+{% block class %}team{% endblock %}
+{% block centre%}
+<div class="column full_width">
+	<div class="content">
+	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+	<div class="admin_menu_info">
+		<h2>Teams</h2>
+	</div>
+	<div class="filter">
+		{{ form_start(form, {'method': 'GET'}) }}
+			<b>Filter by:</b> Division:
+			{{ form_widget(form.divisions) }}
+			League type:
+			{{ form_widget(form.league) }}
+			Status:
+			{{ form_widget(form.status) }}
+			{{ form_widget(form.filter) }}
+		{{ form_end(form) }}
+	</div>
+	<div class="right_button">
+	<a class="button" href="{{ path('add_team') }}">Add team</a>
+</div>
+<div class="right_button pagination total_rows">
+	<a {% if (limit == 10) %} class="active_limit" {% endif %} href= "{{ path('teams', { 'limit': 10}) }}">10</a>
+	<a {% if (limit == 20) %} class="active_limit" {% endif %} href= "{{ path('teams', { 'limit': 20}) }}">20</a>
+	<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('teams', { 'limit': 30}) }}">30</a>
+	<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('teams', { 'limit': 'all'}) }}">All</a>
+</div>
+	<table class="full_width_table">
+		<thead>
+			<tr>
+				<th class ="checkbox_col" ><input class="check_all" type="checkbox" name="#"></th>
+				<th><p>TEAM</p></th>
+				<th><p>DIVISION</p></th>
+				<th><p>COACH</p></th>
+				<th><p>WINS</p></th>
+				<th><p>LOSES</p></th>
+				<th><p>TIES</p></th>
+				<th><p>AVERAGE</p></th>
+				<th><p>LEAGUE TYPE</p></th>
+				<th><p>ACTION</p></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in teams %}
+				<tr {% if (entity.status == 0) %} class="inactive" {% endif %}>
+					<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
+					<td><p>{{ entity.team_name }}</p></td>
+					<td><p>{{ entity.division_name }}</p></td>
+					<td><p>coach</p></td>
+					<td><p>wins</p></td>
+					<td><p>loses</p></td>
+					<td><p>ties</p></td>
+					<td><p>average</p></td>
+					<td><p>{{ entity.league_name }}</p></td>
+					<td>
+					<a href="{{ path('edit_team', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+
+					<a href="#delete" data-item-id={{ entity.id }} data-item-page="teams" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="pagination">
+	 	{{ knp_pagination_render(teams) }}
+	 </div>
+</div>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,163 @@
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+
+{% block centre%}
+<div class="column full_width">
+	<div class="content">
+	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+		<h2 class="title_admin">{% block page_name %}{% endblock %}</h2>
+		{{ form_start(form, {'attr': {'id': 'add_user', 'autocomplete': "off"}}) }}
+		<div class="alert-error">
+			{% for error in errors %}
+				<li>{{ error.message }}</li>
+			{% endfor %}
+		</div>
+		<div class="add_form">
+		<h3 class="title_form">User information</h3>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.username, 'First Name *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.username) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.last_name, 'Last Name *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.last_name) }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.address, 'Address *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.address) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.city, 'City *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.city) }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.states_id, 'State *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.states_id) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.zipcode, 'Zipcode *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.zipcode) }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.email.first, 'Email *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.email.first) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.home_phone, 'Home Phone *')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.home_phone) }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.email.second, 'Email Confirm')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.email.second) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.cell_phone, 'Cell Phone')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.cell_phone) }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.password.first, 'Password *')}}</div>
+					<div class="hilf_width_col"> {{ form_widget( form.password.first ) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.alt_phone, 'Alternative Phone')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.alt_phone) }}</div>
+				</div>
+			</div>
+  
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.password.second, 'Password Confirm')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.password.second) }}</div>
+				</div>				
+			</div>			
+		</div>
+		<div class="add_form">
+		<h3 class="title_form">Alt Contact</h3>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.alt_first_name, 'First Name')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.alt_first_name) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.alt_last_name, 'Last Name')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.alt_last_name) }}</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.alt_email, 'Email')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.alt_email) }}</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">{{ form_label(form.alt_phone_2, 'Alt Phone')}}</div>
+					<div class="hilf_width_col">{{ form_widget(form.alt_phone_2) }}</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="add_form">
+		<h3 class="title_form">User Roles</h3>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">
+						<label>Assign Roles</label>
+					</div>
+					<div class="hilf_width_col">
+						
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">
+						<label>Assign Divisions</label>
+					</div>
+					<div class="hilf_width_col">
+						
+					</div>
+				</div>
+				<div class="hilf_width_col">
+					<div class="hilf_width_col">
+						<label>Assign Teams</label>
+					</div>
+					<div class="hilf_width_col">
+						
+					</div>
+				</div>
+			</div>
+				<table style="display: none">
+					
+				</table>
+				<table class="user_roles">
+					<thead>
+						<tr>
+							<th class="quarter"><p>Current Roles</p></th>
+							<th class="quarter"><p>Division</p></th>
+							<th class="quarter"><p>Team</p></th>
+							<th class="quarter"></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<a class="add_role_btn">Add Role</a>
+			</div>
+		<div class="text_center">
+			{{ form_widget(form.save) }}
+		</div>
+
+		{{ form_end(form) }}
+</div>
+</div>
+{% endblock %}

@@ -11,25 +11,75 @@ use Symfony\Component\HttpFoundation\Response;
 class DivisionsController extends Controller {
 
 
-    public function indexAction() {
+    public function indexAction(Request $request, $limit) {
 
-		/*$em = $this->getDoctrine()->getManager();
-		$query = $em->createQuery('SELECT d.id, d.name, d.fall_ball, d.status FROM LjmsGeneralBundle:Divisions d ORDER BY d.id ASC');
+        $status_filter = $this->status_filter;
+        $season_filter = $this->season_filter;
 
-		$divisions = $query->getResult();
-*/
+        //data for filter form 
         $em    = $this->get('doctrine.orm.entity_manager');
-        $dql   = "SELECT d FROM LjmsGeneralBundle:Divisions d";
-        $query = $em->createQuery($dql);
+        $query_divisions = $em->createQuery('SELECT d.id, d.name FROM LjmsGeneralBundle:Divisions d ORDER BY d.id ASC');
+        $divisions = $query_divisions->getResult();
+        $divisions_list[''] = 'All';
+        foreach ($divisions as $key => $value) {
+            $divisions_list[$divisions[$key]['id']] = $divisions[$key]['name'];
+        }
+
+        // filter form
+        $defaultData = array();
+        $form = $this->createFormBuilder($defaultData)
+            ->setMethod('GET')
+            ->add('divisions', 'choice', array('choices'   => $divisions_list, 'required'  => false, 'attr' => array('class' => 'select_wide')))
+            ->add('status', 'choice', array('choices'   => $status_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
+            ->add('season', 'choice', array('choices' => $season_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
+            ->add('filter', 'submit', array('attr' => array('class' => 'button')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        //get filtration divisions
+        $filter_status = '';
+        $filter_season = '';
+        $filter_division = '';
+        $data = $form->getData();
+        $repository = $this->getDoctrine()
+            ->getRepository('LjmsGeneralBundle:Divisions');
+
+        $query = $repository->createQueryBuilder('d')
+            ->Where('1 = 1')
+            ->select('d');
+
+            if ($data) {
+                if ($data['divisions']) {
+                    $query->andWhere('d.id='.$data['divisions']);
+                }
+                if (strlen($data['season'])) {   
+                    $query->andWhere('d.fall_ball='.$data['season']);
+                }
+                if (strlen($data['status'])) {   
+                    $query->andWhere('d.status='.$data['status']);
+                }
+            }
+        $query->getQuery();
+
+        // number of rows
+        if ($limit == 'all') {
+            $res = $em->createQuery("SELECT COUNT(d) FROM LjmsGeneralBundle:Divisions d");
+            $limit_rows = $res->getResult();
+            $limit_rows = $limit_rows[0][1];
+        } else {
+            $limit_rows = $limit;
+        }
+
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query,
             $this->get('request')->query->get('page', 1)/*page number*/,
-            5/*limit per page*/
+            $limit_rows/*limit per page*/
         );
         return $this->render('LjmsGeneralBundle:Admin:divisions.html.twig', array(
-        	'divisions' => $pagination
+            'form' => $form->createView(), 'divisions' => $pagination, 'limit' => $limit
 
     	));        
     }
@@ -40,7 +90,7 @@ class DivisionsController extends Controller {
         $age = $this->age;
 
         $division = new Divisions();
-                        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
         $form = $this->createFormBuilder($division)
             ->add('status', 'choice', array('choices'   => $status, 'attr' => array('class' => 'select_wide')))
@@ -135,18 +185,17 @@ class DivisionsController extends Controller {
             throw $this->createNotFoundException('No division found for id '.$id);
         }
 
-try{
-    $em->remove($division);
-    $em->flush(); 
+        try{
 
-}catch(\Exception $e){
+            $em->remove($division);
+            $em->flush(); 
+            return new Response('TRUE');
 
-}
-       
+        } catch(Exception $e){
 
-        return $this->redirect($this->generateUrl('divisions'));
+            return new Response('ERROR');
 
-        
+        }        
     }
 
 
@@ -155,6 +204,11 @@ try{
         private $age = array(5  => 5, 6  => 6, 7  => 7, 8  => 8, 9  => 9, 10 => 10, 11 => 11, 
                              12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17, 18 => 18
                             );
+
         private $status = array(''  => 'Select one', '1'    => 'Active', '0' => 'Inactive');
+
+        private $status_filter = array(''  => 'All', '1'    => 'Active', '0' => 'Inactive');
+
+        private $season_filter = array(''  => 'All', '0'    => 'Standart', '1' => 'Fall Ball');
         
 }

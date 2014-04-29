@@ -12,7 +12,6 @@ var required1 = true;
             },
             name:{
                 required: true,
-                maxlength: 30,
             },
             'form[base_fee]':{
                 number : true,
@@ -38,7 +37,6 @@ var required1 = true;
         rules:{
             name:{
                 required: true,
-                maxlength: 30,
             },
             division_id:{
                 required: true,
@@ -55,60 +53,60 @@ var required1 = true;
     //user validation
     $("#add_user").validate({ 
         rules:{
-            first_name:{
+            'form[username]':{
                 required: true,
                 maxlength: 30,
             },
-            last_name:{
+            'form[last_name]':{
                 required: true,
                 maxlength: 30,
             },
-            address:{
+            'form[address]':{
                 required: true,
             },
-            city:{
+            'form[city]':{
                 required: true,
                 maxlength: 30,
             },
-            state_id:{
+            'form[states_id]':{
                 required: true,
             },
-            zipcode:{
+            'form[zipcode]':{
                 required: true,
                 digits : true,
             },
-           /* email:{
+         /*   email:{
                 required: true,
                  my_email_validation: true,
                  remote : {
                     url: base_url+"admin/system_users/email_jq_check"+get_id,
                     type: "post",
                 },
-            },
-            repeat_email:{
-                 equalTo: "#email",
             },*/
-            home_phone:{
+            'form[email][second]':{
+                 equalTo: "#form_email_first",
+            },
+            'form[home_phone]':{
                 required: true,
                 my_phone_validation: true,
             },
-            cell_phone:{
+            'form[cell_phone]':{
                 my_phone_validation: true,
             },
-            alt_phone:{
+            'form[alt_phone]':{
                 my_phone_validation: true,
             },
-            password:{
+            'form[password][first]':{
                 required: required1,
             },
-            repassword:{
+            'form[password][second]':{
                 required: required1,
-                equalTo: "#password",
+                equalTo: "#form_password_first",
             },
-            alt_email:{
+            'form[alt_email]':{
                  my_email_validation: true,
             },
-            alt_phone_2:{
+            'form[alt_phone_2]':{
                 my_phone_validation: true,
             }
        },

@@ -1,70 +1,81 @@
 <?php
-	namespace Ljms\GeneralBundle\Entity;
+namespace Ljms\GeneralBundle\Entity;
 
-	use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="divisions")
+ */
+class Divisions	{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $status;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $fall_ball;
+
+    /**
+     * @ORM\Column(type="integer", length=2)
+     */
+    protected $age_from;
+
+    /**
+     * @ORM\Column(type="integer", length=2)
+     */
+    protected $age_to;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $rules;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    protected $base_fee;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    protected $addon_fee;
 
 	/**
-	 * @ORM\Entity
-	 * @ORM\Table(name="divisions")
-	 */
-	class Divisions	{
-	    /**
-	     * @ORM\Column(type="integer")
-	     * @ORM\Id
-	     * @ORM\GeneratedValue(strategy="AUTO")
-	     */
-	    protected $id;
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $logo;
 
-	    /**
-	     * @ORM\Column(type="string", length=100)
-	     */
-	    protected $name;
+    /**
+     * @ORM\OneToMany(targetEntity="Teams", mappedBy="leagues")
+     */
+    protected $teams;
 
-	    /**
-	     * @ORM\Column(type="boolean")
-	     */
-	    protected $status;
 
-	    /**
-	     * @ORM\Column(type="boolean", nullable=true)
-	     */
-	    protected $fall_ball;
-
-	    /**
-	     * @ORM\Column(type="integer", length=2)
-	     */
-	    protected $age_from;
-
-	    /**
-	     * @ORM\Column(type="integer", length=2)
-	     */
-	    protected $age_to;
-
-	    /**
-	     * @ORM\Column(type="text", nullable=true)
-	     */
-	    protected $description;
-
-	    /**
-	     * @ORM\Column(type="text", nullable=true)
-	     */
-	    protected $rules;
-
-	    /**
-	     * @ORM\Column(type="float", nullable=true)
-	     */
-	    protected $base_fee;
-
-	    /**
-	     * @ORM\Column(type="float", nullable=true)
-	     */
-	    protected $addon_fee;
-
-		/**
-	     * @ORM\Column(type="string", length=100, nullable=true)
-	     */
-	    protected $logo;
-
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
 	
     /**
      * Get id
@@ -308,5 +319,38 @@
     public function isAge_check()
     {
         return ($this->age_from < $this->age_to);
+    }
+
+    /**
+     * Add teams
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teams
+     * @return Divisions
+     */
+    public function addTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
+    {
+        $this->teams[] = $teams;
+
+        return $this;
+    }
+
+    /**
+     * Remove teams
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teams
+     */
+    public function removeTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
+    {
+        $this->teams->removeElement($teams);
+    }
+
+    /**
+     * Get teams
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeams()
+    {
+        return $this->teams;
     }
 }

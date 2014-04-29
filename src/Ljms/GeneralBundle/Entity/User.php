@@ -1,17 +1,25 @@
 <?php
     namespace Ljms\GeneralBundle\Entity;
 
+    use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     use Doctrine\Common\Collections\ArrayCollection;
     use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
+
     /**
      * Ljms\GeneralBundle\Entity\User
-     *
+     * @ORM\Entity
      * @ORM\Table(name="users")
      * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\UserRepository")
+     * @UniqueEntity(fields="email", message="Sorry, this email address is already in use.")
      */
     class User implements AdvancedUserInterface, \Serializable {
+
+        protected $em;
+        public function setEm($em) {
+            $this->em = $em;
+        }
         /**
          * @ORM\Column(type="integer")
          * @ORM\Id
@@ -20,7 +28,7 @@
         private $id;
 
         /**
-         * @ORM\Column(type="string", length=25, unique=true)
+         * @ORM\Column(type="string", length=25)
          */
         private $username;
 
@@ -45,12 +53,12 @@
         private $city;
 
         /**
-         * @ORM\Column(type="string", length=25)
+         * @ORM\Column(type="string", length=25, nullable=true)
          */
         private $alt_first_name;
 
         /**
-         * @ORM\Column(type="string", length=25)
+         * @ORM\Column(type="string", length=25, nullable=true)
          */
         private $alt_last_name;
 
@@ -60,26 +68,27 @@
         private $home_phone;
 
         /**
-         * @ORM\Column(type="bigint", length=25)
+         * @ORM\Column(type="bigint", length=25, nullable=true)
          */
         private $cell_phone;
 
         /**
-         * @ORM\Column(type="bigint", length=25)
+         * @ORM\Column(type="bigint", length=25, nullable=true)
          */
         private $alt_phone;
 
         /**
-         * @ORM\Column(type="bigint", length=25)
+         * @ORM\Column(type="bigint", length=25, nullable=true)
          */
         private $alt_phone_2;
 
         /**
-         * @ORM\Column(type="string", length=60, unique=true)
+         * @ORM\Column(type="string", length=60, nullable=true)
          */
         private $alt_email;
 
         /**
+         * @var string $email
          * @ORM\Column(type="string", length=60, unique=true)
          */
         private $email;
@@ -94,6 +103,16 @@
          *
          */
         private $roles;
+        /**
+         * @ORM\ManyToOne(targetEntity="States", inversedBy="user")
+         * @ORM\JoinColumn(name="states_id", referencedColumnName="id")
+         */
+        protected $states_id;
+        
+        /**
+         * @ORM\Column(type="bigint", length=10)
+         */
+        private $zipcode;
 
 
         public function __construct()
@@ -523,4 +542,51 @@
         {
             return $this->alt_email;
         }
+    
+    /**
+     * Set states_id
+     *
+     * @param \Ljms\GeneralBundle\Entity\States $statesId
+     * @return User
+     */
+    public function setStatesId(\Ljms\GeneralBundle\Entity\States $statesId = null)
+    {
+        $this->states_id = $statesId;
+
+        return $this;
     }
+
+    /**
+     * Get states_id
+     *
+     * @return \Ljms\GeneralBundle\Entity\States 
+     */
+    public function getStatesId()
+    {
+        return $this->states_id;
+    }
+
+    /**
+     * Set zipcode
+     *
+     * @param integer $zipcode
+     * @return User
+     */
+    public function setZipcode($zipcode)
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    /**
+     * Get zipcode
+     *
+     * @return integer 
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
+    }
+
+}
