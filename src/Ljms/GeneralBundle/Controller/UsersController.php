@@ -8,6 +8,7 @@ use Ljms\GeneralBundle\Entity\Teams;
 use Ljms\GeneralBundle\Entity\Divisions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Ljms\GeneralBundle\Form\Type\UserType;
 
 
 class UsersController extends Controller {
@@ -19,12 +20,9 @@ class UsersController extends Controller {
 
         //data for filter form 
         $em    = $this->get('doctrine.orm.entity_manager');
-        $query_divisions = $em->createQuery('SELECT d.id, d.name FROM LjmsGeneralBundle:Divisions d ORDER BY d.id ASC');
-        $divisions = $query_divisions->getResult();
-        $divisions_list[''] = 'All';
-        foreach ($divisions as $key => $value) {
-            $divisions_list[$divisions[$key]['id']] = $divisions[$key]['name'];
-        }
+
+        $divisions_list = $em->getRepository('LjmsGeneralBundle:Divisions')
+            ->divisionlist();
 
      	// filter form
         $defaultData = array();
@@ -86,25 +84,9 @@ class UsersController extends Controller {
         $user = new User();
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createFormBuilder($user)
-            ->add('username', 'text', array( 'attr' => array('class' => 'select_wide')))
-            ->add('password', 'repeated', array('type' => 'password', 'invalid_message' => 'Passwords do not match', 'options' => array('attr' => array('class' => 'select_wide'))))
-            ->add('last_name', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('address', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('zipcode', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('city', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('alt_first_name', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_last_name', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('home_phone', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('cell_phone', 'text', array( 'attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_phone', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_phone_2', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_email', 'email', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('states_id', 'entity', array('class' => 'LjmsGeneralBundle:States', 'property' => 'name', 'attr' => array('class' => 'select_wide')))
-            ->add('email', 'repeated', array('type' => 'email', 'invalid_message' => 'Emails do not match', 'options' => array('attr' => array('class' => 'select_wide'))))
-            ->add('save', 'submit', array('attr' => array('class' => 'button')))
-            ->getForm();
-            $errors='';
+               //connect form
+        $form = $this->createForm(new UserType(), $user);
+        $errors='';
        
         if ($request->getMethod() == 'POST') {
 
@@ -143,25 +125,9 @@ class UsersController extends Controller {
             return $this->redirect($this->generateUrl('users'));
         }
 
-        $form = $this->createFormBuilder($user)
-            ->add('username', 'text', array( 'attr' => array('class' => 'select_wide')))
-            ->add('password', 'repeated', array('type' => 'password', 'invalid_message' => 'Passwords do not match', 'options' => array('attr' => array('class' => 'select_wide'))))
-            ->add('last_name', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('address', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('zipcode', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('city', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('alt_first_name', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_last_name', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('home_phone', 'text', array('attr' => array('class' => 'select_wide')))
-            ->add('cell_phone', 'text', array( 'attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_phone', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_phone_2', 'text', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('alt_email', 'email', array('attr' => array('class' => 'select_wide'), 'required'  => false))
-            ->add('states_id', 'entity', array('class' => 'LjmsGeneralBundle:States', 'property' => 'name', 'attr' => array('class' => 'select_wide')))
-            ->add('email', 'repeated', array('type' => 'email', 'invalid_message' => 'Emails do not match', 'options' => array('attr' => array('class' => 'select_wide'))))
-            ->add('save', 'submit', array('attr' => array('class' => 'button')))
-            ->getForm();
-            $errors='';
+               //connect form
+        $form = $this->createForm(new UserType(), $user);
+        $errors='';
        
         if ($request->getMethod() == 'POST') {
 

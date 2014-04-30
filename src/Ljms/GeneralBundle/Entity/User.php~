@@ -11,7 +11,7 @@
      * Ljms\GeneralBundle\Entity\User
      * @ORM\Entity
      * @ORM\Table(name="users")
-     * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\UserRepository")
+     * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\UserRepository")
      * @UniqueEntity(fields="email", message="Sorry, this email address is already in use.")
      */
     class User implements AdvancedUserInterface, \Serializable {

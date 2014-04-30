@@ -1,5 +1,5 @@
 <?php
-namespace Ljms\GeneralBundle\Entity;
+namespace Ljms\GeneralBundle\Entity\Repository;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

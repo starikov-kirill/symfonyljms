@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="divisions")
+ * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\DivisionRepository")
  */
 class Divisions	{
     /**

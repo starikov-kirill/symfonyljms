@@ -18,7 +18,6 @@ class AuthController extends Controller
     	$request = $this->getRequest();
         $session = $request->getSession();
 
-        // получить ошибки логина, если таковые имеются
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
