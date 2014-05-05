@@ -6,19 +6,17 @@ class DivisionRepository extends EntityRepository
 {
     public function findAllThisFilter($data)
     {
-       
     	$query = $this
     		->createQueryBuilder('d')
-            ->Where('1 = 1')
             ->select('d');
             if ($data) {
-                if ($data['divisions']) {
+                if (isset($data['divisions'])) {
                     $query->andWhere('d.id='.$data['divisions']);
                 }
-                if (strlen($data['season'])) {   
+                if (isset($data['season']) && strlen($data['season'])) {   
                     $query->andWhere('d.fall_ball='.$data['season']);
                 }
-                if (strlen($data['status'])) {   
+                if (isset($data['status']) && strlen($data['status'])) {   
                     $query->andWhere('d.status='.$data['status']);
                 }
             }
@@ -27,8 +25,30 @@ class DivisionRepository extends EntityRepository
         return $query;
     }
 
+    public function countNumber()
+    {       
+        $query = $this
+            ->createQueryBuilder('d')
+            ->select('COUNT(d)');
+            $limit_rows = $query->getQuery();
+            $limit_rows = $limit_rows->getResult();
+            $limit_rows = $limit_rows[0][1];
+
+            return $limit_rows;
+    }
+
     public function divisionlist()
     {
+
+/*
+        $qb = $this->createQueryBuilder('d');
+
+        $qb ->createQueryBuilder('d')
+            ->select('d.id')
+            ->addSelect('d.name')
+            ->add('orderBy', 'd.id ASC')
+        ;
+*/
     	$query = $this
     		->createQueryBuilder('d')
     		->select('d.id')

@@ -7,38 +7,28 @@ use Ljms\GeneralBundle\Entity\Divisions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\DivisionType;
+use Ljms\GeneralBundle\Form\Type\DivisionFilterType;
 
 
 class DivisionsController extends Controller {
 
 
-    public function indexAction(Request $request, $limit) {
 
-        $status_filter = $this->status_filter;
-        $season_filter = $this->season_filter;
+
+    public function indexAction(Request $request, $limit) {
 
         //data for filter form 
         $em    = $this->get('doctrine.orm.entity_manager');
-
         $divisions_list = $em->getRepository('LjmsGeneralBundle:Divisions')
             ->divisionlist();
 
         // filter form
         $defaultData = array();
-        $form = $this->createFormBuilder($defaultData)
-            ->setMethod('GET')
-            ->add('divisions', 'choice', array('choices'   => $divisions_list, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('status', 'choice', array('choices'   => $status_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('season', 'choice', array('choices' => $season_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('filter', 'submit', array('attr' => array('class' => 'button')))
-            ->getForm();
+        $form = $this->createForm(new DivisionFilterType(), $divisions_list);
 
         $form->handleRequest($request);
 
         //get filtration divisions
-        $filter_status = '';
-        $filter_season = '';
-        $filter_division = '';
         $data = $form->getData();
 
         $divisions = $em->getRepository('LjmsGeneralBundle:Divisions')
@@ -46,9 +36,8 @@ class DivisionsController extends Controller {
 
         // number of rows
         if ($limit == 'all') {
-            $res = $em->createQuery("SELECT COUNT(d) FROM LjmsGeneralBundle:Divisions d");
-            $limit_rows = $res->getResult();
-            $limit_rows = $limit_rows[0][1];
+            $limit_rows = $em->getRepository('LjmsGeneralBundle:Divisions')
+                ->countNumber();
         } else {
             $limit_rows = $limit;
         }
@@ -74,25 +63,21 @@ class DivisionsController extends Controller {
         //connect form
         $form = $this->createForm(new DivisionType(), $division);
 
-        $errors='';
-       
-        if ($request->getMethod() == 'POST') {
 
             $form->handleRequest($request);
-            //check the validity of data
-                $validator = $this->get('validator');
-                $errors = $validator->validate($division);
-            if ($form->isValid()) {     
+
+
+            if ($form->isValid()) {      
 
                 $em->persist($division);
                 $em->flush();
 
                 return $this->redirect($this->generateUrl('divisions'));
             } 
-        }
+
 
         return $this->render('LjmsGeneralBundle:Admin:division_add.html.twig', array(
-            'form' => $form->createView(),  'errors' => $errors
+            'form' => $form->createView(),  
         ));
     }
 
@@ -146,9 +131,5 @@ class DivisionsController extends Controller {
             return new Response('ERROR');
 
         }        
-    }
-        private $status_filter = array(''  => 'All', '1'    => 'Active', '0' => 'Inactive');
-
-        private $season_filter = array(''  => 'All', '0'    => 'Standart', '1' => 'Fall Ball');
-        
+    }        
 }

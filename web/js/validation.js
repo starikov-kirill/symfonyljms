@@ -10,16 +10,16 @@ var required1 = true;
             status: {
                 required: true,
             },
-            name:{
+            'division[name]':{
                 required: true,
             },
-            'form[base_fee]':{
+            'division[base_fee]':{
                 number : true,
             },
-            'form[addon_fee]':{
+            'division[addon_fee]':{
                 number : true,
             },
-            'form[age_to]':{
+            'division[age_to]':{
                age_validation: true,
             },
            /*userfile:{
@@ -159,8 +159,8 @@ var required1 = true;
     //own validation rule age
     $.validator.addMethod('age_validation',
     function() {
-        var from = parseInt($("#form_age_from").val());
-        var to   = parseInt($("#form_age_to").val());
+        var from = parseInt($("#division_age_from").val());
+        var to   = parseInt($("#division_age_to").val());
         if (to<=from) {
                 return  false;
             } else {

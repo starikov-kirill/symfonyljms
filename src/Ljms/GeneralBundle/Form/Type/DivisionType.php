@@ -27,7 +27,8 @@ class DivisionType extends AbstractType
                 )
     		    ->add('description', 'textarea', array(
                      'attr' => array(
-                         'cols' => '40', 'rows' => '10'),
+                         'cols' => '40', 
+                         'rows' => '10'),
                      'required'=>false)
                 )
     		    ->add('rules', 'textarea', array(
