@@ -27,35 +27,26 @@ class DivisionRepository extends EntityRepository
 
     public function countNumber()
     {       
-        $query = $this
-            ->createQueryBuilder('d')
-            ->select('COUNT(d)');
-            $limit_rows = $query->getQuery();
-            $limit_rows = $limit_rows->getResult();
-            $limit_rows = $limit_rows[0][1];
+        $qb = $this->createQueryBuilder('d');
+        $qb->select('COUNT(d)');
+
+        $limit_rows = $qb->getQuery();
+        $limit_rows = $limit_rows->getResult();
+        $limit_rows = $limit_rows[0][1];
 
             return $limit_rows;
     }
 
     public function divisionlist()
     {
-
-/*
         $qb = $this->createQueryBuilder('d');
-
-        $qb ->createQueryBuilder('d')
-            ->select('d.id')
-            ->addSelect('d.name')
-            ->add('orderBy', 'd.id ASC')
-        ;
-*/
-    	$query = $this
-    		->createQueryBuilder('d')
-    		->select('d.id')
+    	$qb ->select('d.id')
     		->addSelect('d.name')
     		->add('orderBy', 'd.id ASC');
-		$divisions = $query->getQuery();
+
+		$divisions = $qb->getQuery();
 		$divisions = $divisions->getResult();
+
 		 $divisions_list[''] = 'All';
         foreach ($divisions as $key => $value) {
             $divisions_list[$divisions[$key]['id']] = $divisions[$key]['name'];

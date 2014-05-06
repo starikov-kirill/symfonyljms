@@ -19,10 +19,27 @@ class DivisionFilterType extends AbstractType
         $data = $builder->getData();
 
 		$builder->setMethod('GET')
-            ->add('divisions', 'choice', array('choices'   => $data, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('status', 'choice', array('choices'   => $status_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('season', 'choice', array('choices' => $season_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('filter', 'submit', array('attr' => array('class' => 'button')));
+            ->add('divisions', 'choice', array(
+                'choices'   => $data, 'required'  => false, 'attr' => array(
+                    'class' => 'select_wide')
+                )
+            )
+            ->add('status', 'choice', array(
+                'choices'   => $status_filter, 'required'  => false, 'attr' => array(
+                    'class' => 'select_wide'
+                    )
+                )
+            )
+            ->add('season', 'choice', array(
+                'choices' => $season_filter, 'required'  => false, 'attr' => array(
+                    'class' => 'select_wide')
+                )
+            )
+            ->add('filter', 'submit', array(
+                'attr' => array(
+                    'class' => 'button')
+                )
+            );
     }
 
     public function getName()
