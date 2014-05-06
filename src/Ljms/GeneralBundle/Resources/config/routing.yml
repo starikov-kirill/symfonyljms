@@ -11,23 +11,6 @@ login_check:
     pattern:  /login_check
 logout:
     pattern:  /logout
-divisions:
-    pattern:  /admin/divisions/{limit}
-    defaults: { _controller: LjmsGeneralBundle:Divisions:index, limit: 10 }
-    methods:  [GET]
-edit_division:
-    pattern:  /admin/edit_division/{id}
-    defaults: { _controller: LjmsGeneralBundle:Divisions:edit }
-    requirements:
-        id:  \d+
-add_division:
-    pattern:  /admin/add_division
-    defaults: { _controller: LjmsGeneralBundle:Divisions:add }
-delete_division:
-    pattern:  /admin/divisions/delete_division/{id}
-    defaults: { _controller: LjmsGeneralBundle:Divisions:delete }
-    requirements:
-        id:  \d+
 teams:
     pattern: /admin/teams/{limit}
     defaults: {_controller: LjmsGeneralBundle:Teams:index, limit: 10 }

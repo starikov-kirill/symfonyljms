@@ -1,6 +1,6 @@
 <?php
 
-namespace Ljms\GeneralBundle\Controller;
+namespace Ljms\GeneralBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ljms\GeneralBundle\Entity\Divisions;
@@ -8,10 +8,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\DivisionType;
 use Ljms\GeneralBundle\Form\Type\DivisionFilterType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
 class DivisionsController extends Controller {
 
+    /**
+     * 
+     * @Route("/admin/divisions/{limit}", name="divisions", defaults={"limit" = 10})
+     * @Method({"GET"})
+     * @Template()
+     */
     public function indexAction(Request $request, $limit) 
     {
 
@@ -33,7 +42,8 @@ class DivisionsController extends Controller {
         if ($limit == 'all')
         {
             $limit_rows = $em->getRepository('LjmsGeneralBundle:Divisions')->countNumber();
-        } else {
+        } else 
+        {
             $limit_rows = $limit;
         }
 
@@ -41,14 +51,16 @@ class DivisionsController extends Controller {
         $pagination = $helper-> calculate_hash($divisions, $this->get('request')->query->get('page', 1),  $limit_rows);
 
 
-        return $this->render('LjmsGeneralBundle:Admin:divisions.html.twig', 
-            array(
-                'form' => $form->createView(), 'divisions' => $pagination, 'limit' => $limit
-            )
+        return array(
+            'form' => $form->createView(), 'divisions' => $pagination, 'limit' => $limit
         );        
     }
 
-
+    /**
+     * 
+     * @Route("/admin/add_division", name="add_division")
+     * @Template()
+     */
 	public function addAction(Request $request) 
     {   
         
@@ -68,14 +80,19 @@ class DivisionsController extends Controller {
 
                 return $this->redirect($this->generateUrl('divisions'));
             } 
+            $validator = $this->get('validator');
+            $errors = $validator->validate($division);
 
-        return $this->render('LjmsGeneralBundle:Admin:division_add.html.twig', 
-            array(
-                'form' => $form->createView(),  
-            )
+        return array(
+                'form' => $form->createView()
         );
     }
 
+    /**
+     * 
+     * @Route("/admin/edit_division/{id}", requirements={"id" = "\d+"}, name="edit_division")
+     * @Template()
+     */
     public function editAction(Request $request, $id)
     {          
 
@@ -103,13 +120,15 @@ class DivisionsController extends Controller {
             return $this->redirect($this->generateUrl('divisions'));
         }
 
-        return $this->render('LjmsGeneralBundle:Admin:division_edit.html.twig', 
-            array(
+        return array(
                 'form' => $form->createView(), 'id' => $id, 'division' => $division
-            )
         );
     }
 
+    /**
+     * 
+     * @Route("/admin/divisions/delete_division/{id}", requirements={"id" = "\d+"}, name="delete_division")
+     */      
     public function deleteAction($id)
     {  
         $em = $this->getDoctrine()->getManager();
@@ -118,7 +137,8 @@ class DivisionsController extends Controller {
         if (!$division) 
         {
             throw $this->createNotFoundException('No division found for id '.$id);
-        } try {
+        } try 
+        {
             $em->remove($division);
             $em->flush(); 
             return new Response('TRUE');

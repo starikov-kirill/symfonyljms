@@ -6,6 +6,7 @@
 	/**
 	 * @ORM\Entity
 	 * @ORM\Table(name="teams")
+     * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\TeamRepository")
 	 */
 	class Teams	{
 	    /**

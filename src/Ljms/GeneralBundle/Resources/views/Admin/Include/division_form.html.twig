@@ -9,6 +9,14 @@
 		{{ form_start(form, {'attr': {'id': 'add_division', 'autocomplete': "off"}}) }}
 		<div class="alert-error">
 			{{ form_errors(form) }}
+			{{ form_errors(form.status) }}
+			{{ form_errors(form.name) }}
+			{{ form_errors(form.age_from) }}
+			{{ form_errors(form.age_to) }}
+			{{ form_errors(form.description) }}
+			{{ form_errors(form.rules) }}
+			{{ form_errors(form.base_fee) }}
+			{{ form_errors(form.addon_fee) }}
 		</div>
 
 		<div class="add_form">

@@ -9,14 +9,18 @@ class DivisionRepository extends EntityRepository
     	$query = $this
     		->createQueryBuilder('d')
             ->select('d');
-            if ($data) {
-                if (isset($data['divisions'])) {
+            if ($data) 
+            {
+                if (isset($data['divisions'])) 
+                {
                     $query->andWhere('d.id='.$data['divisions']);
                 }
-                if (isset($data['season']) && strlen($data['season'])) {   
+                if (isset($data['season']) && strlen($data['season'])) 
+                {   
                     $query->andWhere('d.fall_ball='.$data['season']);
                 }
-                if (isset($data['status']) && strlen($data['status'])) {   
+                if (isset($data['status']) && strlen($data['status']))
+                {   
                     $query->andWhere('d.status='.$data['status']);
                 }
             }
@@ -48,7 +52,8 @@ class DivisionRepository extends EntityRepository
 		$divisions = $divisions->getResult();
 
 		 $divisions_list[''] = 'All';
-        foreach ($divisions as $key => $value) {
+        foreach ($divisions as $key => $value)
+        {
             $divisions_list[$divisions[$key]['id']] = $divisions[$key]['name'];
         }
         return $divisions_list;
