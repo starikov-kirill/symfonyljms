@@ -22,37 +22,43 @@ class DivisionsController extends Controller {
      * @Template()
      */
     public function indexAction(Request $request, $limit) 
-    {
+    { 
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        //data for filter form 
-        $em    = $this->get('doctrine.orm.entity_manager');
+        // get divisions list
         $divisions_list = $em->getRepository('LjmsGeneralBundle:Divisions')->divisionlist();
 
-        // filter form
-        $defaultData = array();
+        // create form
         $form = $this->createForm(new DivisionFilterType(), $divisions_list);
+
+        // form proccessing
         $form->handleRequest($request);
 
+        // get filtration data
         $data = $form->getData();
 
-        //get filtration divisions
+        // get filtration divisions
         $divisions = $em->getRepository('LjmsGeneralBundle:Divisions')->findAllThisFilter($data);
 
         // number of rows
         if ($limit == 'all')
         {
+            // if limit = all, count the number of records in db
             $limit_rows = $em->getRepository('LjmsGeneralBundle:Divisions')->countNumber();
         } else 
         {
             $limit_rows = $limit;
         }
 
+        // connect pagination 
         $helper     = $this->get('ljms.helper.pagination');
         $pagination = $helper-> calculate_hash($divisions, $this->get('request')->query->get('page', 1),  $limit_rows);
 
 
         return array(
-            'form' => $form->createView(), 'divisions' => $pagination, 'limit' => $limit
+            'form'      => $form->createView(), 
+            'divisions' => $pagination, 
+            'limit'     => $limit
         );        
     }
 
@@ -62,29 +68,27 @@ class DivisionsController extends Controller {
      * @Template()
      */
 	public function addAction(Request $request) 
-    {   
-        
+    {           
         $division = new Divisions();
 
-        //connect form
+        // create form
         $form = $this->createForm(new DivisionType(), $division);
 
-            $form->handleRequest($request);
+        // form proccessing
+        $form->handleRequest($request);
 
-            if ($form->isValid()) 
-            {    
+        // save if form valid
+        if ($form->isValid()) 
+        {   
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($division);
+            $em->flush();
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($division);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('divisions'));
-            } 
-            $validator = $this->get('validator');
-            $errors = $validator->validate($division);
+            return $this->redirect($this->generateUrl('divisions'));
+        } 
 
         return array(
-                'form' => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -94,26 +98,25 @@ class DivisionsController extends Controller {
      * @Template()
      */
     public function editAction(Request $request, $id)
-    {          
+    {   
+        // get object from db by id
+        $division = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Divisions')->find($id);
 
-        $division = $this->get('doctrine')
-            ->getManager()
-            ->getRepository('LjmsGeneralBundle:Divisions')
-            ->find($id);
-
+        // if an object exists
         if (!$division)
         {
             return $this->redirect($this->generateUrl('divisions'));
         }
-        //connect form
+
+        // create form
         $form = $this->createForm(new DivisionType(), $division);
 
+        // form proccessing
         $form->handleRequest($request);
 
-        //check the validity of data
+        // check the validity of data
         if ($form->isValid())
         {
-
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -121,7 +124,9 @@ class DivisionsController extends Controller {
         }
 
         return array(
-                'form' => $form->createView(), 'id' => $id, 'division' => $division
+            'form'     => $form->createView(), 
+            'id'       => $id, 
+            'division' => $division
         );
     }
 
@@ -130,23 +135,26 @@ class DivisionsController extends Controller {
      * @Route("/admin/divisions/delete_division/{id}", requirements={"id" = "\d+"}, name="delete_division")
      */      
     public function deleteAction($id)
-    {  
-        $em = $this->getDoctrine()->getManager();
-        $division = $em->getRepository('LjmsGeneralBundle:Divisions')->find($id);
+    {    
+        // get object from db by id      
+        $division = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Divisions')->find($id);
 
+        // if an object exists
         if (!$division) 
         {
             throw $this->createNotFoundException('No division found for id '.$id);
-        } try 
-        {
+        } 
+
+        try 
+        {   
+            $em = $this->getDoctrine()->getManager();
             $em->remove($division);
             $em->flush(); 
             return new Response('TRUE');
 
-        } catch(Exception $e) {
-
+        } catch(Exception $e) 
+        {
             return new Response('ERROR');
-
         }        
     }        
 }

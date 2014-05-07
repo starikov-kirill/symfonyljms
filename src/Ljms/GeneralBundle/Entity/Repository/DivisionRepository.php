@@ -15,10 +15,12 @@ class DivisionRepository extends EntityRepository
                 {
                     $query->andWhere('d.id='.$data['divisions']);
                 }
+
                 if (isset($data['season']) && strlen($data['season'])) 
                 {   
                     $query->andWhere('d.fall_ball='.$data['season']);
                 }
+
                 if (isset($data['status']) && strlen($data['status']))
                 {   
                     $query->andWhere('d.status='.$data['status']);
@@ -38,7 +40,7 @@ class DivisionRepository extends EntityRepository
         $limit_rows = $limit_rows->getResult();
         $limit_rows = $limit_rows[0][1];
 
-            return $limit_rows;
+        return $limit_rows;
     }
 
     public function divisionlist()
@@ -51,13 +53,14 @@ class DivisionRepository extends EntityRepository
 		$divisions = $qb->getQuery();
 		$divisions = $divisions->getResult();
 
-		 $divisions_list[''] = 'All';
+		$divisions_list[''] = 'All';
+
         foreach ($divisions as $key => $value)
         {
             $divisions_list[$divisions[$key]['id']] = $divisions[$key]['name'];
         }
+
         return $divisions_list;
        
     }
 }
-

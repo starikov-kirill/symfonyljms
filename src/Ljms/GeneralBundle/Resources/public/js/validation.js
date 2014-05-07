@@ -7,21 +7,17 @@ var required1 = true;
     $("#add_division").validate({
 
        rules:{
-            status: {
+            'division[name]': {
                 required: true,
             },
-            name:{
-                required: true,
-                maxlength: 30,
-            },
-            'form[base_fee]':{
+            'division[base_fee]': {
                 number : true,
             },
-            'form[addon_fee]':{
+            'division[addon_fee]': {
                 number : true,
             },
-            'form[age_to]':{
-               age_validation: true,
+            'division[age_to]': {
+                age_validation: true,
             },
            /*userfile:{
                  accept: "image/jpg,image/png,image/jpeg,image/gif",
@@ -38,7 +34,6 @@ var required1 = true;
         rules:{
             name:{
                 required: true,
-                maxlength: 30,
             },
             division_id:{
                 required: true,
@@ -55,60 +50,60 @@ var required1 = true;
     //user validation
     $("#add_user").validate({ 
         rules:{
-            first_name:{
+            'user[username]':{
                 required: true,
                 maxlength: 30,
             },
-            last_name:{
+            'user[last_name]':{
                 required: true,
                 maxlength: 30,
             },
-            address:{
+            'user[address]':{
                 required: true,
             },
-            city:{
+            'user[city]':{
                 required: true,
                 maxlength: 30,
             },
-            state_id:{
+            'user[states_id]':{
                 required: true,
             },
-            zipcode:{
+            'user[zipcode]':{
                 required: true,
                 digits : true,
             },
-           /* email:{
+         /*   email:{
                 required: true,
                  my_email_validation: true,
                  remote : {
                     url: base_url+"admin/system_users/email_jq_check"+get_id,
                     type: "post",
                 },
-            },
-            repeat_email:{
-                 equalTo: "#email",
             },*/
-            home_phone:{
+            'user[email][second]':{
+                 equalTo: "#form_email_first",
+            },
+            'user[home_phone]':{
                 required: true,
                 my_phone_validation: true,
             },
-            cell_phone:{
+            'user[cell_phone]':{
                 my_phone_validation: true,
             },
-            alt_phone:{
+            'user[alt_phone]':{
                 my_phone_validation: true,
             },
-            password:{
+            'user[password][first]':{
                 required: required1,
             },
-            repassword:{
+            'user[password][second]':{
                 required: required1,
-                equalTo: "#password",
+                equalTo: "#form_password_first",
             },
-            alt_email:{
+            'user[alt_email]':{
                  my_email_validation: true,
             },
-            alt_phone_2:{
+            'form[alt_phone_2]':{
                 my_phone_validation: true,
             }
        },
@@ -161,8 +156,8 @@ var required1 = true;
     //own validation rule age
     $.validator.addMethod('age_validation',
     function() {
-        var from = parseInt($("#form_age_from").val());
-        var to   = parseInt($("#form_age_to").val());
+        var from = parseInt($("#division_age_from").val());
+        var to   = parseInt($("#division_age_to").val());
         if (to<=from) {
                 return  false;
             } else {

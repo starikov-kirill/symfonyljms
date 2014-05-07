@@ -1,6 +1,9 @@
 ljms_frontend:
     resource: "@LjmsGeneralBundle/Resources/config/routing.yml"
     prefix:   /
-post:
+divisions:
     resource: "@LjmsGeneralBundle/Controller/Admin/DivisionsController.php"
+    type:     annotation
+teams:
+    resource: "@LjmsGeneralBundle/Controller/Admin/TeamsController.php"
     type:     annotation

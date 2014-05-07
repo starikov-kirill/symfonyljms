@@ -13,32 +13,45 @@ class TeamType extends AbstractType
         $visitor = $this->visitor;
 
 		$builder->add('status', 'choice', array(
-                    'choices'   => $status, 'attr' => array(
-                        'class' => 'select_wide')
+                    'choices'   => $status, 
+                    'attr' => array(
+                        'class' => 'select_wide'
+                        )
                     )
                 )
             ->add('is_visitor', 'choice', array(
-                    'choices'   => $visitor, 'attr' => array(
-                        'class' => 'select_wide')
+                    'choices'   => $visitor, 
+                    'attr' => array(
+                        'class' => 'select_wide'
+                        )
                     )
             )
             ->add('division_id', 'entity', array(
-                    'class' => 'LjmsGeneralBundle:Divisions', 'property' => 'name','attr' => array(
-                        'class' => 'select_wide')
+                    'class' => 'LjmsGeneralBundle:Divisions', 
+                    'property' => 'name',
+                    'attr' => array(
+                        'class' => 'select_wide'
+                        )
                     )
             )
             ->add('league_type_id', 'entity', array(
-                    'class' => 'LjmsGeneralBundle:Leagues', 'property' => 'name', 'attr' => array(
-                        'class' => 'select_wide')
+                    'class' => 'LjmsGeneralBundle:Leagues', 
+                    'property' => 'name', 
+                    'attr' => array(
+                        'class' => 'select_wide'
+                        )
                     )
             )
             ->add('name', 'text',  array(
-                    'attr' => array('class' => 'select_wide')
+                    'attr' => array(
+                        'class' => 'select_wide'
+                        )
                     )
             )
             ->add('save', 'submit', array(
                     'attr' => array(
-                        'class' => 'button')
+                        'class' => 'button'
+                        )
                     )
             );
     }
@@ -48,7 +61,14 @@ class TeamType extends AbstractType
         return 'team';
     }
 
-    private $visitor = array('0'    => 'No', '1' => 'Yes');
+    private $visitor = array(
+        '0' => 'No', 
+        '1' => 'Yes'
+        );
 
-    private $status = array(''  => 'Select one', '1'    => 'Active', '0' => 'Inactive');
+    private $status = array(
+        ''  => 'Select one',
+        '1' => 'Active',
+        '0' => 'Inactive'
+        );
 }

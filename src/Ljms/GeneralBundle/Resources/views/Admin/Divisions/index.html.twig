@@ -2,75 +2,79 @@
 {% block title %}LJMS{% endblock %}
 {% block class %}division{% endblock %}
 {% block centre%}
-<div class="column full_width">
-	<div class="content">
-	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
-	<div class="admin_menu_info">
-		<h2>Divisions</h2>
-	</div>
-	<div class="filter">
-		{{ form_start(form, {'method': 'GET'}) }}
-			<b>Filter by:</b> Division:
-			{{ form_widget(form.divisions) }}
-			Season:
-			{{ form_widget(form.season) }}
-			Status:
-			{{ form_widget(form.status) }}
-			{{ form_widget(form.filter) }}
-		{{ form_end(form) }}
-	</div>
-	<div class="right_button">
-	<a class="button" href="{{ path('add_division') }}">Add division</a>
-</div>
-<div class="right_button pagination total_rows">
-	<a {% if (limit == 10) %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 10}) }}">10</a>
-	<a {% if (limit == 20) %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 20}) }}">20</a>
-	<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 30}) }}">30</a>
-	<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 'all'}) }}">All</a>
-</div>
-	<table class="full_width_table">
-		<thead>
-			<tr>
-				<th class ="checkbox_col" ><input class="check_all" type="checkbox" name="#"></th>
-				<th><p>DIVISION</p></th>
-				<th><p>SEASON</p></th>
-				<th><p>TEAM(S)</p></th>
-				<th><p>DIRECTOR</p></th>
-				<th><p>ACTION</p></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for entity in divisions %}
-				<tr {% if (entity.status == 0) %} class="inactive" {% endif %}>
-					<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
-					<td><p>{{ entity.name }}</p></td>
-					<td>
-						<p>
-							{% if (entity.fallball == 0) %}
-								Spring/Summer
-							{% else %}
-								Fall Ball
-							{% endif %}
-						</p>
-					</td>
-					<td><p>
-					{#<?php echo str_replace('|||', '</br>', htmlspecialchars($item['team_name']));?>#}
-					</p></td>
-					<td><p></p></td>
-					<td>
-					<a href="{{ path('edit_division', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+	<div class="column full_width">
+		<div class="content">
+			{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+			<div class="admin_menu_info">
+				<h2>Divisions</h2>
+			</div>
 
-					<a href="#delete" data-item-id={{ entity.id }} data-item-page="divisions" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<div class="pagination">
-	 	{{ knp_pagination_render(divisions) }}
-	 </div>
-</div>
-</div>
+			<div class="filter">
+				{{ form_start(form, {'method': 'GET'}) }}
+					<b>Filter by:</b> Division:
+						{{ form_widget(form.divisions) }}
+					Season:
+						{{ form_widget(form.season) }}
+					Status:
+						{{ form_widget(form.status) }}
+					{{ form_widget(form.filter) }}
+				{{ form_end(form) }}
+			</div>
+
+			<div class="right_button">
+				<a class="button" href="{{ path('add_division') }}">Add division</a>
+			</div>
+
+			<div class="right_button pagination total_rows">
+				<a {% if (limit == 10) %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 10}) }}">10</a>
+				<a {% if (limit == 20) %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 20}) }}">20</a>
+				<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 30}) }}">30</a>
+				<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('divisions', { 'limit': 'all'}) }}">All</a>
+			</div>
+
+			<table class="full_width_table">
+				<thead>
+					<tr>
+						<th class ="checkbox_col" ><input class="check_all" type="checkbox" name="#"></th>
+						<th><p>DIVISION</p></th>
+						<th><p>SEASON</p></th>
+						<th><p>TEAM(S)</p></th>
+						<th><p>DIRECTOR</p></th>
+						<th><p>ACTION</p></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for entity in divisions %}
+						<tr {% if (entity.status == 0) %} class="inactive" {% endif %}>
+							<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
+							<td><p>{{ entity.name }}</p></td>
+							<td>
+								<p>
+									{% if (entity.fallball == 0) %}
+										Spring/Summer
+									{% else %}
+										Fall Ball
+									{% endif %}
+								</p>
+							</td>
+							<td><p>{#<?php echo str_replace('|||', '</br>', htmlspecialchars($item['team_name']));?>#}</p></td>
+							<td><p></p></td>
+							<td>
+								<a href="{{ path('edit_division', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+
+								<a href="#delete" data-item-id={{ entity.id }} data-item-page="divisions" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="pagination">
+				{{ knp_pagination_render(divisions) }}
+			</div>		
+		</div>
+	</div>
 {% endblock %}
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ljms\GeneralBundle\Controller;
+namespace Ljms\GeneralBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Ljms\GeneralBundle\Entity\Teams;
@@ -8,11 +8,20 @@ use Ljms\GeneralBundle\Entity\Divisions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\TeamType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
 class TeamsController extends Controller {
 
 
+    /**
+     * 
+     * @Route("/admin/teams/{limit}", name="teams", defaults={"limit" = 10})
+     * @Method({"GET"})
+     * @Template()
+     */
     public function indexAction(Request $request, $limit) {
 
         $status_filter = $this->status_filter;
@@ -60,9 +69,14 @@ class TeamsController extends Controller {
         );
 
 
-        return $this->render('LjmsGeneralBundle:Admin:teams.html.twig', array('form' => $form->createView(), 'teams' => $pagination, 'limit' => $limit));        
+        return array('form' => $form->createView(), 'teams' => $pagination, 'limit' => $limit);        
     }
 
+    /**
+     * 
+     * @Route("/admin/add_team", name="add_team")
+     * @Template()
+     */
     public function addAction(Request $request) {   
         
         $team = new Teams();
@@ -87,11 +101,16 @@ class TeamsController extends Controller {
             } 
         }
 
-        return $this->render('LjmsGeneralBundle:Admin:team_add.html.twig', array(
+        return array(
             'form' => $form->createView(),  'errors' => $errors
-        ));
+        );
     }
 
+    /**
+     * 
+     * @Route("/admin/edit_team/{id}", requirements={"id" = "\d+"}, name="edit_team")
+     * @Template()
+     */
     public function editAction(Request $request, $id) {   
         
         $em = $this->getDoctrine()->getManager();
@@ -121,11 +140,15 @@ class TeamsController extends Controller {
             } 
         }
 
-        return $this->render('LjmsGeneralBundle:Admin:team_edit.html.twig', array(
+        return array(
             'form' => $form->createView(),  'errors' => $errors, 'id' => $id, 'team' => $team
-        ));
+        );
     }
 
+    /**
+     * 
+     * @Route("/admin/teams/delete_team/{id}", requirements={"id" = "\d+"}, name="delete_team")
+     */  
     public function deleteAction($id) {  
         $em = $this->getDoctrine()->getManager();
         $team = $em->getRepository('LjmsGeneralBundle:Teams')->find($id);

@@ -64,16 +64,21 @@ Ljms\GeneralBundle\Entity\User:
         home_phone:
             - NotBlank:
                 message: "Home Phone field is required."
-            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
+            - Regex: 
+                pattern: "/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/"
+                message: "Incorrect Home Phone."
         cell_phone:
-            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
-
+            - Regex: 
+                pattern: "/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/"
+                message: "Incorrect Cell Phone."
         alt_phone:
-            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
-
+            - Regex: 
+                pattern: "/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/"
+                message: "Incorrect Alternative Phone."
         alt_phone_2:
-            - Ljms\GeneralBundle\Validator\Constraints\Phone: ~
-
+            - Regex: 
+                pattern: "/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/"
+                message: "Incorrect Alt Phone."
         alt_email:
             - Email:
                 message: 'The email "{{ value }}" is not a valid email'

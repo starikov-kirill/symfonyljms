@@ -7,10 +7,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class DivisionFilterType extends AbstractType
 {
-
-    private $status_filter = array(''  => 'All', '1'    => 'Active', '0' => 'Inactive');
-
-    private $season_filter = array(''  => 'All', '0'    => 'Standart', '1' => 'Fall Ball');
+    //array for dropdown status
+    private $status_filter = array(
+        ''  => 'All',
+        '1' => 'Active',
+        '0' => 'Inactive'
+        );
+    //array for dropdown season
+    private $season_filter = array(
+        ''  => 'All',
+        '0' => 'Standart',
+        '1' => 'Fall Ball'
+        );
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,18 +28,24 @@ class DivisionFilterType extends AbstractType
 
 		$builder->setMethod('GET')
             ->add('divisions', 'choice', array(
-                'choices'   => $data, 'required'  => false, 'attr' => array(
+                'choices'   => $data, 
+                'required'  => false, 
+                'attr' => array(
                     'class' => 'select_wide')
                 )
             )
             ->add('status', 'choice', array(
-                'choices'   => $status_filter, 'required'  => false, 'attr' => array(
+                'choices'   => $status_filter, 
+                'required'  => false,
+                'attr' => array(
                     'class' => 'select_wide'
                     )
                 )
             )
             ->add('season', 'choice', array(
-                'choices' => $season_filter, 'required'  => false, 'attr' => array(
+                'choices' => $season_filter,
+                'required'  => false, 
+                'attr' => array(
                     'class' => 'select_wide')
                 )
             )

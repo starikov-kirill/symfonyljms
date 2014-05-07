@@ -7,20 +7,17 @@ var required1 = true;
     $("#add_division").validate({
 
        rules:{
-            status: {
+            'division[name]': {
                 required: true,
             },
-            'division[name]':{
-                required: true,
-            },
-            'division[base_fee]':{
+            'division[base_fee]': {
                 number : true,
             },
-            'division[addon_fee]':{
+            'division[addon_fee]': {
                 number : true,
             },
-            'division[age_to]':{
-               age_validation: true,
+            'division[age_to]': {
+                age_validation: true,
             },
            /*userfile:{
                  accept: "image/jpg,image/png,image/jpeg,image/gif",
@@ -53,25 +50,25 @@ var required1 = true;
     //user validation
     $("#add_user").validate({ 
         rules:{
-            'form[username]':{
+            'user[username]':{
                 required: true,
                 maxlength: 30,
             },
-            'form[last_name]':{
+            'user[last_name]':{
                 required: true,
                 maxlength: 30,
             },
-            'form[address]':{
+            'user[address]':{
                 required: true,
             },
-            'form[city]':{
+            'user[city]':{
                 required: true,
                 maxlength: 30,
             },
-            'form[states_id]':{
+            'user[states_id]':{
                 required: true,
             },
-            'form[zipcode]':{
+            'user[zipcode]':{
                 required: true,
                 digits : true,
             },
@@ -83,27 +80,27 @@ var required1 = true;
                     type: "post",
                 },
             },*/
-            'form[email][second]':{
+            'user[email][second]':{
                  equalTo: "#form_email_first",
             },
-            'form[home_phone]':{
+            'user[home_phone]':{
                 required: true,
                 my_phone_validation: true,
             },
-            'form[cell_phone]':{
+            'user[cell_phone]':{
                 my_phone_validation: true,
             },
-            'form[alt_phone]':{
+            'user[alt_phone]':{
                 my_phone_validation: true,
             },
-            'form[password][first]':{
+            'user[password][first]':{
                 required: required1,
             },
-            'form[password][second]':{
+            'user[password][second]':{
                 required: required1,
                 equalTo: "#form_password_first",
             },
-            'form[alt_email]':{
+            'user[alt_email]':{
                  my_email_validation: true,
             },
             'form[alt_phone_2]':{
