@@ -29,19 +29,19 @@ var required1 = true;
             }
         }*/
     });
-//team validation
+    //team validation
     $("#add_team").validate({ 
         rules:{
-            name:{
+            'team[name]':{
                 required: true,
             },
-            division_id:{
+            'team[division_id]':{
                 required: true,
             },
-            status:{
+            'team[status]':{
                 required: true,
             },
-            league_type_id:{
+            'team[league_type_id]':{
                 required: true,
             },
        },

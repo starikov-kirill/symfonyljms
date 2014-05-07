@@ -8,6 +8,7 @@ use Ljms\GeneralBundle\Entity\Divisions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\TeamType;
+use Ljms\GeneralBundle\Form\Type\TeamFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,52 +23,38 @@ class TeamsController extends Controller {
      * @Method({"GET"})
      * @Template()
      */
-    public function indexAction(Request $request, $limit) {
-
-        $status_filter = $this->status_filter;
-        $league_filter = $this->league_filter;
-
-        //data for filter form 
+    public function indexAction(Request $request, $limit) 
+    {
         $em    = $this->get('doctrine.orm.entity_manager');
-        $divisions_list = $em->getRepository('LjmsGeneralBundle:Divisions')
-            ->divisionlist();
 
-     	// filter form
-        $defaultData = array();
-        $form = $this->createFormBuilder($defaultData)
-            ->setMethod('GET')
-            ->add('divisions', 'choice', array('choices'   => $divisions_list, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('status', 'choice', array('choices'   => $status_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('league', 'choice', array('choices' => $league_filter, 'required'  => false, 'attr' => array('class' => 'select_wide')))
-            ->add('filter', 'submit', array('attr' => array('class' => 'button')))
-            ->getForm();
+        // get divisions list
+        $divisions_list = $em->getRepository('LjmsGeneralBundle:Divisions')->divisionlist();
+
+        // create form
+        $form = $this->createForm(new TeamFilterType(), $divisions_list);
+
+        // form proccessing
         $form->handleRequest($request);
 
-        //get filtration teams
-        $filter_status = '';
-        $filter_league = '';
-        $filter_division = '';
+        // get filtration data
         $data = $form->getData();
 
-        $teams = $em->getRepository('LjmsGeneralBundle:Teams')
-            ->findAllThisFilter($data);
+        // get filtration teams
+        $teams = $em->getRepository('LjmsGeneralBundle:Teams')->findAllThisFilter($data);
 
         // number of rows
-        if ($limit == 'all') {
-            $res = $em->createQuery("SELECT COUNT(t) FROM LjmsGeneralBundle:Teams t");
-            $limit_rows = $res->getResult();
-            $limit_rows = $limit_rows[0][1];
-        } else {
+        if ($limit == 'all')
+        {
+            // if limit = all, count the number of records in db
+            $limit_rows = $em->getRepository('LjmsGeneralBundle:Teams')->countNumber();
+        } else 
+        {
             $limit_rows = $limit;
         }
 
-        $paginator  = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $teams,
-            $this->get('request')->query->get('page', 1)/*page number*/,
-            $limit_rows/*limit per page*/
-        );
-
+        // connect pagination 
+        $helper     = $this->get('ljms.helper.pagination');
+        $pagination = $helper-> calculate_hash($teams, $this->get('request')->query->get('page', 1),  $limit_rows);
 
         return array('form' => $form->createView(), 'teams' => $pagination, 'limit' => $limit);        
     }
@@ -80,29 +67,25 @@ class TeamsController extends Controller {
     public function addAction(Request $request) {   
         
         $team = new Teams();
-        $em = $this->getDoctrine()->getManager();
 
-        //connect form
+        // create form
         $form = $this->createForm(new TeamType(), $team);
-        $errors='';
+
+        // form proccessing
+        $form->handleRequest($request);
        
-        if ($request->getMethod() == 'POST') {
+        // save if form valid
+        if ($form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($team);
+            $em->flush();
 
-            $form->handleRequest($request);
-            //check the validity of data
-                $validator = $this->get('validator');
-                $errors = $validator->validate($team);
-            if ($form->isValid()) {
-
-                $em->persist($team);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('teams'));
-            } 
-        }
+            return $this->redirect($this->generateUrl('teams'));
+        } 
 
         return array(
-            'form' => $form->createView(),  'errors' => $errors
+            'form' => $form->createView()
         );
     }
 
@@ -113,64 +96,61 @@ class TeamsController extends Controller {
      */
     public function editAction(Request $request, $id) {   
         
-        $em = $this->getDoctrine()->getManager();
-        $team = $this->get('doctrine')
-            ->getManager()
-            ->getRepository('LjmsGeneralBundle:Teams')
-            ->find($id);
+        // get object from db by id
+        $team = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Teams')->find($id);
 
+        // if an object exists
         if (!$team) {
             return $this->redirect($this->generateUrl('teams'));
         }
 
-        //connect form
+        // create form
         $form = $this->createForm(new TeamType(), $team);
-        $errors='';
-       
-        if ($request->getMethod() == 'POST') {
 
-            $form->handleRequest($request);
-            //check the validity of data
-                $validator = $this->get('validator');
-                $errors = $validator->validate($team);
-            if ($form->isValid()) {
-                $em->flush();
+        // form proccessing
+        $form->handleRequest($request);
+        
+        // check the validity of data
+        if ($form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-                return $this->redirect($this->generateUrl('teams'));
-            } 
-        }
+            return $this->redirect($this->generateUrl('teams'));
+        } 
 
         return array(
-            'form' => $form->createView(),  'errors' => $errors, 'id' => $id, 'team' => $team
+            'form' => $form->createView(),
+            'id' => $id,
+            'team' => $team
         );
     }
 
     /**
      * 
-     * @Route("/admin/teams/delete_team/{id}", requirements={"id" = "\d+"}, name="delete_team")
+     * @Route("/admin/delete_team/{id}", requirements={"id" = "\d+"}, name="delete_team")
      */  
     public function deleteAction($id) {  
-        $em = $this->getDoctrine()->getManager();
-        $team = $em->getRepository('LjmsGeneralBundle:Teams')->find($id);
+        
+        // get object from db by id
+        $team = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Teams')->find($id);
 
-        if (!$team) {
+        // if an object exists
+        if (!$team)
+        {
             throw $this->createNotFoundException('No team found for id '.$id);
         }
 
-        try{
-
+        try
+        {
+            $em = $this->getDoctrine()->getManager();
             $em->remove($team);
             $em->flush(); 
             return new Response('TRUE');
 
-        } catch(Exception $e){
-
+        } catch(Exception $e)
+        {
             return new Response('ERROR');
-
         }        
     }
-
-	private $league_filter = array(''  => 'All', '1'    => 'LJMS Teams', '2' => 'Non Conference Teams');
-
-	private $status_filter = array(''  => 'All', '1'    => 'Active', '0' => 'Inactive');
 }

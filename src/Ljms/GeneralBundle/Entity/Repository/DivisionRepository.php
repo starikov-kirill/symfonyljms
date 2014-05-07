@@ -8,7 +8,17 @@ class DivisionRepository extends EntityRepository
     {
     	$query = $this
     		->createQueryBuilder('d')
-            ->select('d');
+            ->select('d',
+                     't',
+                     'GROUP_CONCAT(t.name) as teams',
+                     'd.name as division_name',
+                     'd.status as status',
+                     'd.fall_ball as fallball',
+                     'd.id as id'
+                     )
+
+            ->leftJoin('d.teams', 't', 'WITH', 't.division_id = d.id')
+            ->groupBy('d.id');
             if ($data) 
             {
                 if (isset($data['divisions'])) 

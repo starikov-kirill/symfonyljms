@@ -2,44 +2,49 @@
 {% block title %}LJMS{% endblock %}
 
 {% block centre%}
-<div class="column full_width">
-	<div class="content">
-	{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
-		<h2 class="title_admin">{% block page_name %}{% endblock %}</h2>
-		{{ form_start(form, {'attr': {'id': 'add_team', 'autocomplete': "off"}}) }}
-		<div class="alert-error">
-			{% for error in errors %}
-				<li>{{ error.message }}</li>
-			{% endfor %}
-		</div>
+	<div class="column full_width">
+		<div class="content">
+		{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+			<h2 class="title_admin">{% block page_name %}{% endblock %}</h2>
+			{{ form_start(form, {'attr': {'id': 'add_team', 'autocomplete': "off"}}) }}
+				<div class="alert-error">
+					{{ form_errors(form.name) }}
+					{{ form_errors(form.division_id) }}
+					{{ form_errors(form.league_type_id) }}
+					{{ form_errors(form.status) }}
+					{{ form_errors(form.is_visitor) }}
+				</div>
 
-		<div class="add_form">
-			<div class="form-group">
-				<div class="leftpart">{{ form_label(form.name, 'Team Name *')}}</div>
-				<div class="rightpart">{{ form_widget(form.name) }}</div>
-			</div>
-			<div class="form-group">
-				<div class="leftpart">{{ form_label(form.division_id, 'Division*')}}</div>
-				<div class="rightpart">{{ form_widget(form.division_id) }}</div>
-			</div>
-			<div class="form-group">
-				<div class="leftpart">{{ form_label(form.league_type_id, 'League Type*')}}</div>
-				<div class="rightpart">{{ form_widget(form.league_type_id) }}</div>
-			</div>
-			<div class="form-group">
-				<div class="leftpart">{{ form_label(form.status, 'Status *')}}</div>
-				<div class="rightpart">{{ form_widget(form.status) }}</div>
-			</div>
-			<div class="form-group"> 
-				<div class="leftpart">{{ form_label(form.is_visitor, 'Is Visitor *')}}</div>
-				<div class="rightpart">{{ form_widget(form.is_visitor)}}</div>
-			</div>
-		</div>
-		<div class="text_center">
-			{{ form_widget(form.save) }}
-		</div>
+				<div class="add_form">
+					<div class="form-group">
+						<div class="leftpart">{{ form_label(form.name, 'Team Name *')}}</div>
+						<div class="rightpart">{{ form_widget(form.name) }}</div>
+					</div>
 
-		{{ form_end(form) }}
-</div>
-</div>
+					<div class="form-group">
+						<div class="leftpart">{{ form_label(form.division_id, 'Division*')}}</div>
+						<div class="rightpart">{{ form_widget(form.division_id) }}</div>
+					</div>
+
+					<div class="form-group">
+						<div class="leftpart">{{ form_label(form.league_type_id, 'League Type*')}}</div>
+						<div class="rightpart">{{ form_widget(form.league_type_id) }}</div>
+					</div>
+
+					<div class="form-group">
+						<div class="leftpart">{{ form_label(form.status, 'Status *')}}</div>
+						<div class="rightpart">{{ form_widget(form.status) }}</div>
+					</div>
+					
+					<div class="form-group"> 
+						<div class="leftpart">{{ form_label(form.is_visitor, 'Is Visitor *')}}</div>
+						<div class="rightpart">{{ form_widget(form.is_visitor)}}</div>
+					</div>
+				</div>
+				<div class="text_center">
+					{{ form_widget(form.save) }}
+				</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
 {% endblock %}

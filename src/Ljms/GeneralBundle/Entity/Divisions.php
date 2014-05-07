@@ -68,7 +68,7 @@ class Divisions	{
     protected $logo;
 
     /**
-     * @ORM\OneToMany(targetEntity="Teams", mappedBy="leagues")
+     * @ORM\OneToMany(targetEntity="Teams", mappedBy="division_id")
      */
     protected $teams;
 

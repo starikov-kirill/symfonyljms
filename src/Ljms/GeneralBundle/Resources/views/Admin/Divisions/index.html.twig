@@ -5,6 +5,7 @@
 	<div class="column full_width">
 		<div class="content">
 			{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+
 			<div class="admin_menu_info">
 				<h2>Divisions</h2>
 			</div>
@@ -48,7 +49,7 @@
 					{% for entity in divisions %}
 						<tr {% if (entity.status == 0) %} class="inactive" {% endif %}>
 							<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
-							<td><p>{{ entity.name }}</p></td>
+							<td><p>{{ entity.division_name }}</p></td>
 							<td>
 								<p>
 									{% if (entity.fallball == 0) %}
@@ -58,11 +59,10 @@
 									{% endif %}
 								</p>
 							</td>
-							<td><p>{#<?php echo str_replace('|||', '</br>', htmlspecialchars($item['team_name']));?>#}</p></td>
+							<td><p>{{ entity.teams|escape|replace({',': '</br>' })|raw }}</p></td>
 							<td><p></p></td>
-							<td>
+							<td>								
 								<a href="{{ path('edit_division', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
-
 								<a href="#delete" data-item-id={{ entity.id }} data-item-page="divisions" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
 							</td>
 						</tr>
