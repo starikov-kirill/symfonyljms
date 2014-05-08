@@ -73,7 +73,7 @@ class UsersController extends Controller {
         
         $user = new User();
 
-        $form = $this->createForm(new UserType(), $user);
+        $form = $this->createForm(new UserType(), $user, array('block_name' => 'creating'));
 
         $form->handleRequest($request);
        
@@ -81,7 +81,7 @@ class UsersController extends Controller {
         if ($form->isValid()) {
             
             // encrypt password
-            $password = $this->get('ljms.helper.encryptPassword')-> encryptPassword($user);
+            $password = $this->get('ljms.helper.encryptPassword')-> encryptPassword($user, 'add');
 
             // install user is active by default
             $user->setIsActive('1');
@@ -113,14 +113,20 @@ class UsersController extends Controller {
             return $this->redirect($this->generateUrl('users'));
         }
 
-        $form = $this->createForm(new UserType(), $user);
+        $form = $this->createForm(new UserType(), $user, array('block_name' => 'updating'));
 
         $form->handleRequest($request);
-       
-        if ($form->isValid()) {
 
-            // encrypt password
-            $password = $this->get('ljms.helper.encryptPassword')-> encryptPassword($user);
+        // get the password entered in the form 
+        $newPassword = $user->getNewpassword();
+
+        if ($form->isValid()) {
+            // if the password has been entered 
+            if ($newPassword) 
+            {
+                // encrypt password and written to the database
+                $password = $this->get('ljms.helper.encryptPassword')-> encryptPassword($user, 'edit');
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -148,7 +154,6 @@ class UsersController extends Controller {
         {
             throw $this->createNotFoundException('No user found for id '.$id);
         }
-
         try
         {
             $em = $this->getDoctrine()->getManager();

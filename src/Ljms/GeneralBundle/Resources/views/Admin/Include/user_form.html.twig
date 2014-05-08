@@ -8,9 +8,22 @@
 		<h2 class="title_admin">{% block page_name %}{% endblock %}</h2>
 		{{ form_start(form, {'attr': {'id': 'add_user', 'autocomplete': "off"}}) }}
 		<div class="alert-error">
-
-
-
+			{{ form_errors(form.username) }}
+			{{ form_errors(form.last_name) }}
+			{{ form_errors(form.address) }}
+			{{ form_errors(form.city) }}
+			{{ form_errors(form.states_id) }}
+			{{ form_errors(form.zipcode) }}
+			{{ form_errors(form.email.first) }}
+			{{ form_errors(form.email.second) }}
+			{{ form_errors(form.home_phone) }}
+			{{ form_errors(form.cell_phone) }}
+			{% block passwordError%}{% endblock %}
+			{{ form_errors(form.alt_phone) }}
+			{{ form_errors(form.alt_first_name) }}
+			{{ form_errors(form.alt_last_name) }}
+			{{ form_errors(form.alt_email) }}
+			{{ form_errors(form.alt_phone_2) }}
 		</div>
 		<div class="add_form">
 		<h3 class="title_form">User information</h3>
@@ -66,8 +79,7 @@
 			</div>
 			<div class="form-group">
 				<div class="hilf_width_col">
-					<div class="hilf_width_col">{{ form_label(form.password.first, 'Password *')}}</div>
-					<div class="hilf_width_col"> {{ form_widget( form.password.first ) }}</div>
+					{% block passwordfield%}{% endblock %}
 				</div>
 				<div class="hilf_width_col">
 					<div class="hilf_width_col">{{ form_label(form.alt_phone, 'Alternative Phone')}}</div>
@@ -77,8 +89,7 @@
   
 			<div class="form-group">
 				<div class="hilf_width_col">
-					<div class="hilf_width_col">{{ form_label(form.password.second, 'Password Confirm')}}</div>
-					<div class="hilf_width_col">{{ form_widget(form.password.second) }}</div>
+					{% block passwordrepeatfield%}{% endblock %}
 				</div>				
 			</div>			
 		</div>

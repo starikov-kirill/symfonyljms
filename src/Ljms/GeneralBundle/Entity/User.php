@@ -36,6 +36,11 @@
          * @ORM\Column(type="string", length=64)
          */
         private $password;
+
+        /**
+         * @ORM\Column(type="string", length=64, nullable=true)
+         */        
+        private $newpassword;
         
         /**
          * @ORM\Column(type="string", length=25)
@@ -589,4 +594,27 @@
         return $this->zipcode;
     }
 
+
+    /**
+     * Set newpassword
+     *
+     * @param string $newpassword
+     * @return User
+     */
+    public function setNewpassword($newpassword)
+    {
+        $this->newpassword = $newpassword;
+
+        return $this;
+    }
+
+    /**
+     * Get newpassword
+     *
+     * @return string 
+     */
+    public function getNewpassword()
+    {
+        return $this->newpassword;
+    }
 }

@@ -1,2 +1,17 @@
 {% extends 'LjmsGeneralBundle:Admin/Include:user_form.html.twig' %}
 {% block page_name %}Edit User{% endblock %}
+
+{% block passwordError%}
+	{{ form_errors(form.newpassword.first) }}
+	{{ form_errors(form.newpassword.second) }}
+{% endblock %}
+
+{% block passwordfield%}
+	<div class="hilf_width_col">{{ form_label(form.newpassword.first, 'Password *')}}</div>
+	<div class="hilf_width_col"> {{ form_widget( form.newpassword.first ) }}</div>
+{% endblock %}
+
+{% block passwordrepeatfield%}
+	<div class="hilf_width_col">{{ form_label(form.newpassword.second, 'Password Confirm')}}</div>
+	<div class="hilf_width_col">{{ form_widget(form.newpassword.second) }}</div>
+{% endblock %}

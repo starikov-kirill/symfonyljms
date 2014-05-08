@@ -1,9 +1,11 @@
 $(document).ready(function(){
 //division validation
 var required1 = true;
-/*if (get_id) {
+
+//if in url edit
+if(location.href.indexOf('edit') + 1) {
     required1 = false;
-}*/
+}
     $("#add_division").validate({
 
        rules:{
@@ -93,13 +95,13 @@ var required1 = true;
             'user[alt_phone]':{
                 my_phone_validation: true,
             },
-            'user[password][first]':{
+        /*    'user[password][first]':{
                 required: required1,
             },
             'user[password][second]':{
                 required: required1,
                 equalTo: "#user_password_first",
-            },
+            },*/
             'user[alt_email]':{
                  my_email_validation: true,
             },

@@ -9,18 +9,12 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+       print_r($options['action']);
 
 		$builder->add('username', 'text', array(
                     'attr' => array(
                         'class' => 'select_wide')
                     )
-                )
-                ->add('password', 'repeated', array(
-                        'type' => 'password', 'invalid_message' => 'Passwords do not match', 'options' => array(
-                            'attr' => array(
-                                'class' => 'select_wide')
-                            )
-                        )
                 )
                 ->add('last_name', 'text', array(
                     'attr' => array(
@@ -94,6 +88,33 @@ class UserType extends AbstractType
                         'class' => 'button')
                     )
                 );
+        if ($options['block_name'] == 'updating')
+        {
+            $builder->add('newpassword', 'repeated', array(
+                        'type' => 'password',
+                        'required' => false,
+                        'invalid_message' => 'Passwords do not match',
+                        'options' => array(
+                            'attr' => array(
+                                'class' => 'select_wide',
+                                )
+                            )
+                        )
+                    );
+        } elseif ($options['block_name'] == 'creating')
+        {
+            $builder->add('password', 'repeated', array(
+                    'type' => 'password',
+                    'invalid_message' => 'Passwords do not match',
+                    'options' => array(
+                        'attr' => array(
+                            'class' => 'select_wide',
+                            )
+                        )
+                    )
+                );
+        }
+
     }
 
     public function getName()

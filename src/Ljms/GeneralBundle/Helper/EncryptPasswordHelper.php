@@ -11,7 +11,7 @@ class EncryptPasswordHelper {
         $this->container = $container;
     }
 
-    public function encryptPassword($user)
+    public function encryptPassword($user, $method)
     {
         $container  = $this->container;
 
@@ -19,7 +19,14 @@ class EncryptPasswordHelper {
         {
         $factory = $container->get('security.encoder_factory');
         $encoder = $factory->getEncoder($user);
-        $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+        if ($method == 'edit')
+        {
+            $password = $encoder->encodePassword($user->getNewpassword(), $user->getSalt());
+            $user->setNewpassword($password);
+        } elseif ($method == 'add')
+        {
+            $password = $encoder->encodePassword($user->getpassword(), $user->getSalt());
+        }
         $user->setPassword($password);
 
         return $password;
