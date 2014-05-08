@@ -41,19 +41,19 @@ class DivisionRepository extends EntityRepository
         return $query;
     }
 
-    public function countNumber()
+    public function getCountNumberDivisions()
     {       
         $qb = $this->createQueryBuilder('d');
         $qb->select('COUNT(d)');
 
-        $limit_rows = $qb->getQuery();
-        $limit_rows = $limit_rows->getResult();
-        $limit_rows = $limit_rows[0][1];
+        $limitRows = $qb->getQuery();
+        $limitRows = $limitRows->getResult();
+        $limitRows = $limitRows[0][1];
 
-        return $limit_rows;
+        return $limitRows;
     }
 
-    public function divisionlist()
+    public function findAllDevisions()
     {
         $qb = $this->createQueryBuilder('d');
     	$qb ->select('d.id')
@@ -63,14 +63,14 @@ class DivisionRepository extends EntityRepository
 		$divisions = $qb->getQuery();
 		$divisions = $divisions->getResult();
 
-		$divisions_list[''] = 'All';
+		$divisionsList[''] = 'All';
 
         foreach ($divisions as $key => $value)
         {
-            $divisions_list[$divisions[$key]['id']] = $divisions[$key]['name'];
+            $divisionsList[$divisions[$key]['id']] = $divisions[$key]['name'];
         }
 
-        return $divisions_list;
+        return $divisionsList;
        
     }
 }

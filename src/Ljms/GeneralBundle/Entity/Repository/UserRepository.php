@@ -54,4 +54,50 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->getEntityName() === $class
             || is_subclass_of($class, $this->getEntityName());
     }
+    public function findAllThisFilter($data)
+    {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->select('u',
+                     'u.username',
+                     'u.last_name',
+                     'u.isActive',
+                     'u.home_phone as phone',
+                     'u.id as id',
+                     'u.email'
+                     )
+            ->groupBy('u.id');
+            /*if ($data) 
+            {
+                if (isset($data['divisions'])) 
+                {
+                    $query->andWhere('d.id='.$data['divisions']);
+                }
+
+                if (isset($data['season']) && strlen($data['season'])) 
+                {   
+                    $query->andWhere('d.fall_ball='.$data['season']);
+                }
+
+                if (isset($data['status']) && strlen($data['status']))
+                {   
+                    $query->andWhere('d.status='.$data['status']);
+                }
+            }*/
+            $query->getQuery();
+
+        return $query;
+    }
+
+    public function getCountNumberUsers()
+    {       
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('COUNT(u)');
+
+        $limitRows = $qb->getQuery();
+        $limitRows = $limitRows->getResult();
+        $limitRows = $limitRows[0][1];
+
+        return $limitRows;
+    }
 }

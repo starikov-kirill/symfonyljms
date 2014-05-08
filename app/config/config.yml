@@ -84,3 +84,6 @@ services:
   ljms.helper.pagination:
     class: Ljms\GeneralBundle\Helper\PaginationHelper
     arguments: [@service_container]
+  ljms.helper.encryptPassword:
+    class: Ljms\GeneralBundle\Helper\EncryptPasswordHelper
+    arguments: [@service_container]

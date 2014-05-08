@@ -35,16 +35,16 @@ class TeamRepository extends EntityRepository
         return $query;
     }
 
-    public function countNumber()
+    public function getCountNumberTeams()
     {       
         $qb = $this->createQueryBuilder('t');
         $qb->select('COUNT(t)');
 
-        $limit_rows = $qb->getQuery();
-        $limit_rows = $limit_rows->getResult();
-        $limit_rows = $limit_rows[0][1];
+        $limitRows = $qb->getQuery();
+        $limitRows = $limitRows->getResult();
+        $limitRows = $limitRows[0][1];
 
-        return $limit_rows;
+        return $limitRows;
     }
 }
 

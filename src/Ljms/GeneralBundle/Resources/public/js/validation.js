@@ -23,11 +23,11 @@ var required1 = true;
                  accept: "image/jpg,image/png,image/jpeg,image/gif",
             },*/
        },
-       /* messages: {
+        messages: {
             userfile:{
                 accept: 'Incorrect image format! Select jpg, png or gif'
             }
-        }*/
+        }
     });
     //team validation
     $("#add_team").validate({ 
@@ -81,7 +81,7 @@ var required1 = true;
                 },
             },*/
             'user[email][second]':{
-                 equalTo: "#form_email_first",
+                 equalTo: "#user_email_first",
             },
             'user[home_phone]':{
                 required: true,
@@ -98,7 +98,7 @@ var required1 = true;
             },
             'user[password][second]':{
                 required: required1,
-                equalTo: "#form_password_first",
+                equalTo: "#user_password_first",
             },
             'user[alt_email]':{
                  my_email_validation: true,

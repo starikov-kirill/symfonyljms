@@ -7,3 +7,6 @@ divisions:
 teams:
     resource: "@LjmsGeneralBundle/Controller/Admin/TeamsController.php"
     type:     annotation
+users:
+    resource: "@LjmsGeneralBundle/Controller/Admin/UsersController.php"
+    type:     annotation

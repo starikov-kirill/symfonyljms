@@ -16,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DivisionsController extends Controller {
 
     /**
-     * 
      * @Route("/admin/divisions/{limit}", name="divisions", defaults={"limit" = 10})
      * @Method({"GET"})
      * @Template()
@@ -26,12 +25,10 @@ class DivisionsController extends Controller {
         $em = $this->get('doctrine.orm.entity_manager');
 
         // get divisions list
-        $divisions_list = $em->getRepository('LjmsGeneralBundle:Divisions')->divisionlist();
+        $divisionsList = $em->getRepository('LjmsGeneralBundle:Divisions')->findAllDevisions();
 
-        // create form
-        $form = $this->createForm(new DivisionFilterType(), $divisions_list);
+        $form = $this->createForm(new DivisionFilterType(), $divisionsList);
 
-        // form proccessing
         $form->handleRequest($request);
 
         // get filtration data
@@ -44,16 +41,15 @@ class DivisionsController extends Controller {
         if ($limit == 'all')
         {
             // if limit = all, count the number of records in db
-            $limit_rows = $em->getRepository('LjmsGeneralBundle:Divisions')->countNumber();
+            $limitRows = $em->getRepository('LjmsGeneralBundle:Divisions')->getCountNumberDivisions();
         } else 
         {
-            $limit_rows = $limit;
+            $limitRows = $limit;
         }
 
         // connect pagination 
         $helper     = $this->get('ljms.helper.pagination');
-        $pagination = $helper-> calculate_hash($divisions, $this->get('request')->query->get('page', 1),  $limit_rows);
-
+        $pagination = $helper-> calculateHash($divisions, $this->get('request')->query->get('page', 1),  $limitRows);
 
         return array(
             'form'      => $form->createView(), 
@@ -63,7 +59,6 @@ class DivisionsController extends Controller {
     }
 
     /**
-     * 
      * @Route("/admin/add_division", name="add_division")
      * @Template()
      */
@@ -71,10 +66,8 @@ class DivisionsController extends Controller {
     {           
         $division = new Divisions();
 
-        // create form
         $form = $this->createForm(new DivisionType(), $division);
 
-        // form proccessing
         $form->handleRequest($request);
 
         // save if form valid
@@ -93,7 +86,6 @@ class DivisionsController extends Controller {
     }
 
     /**
-     * 
      * @Route("/admin/edit_division/{id}", requirements={"id" = "\d+"}, name="edit_division")
      * @Template()
      */
@@ -102,16 +94,14 @@ class DivisionsController extends Controller {
         // get object from db by id
         $division = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Divisions')->find($id);
 
-        // if an object exists
+        // if an object no exists
         if (!$division)
         {
             return $this->redirect($this->generateUrl('divisions'));
         }
 
-        // create form
         $form = $this->createForm(new DivisionType(), $division);
 
-        // form proccessing
         $form->handleRequest($request);
 
         // check the validity of data
@@ -131,7 +121,6 @@ class DivisionsController extends Controller {
     }
 
     /**
-     * 
      * @Route("/admin/divisions/delete_division/{id}", requirements={"id" = "\d+"}, name="delete_division")
      */      
     public function deleteAction($id)
@@ -139,7 +128,7 @@ class DivisionsController extends Controller {
         // get object from db by id      
         $division = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Divisions')->find($id);
 
-        // if an object exists
+        // if an object no exists
         if (!$division) 
         {
             throw $this->createNotFoundException('No division found for id '.$id);
@@ -150,11 +139,12 @@ class DivisionsController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->remove($division);
             $em->flush(); 
+
             return new Response('TRUE');
 
         } catch(Exception $e) 
         {
-            return new Response('ERROR');
+            return new Response($e);
         }        
     }        
 }

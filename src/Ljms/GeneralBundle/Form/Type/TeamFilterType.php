@@ -7,19 +7,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TeamFilterType extends AbstractType
 {
-    //array for dropdown league
-    private $league_filter = array(
+    // array for dropdown league
+    private $leagueFilter = array(
         ''  => 'All',
         '1' => 'LJMS Teams',
         '2' => 'Non Conference Teams'
-        );
+    );
 
-    //array for dropdown status
-    private $status_filter = array(
+    // array for dropdown status
+    private $statusFilter = array(
         ''  => 'All',
         '1' => 'Active',
         '0' => 'Inactive'
-        );
+    );
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -38,7 +38,7 @@ class TeamFilterType extends AbstractType
                 )
             )
             ->add('status', 'choice', array(
-                'choices'  => $status_filter,
+                'choices'  => $statusFilter,
                 'required' => false,
                 'attr'     => array(
                     'class' => 'select_wide'
@@ -46,7 +46,7 @@ class TeamFilterType extends AbstractType
                 )
             )
             ->add('league', 'choice', array(
-                'choices' => $league_filter,
+                'choices' => $leagueFilter,
                 'required'  => false,
                 'attr' => array(
                     'class' => 'select_wide'

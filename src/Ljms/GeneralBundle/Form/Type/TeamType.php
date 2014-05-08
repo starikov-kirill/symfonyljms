@@ -7,17 +7,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TeamType extends AbstractType
 {
-    //array for dropdown visitor
+    // array for dropdown visitor
     private $visitor = array(
         '0' => 'No', 
         '1' => 'Yes'
-        );
-    //array for dropdown status
+    );
+    // array for dropdown status
     private $status = array(
         ''  => 'Select one',
         '1' => 'Active',
         '0' => 'Inactive'
-        );
+    );
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

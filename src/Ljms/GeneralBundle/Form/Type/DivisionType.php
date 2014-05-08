@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class DivisionType extends AbstractType
 {   
-        //array for dropdown age
+        // array for dropdown age
         private $age = array(
             5  => 5, 
             6  => 6, 
@@ -23,13 +23,13 @@ class DivisionType extends AbstractType
             16 => 16, 
             17 => 17, 
             18 => 18
-            );
-        //array for dropdown status
+        );
+        // array for dropdown status
         private $status = array(
             ''  => 'Select one',
             '1' => 'Active',
             '0' => 'Inactive'
-            );
+        );
         
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

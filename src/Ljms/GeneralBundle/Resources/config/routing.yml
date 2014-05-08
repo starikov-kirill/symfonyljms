@@ -11,21 +11,3 @@ login_check:
     pattern:  /login_check
 logout:
     pattern:  /logout
-
-users:
-    pattern: /admin/users/{limit}
-    defaults: {_controller: LjmsGeneralBundle:Users:index, limit: 10 }
-    methods:  [GET]
-edit_user:
-    pattern:  /admin/edit_user/{id}
-    defaults: { _controller: LjmsGeneralBundle:Users:edit }
-    requirements:
-        id:  \d+
-add_user:
-    pattern:  /admin/add_user
-    defaults: { _controller: LjmsGeneralBundle:Users:add }
-delete_user:
-    pattern:  /admin/users/delete_user/{id}
-    defaults: { _controller: LjmsGeneralBundle:Users:delete }
-    requirements:
-        id:  \d+

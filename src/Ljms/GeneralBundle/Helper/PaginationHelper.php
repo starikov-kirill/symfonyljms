@@ -11,7 +11,7 @@ class PaginationHelper {
         $this->container = $container;
     }
 
-    public function calculate_hash($object, $page, $limit)
+    public function calculateHash($object, $page, $limit)
     {
 
     	$container  = $this->container;
@@ -19,8 +19,8 @@ class PaginationHelper {
         $paginator  = $container->get("knp_paginator");
         $pagination = $paginator->paginate(
             $object,
-            $page/*page number*/,
-            $limit/*limit per page*/
+            $page,
+            $limit
         );
         return $pagination;
 

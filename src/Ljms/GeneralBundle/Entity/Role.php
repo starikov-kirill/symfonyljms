@@ -8,6 +8,7 @@
 	/**
 	 * @ORM\Table(name="roles")
 	 * @ORM\Entity()
+     * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\RoleRepository")
 	 */
 	class Role implements RoleInterface	{
 	    /**
