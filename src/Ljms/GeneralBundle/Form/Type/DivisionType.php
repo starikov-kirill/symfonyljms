@@ -43,10 +43,6 @@ class DivisionType extends AbstractType
                         )
                     )
                 )
-    		    ->add('fall_ball', 'checkbox', array(
-                    'required'=> false
-                    )
-                )
     		    ->add('name', 'text')
     		    ->add('age_to', 'choice', array(
                     'choices'   => $age)
@@ -84,6 +80,13 @@ class DivisionType extends AbstractType
                         )
                     )
                 );
+        if ($options['block_name'] == 'creating')
+        {
+            $builder->add('fall_ball', 'checkbox', array(
+                'required'=> false
+                )
+            );
+        }
     }
 
     public function getName()

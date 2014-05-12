@@ -66,7 +66,7 @@ class DivisionsController extends Controller {
     {           
         $division = new Divisions();
 
-        $form = $this->createForm(new DivisionType(), $division);
+        $form = $this->createForm(new DivisionType(), $division, array('block_name' => 'creating'));
 
         $form->handleRequest($request);
 
@@ -100,7 +100,7 @@ class DivisionsController extends Controller {
             return $this->redirect($this->generateUrl('divisions'));
         }
 
-        $form = $this->createForm(new DivisionType(), $division);
+        $form = $this->createForm(new DivisionType(), $division, array('block_name' => 'updating'));
 
         $form->handleRequest($request);
 
