@@ -9,7 +9,7 @@ $(document).ready(function(){
 	       var id = $(this).data("item-id");
 	       var elem = $(this);
 	       //sending a request to the controller
-	       $.post('delete_'+class_name+'/'+id, function(del) {
+	       $.post(baseUrl+'/admin/delete_'+class_name+'/'+id, function(del) {
 	           if (del == "ERROR"){
 	               alert("Server error. Not deleted!");
 	               return

@@ -23,8 +23,8 @@ class TeamFilterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $status_filter = $this->status_filter;
-        $league_filter = $this->league_filter;
+        $statusFilter = $this->statusFilter;
+        $leagueFilter = $this->leagueFilter;
         
         $data = $builder->getData();
 

@@ -121,7 +121,7 @@ class DivisionsController extends Controller {
     }
 
     /**
-     * @Route("/admin/divisions/delete_division/{id}", requirements={"id" = "\d+"}, name="delete_division")
+     * @Route("/admin/delete_division/{id}", requirements={"id" = "\d+"}, name="delete_division")
      */      
     public function deleteAction($id)
     {    

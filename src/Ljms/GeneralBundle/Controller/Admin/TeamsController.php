@@ -122,7 +122,7 @@ class TeamsController extends Controller {
     }
 
     /**
-     * @Route("/admin/teams/delete_team/{id}", requirements={"id" = "\d+"}, name="delete_team")
+     * @Route("/admin/delete_team/{id}", requirements={"id" = "\d+"}, name="delete_team")
      */  
     public function deleteAction($id) {  
         

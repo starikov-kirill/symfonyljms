@@ -145,7 +145,7 @@ class UsersController extends Controller {
     }
 
     /**
-     * @Route("/admin/users/delete_user/{id}", requirements={"id" = "\d+"}, name="delete_user")
+     * @Route("/admin/delete_user/{id}", requirements={"id" = "\d+"}, name="delete_user")
      */  
     public function deleteAction($id)
     {        
