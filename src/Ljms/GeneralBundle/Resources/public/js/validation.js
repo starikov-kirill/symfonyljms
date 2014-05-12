@@ -1,6 +1,10 @@
 $(document).ready(function(){
 //division validation
 var required1 = true;
+if (typeof userId == "undefined"){
+   userId = '0';
+}
+
 
 //if in url edit
 if(location.href.indexOf('edit') + 1) {
@@ -74,14 +78,14 @@ if(location.href.indexOf('edit') + 1) {
                 required: true,
                 digits : true,
             },
-         /*   email:{
+            'user[email][first]':{
                 required: true,
-                 my_email_validation: true,
-                 remote : {
-                    url: base_url+"admin/system_users/email_jq_check"+get_id,
+                my_email_validation: true,
+                remote : {
+                    url: baseUrl+'/admin/users/email_jq_check/'+userId,
                     type: "post",
                 },
-            },*/
+            },
             'user[email][second]':{
                  equalTo: "#user_email_first",
             },
@@ -110,7 +114,7 @@ if(location.href.indexOf('edit') + 1) {
             }
        },
         messages:{
-            email:{
+            'user[email][first]':{
                 remote: "Email is busy",
             },  
         }, 
@@ -177,7 +181,7 @@ if(location.href.indexOf('edit') + 1) {
             } else {
                 return  true;
             }
-        },"Enter a valid email address!");
+        },"");
     //own validation rule phone
     $.validator.addMethod('my_phone_validation',
         function(val,el)

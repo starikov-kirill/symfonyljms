@@ -24,7 +24,8 @@ class UsersController extends Controller {
      * @Method({"GET"})
      * @Template()
      */
-    public function indexAction(Request $request, $limit) {
+    public function indexAction(Request $request, $limit)
+    {
 
         $em  = $this->get('doctrine.orm.entity_manager');
 
@@ -69,7 +70,8 @@ class UsersController extends Controller {
      * @Route("/admin/add_user", name="add_user")
      * @Template()
      */
-    public function addAction(Request $request) {   
+    public function addAction(Request $request)
+    {   
         
         $user = new User();
 
@@ -102,7 +104,8 @@ class UsersController extends Controller {
      * @Route("/admin/edit_user/{id}", requirements={"id" = "\d+"}, name="edit_user")
      * @Template()
      */
-    public function editAction(Request $request, $id) {   
+    public function editAction(Request $request, $id)
+    {   
 
         // get object from db by id
         $user = $this->getDoctrine()->getRepository('LjmsGeneralBundle:User')->find($id);
@@ -144,8 +147,8 @@ class UsersController extends Controller {
     /**
      * @Route("/admin/users/delete_user/{id}", requirements={"id" = "\d+"}, name="delete_user")
      */  
-    public function deleteAction($id) {  
-        
+    public function deleteAction($id)
+    {        
         // get object from db by id      
         $user = $this->getDoctrine()->getRepository('LjmsGeneralBundle:User')->find($id);
 
@@ -166,6 +169,29 @@ class UsersController extends Controller {
         {
             return new Response($e);
         }        
+    }
+
+    /**
+     * @Route("/admin/users/email_jq_check/{id}", requirements={"id" = "\d+"}, name="email_jq_check")
+     */  
+    public function emailJqCheck(Request $request, $id)
+    {   
+
+        $post = $request->request->get('user');
+        $email = $post['email']['first'];
+
+        $em  = $this->get('doctrine.orm.entity_manager');
+        // get id from db by email
+        $newid = $em->getRepository('LjmsGeneralBundle:User')->emailJqCheck($email);
+
+        if ($newid == 'no' || $newid == $id)
+        {
+            return new Response('true');
+        } else 
+        {
+            return new Response('false');   
+        }       
+         
     }
 
 }

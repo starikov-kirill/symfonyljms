@@ -100,4 +100,27 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
         return $limitRows;
     }
+
+    public function emailJqCheck($email)
+    {       
+        $qb = $this->createQueryBuilder('u');
+        $qb ->select('u.id')
+            ->where('u.email = :email')
+            ->setParameter('email', $email);
+            
+        $id = $qb->getQuery();
+        $id = $id->getResult();
+
+        foreach ($id as $key => $value)
+        {
+            $id = $id[$key]['id'];
+        }
+        
+        if (count($id) == 0)
+        {
+            $id = 'no';
+        } 
+
+        return $id;
+    }
 }

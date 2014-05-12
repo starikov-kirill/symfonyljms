@@ -10,6 +10,7 @@
 
 		{% block javascripts %}
 			<script type="text/javascript">var class_name = '{% block class %}{% endblock %}';</script>
+			<script type="text/javascript">var baseUrl = '{{ app.request.getBaseURL() }}';</script>			
 			{% javascripts
 			    '@LjmsGeneralBundle/Resources/public/js/libraries/jquery-1.9.1.min.js'
 			    '@LjmsGeneralBundle/Resources/public/js/libraries/jquery.validate.js'

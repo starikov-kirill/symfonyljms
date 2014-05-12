@@ -1,4 +1,8 @@
 {% extends 'LjmsGeneralBundle:Admin/Include:user_form.html.twig' %}
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">var userId = '{{ id }}';</script>
+{% endblock %} 
 {% block page_name %}Edit User{% endblock %}
 
 {% block passwordError%}
