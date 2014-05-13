@@ -40,6 +40,7 @@ class TeamType extends AbstractType
                 )
                 ->add('division_id', 'entity', array(
                         'class' => 'LjmsGeneralBundle:Divisions', 
+                        'empty_value' => 'Select',
                         'property' => 'name',
                         'attr' => array(
                             'class' => 'select_wide'
@@ -48,6 +49,7 @@ class TeamType extends AbstractType
                 )
                 ->add('league_type_id', 'entity', array(
                         'class' => 'LjmsGeneralBundle:Leagues', 
+                        'empty_value' => 'Select',
                         'property' => 'name', 
                         'attr' => array(
                             'class' => 'select_wide'

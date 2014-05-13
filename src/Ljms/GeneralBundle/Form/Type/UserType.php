@@ -72,12 +72,17 @@ class UserType extends AbstractType
                     'required'  => false)
                 )
                 ->add('states_id', 'entity', array(
-                    'class' => 'LjmsGeneralBundle:States', 'property' => 'name', 'attr' => array(
+                    'class' => 'LjmsGeneralBundle:States',
+                    'empty_value' => 'Select',
+                    'property' => 'name',
+                    'attr' => array(
                         'class' => 'select_wide')
                     )
                 )
                 ->add('email', 'repeated', array(
-                    'type' => 'email', 'invalid_message' => 'Emails do not match', 'options' => array(
+                    'type' => 'email',
+                    'invalid_message' => 'Emails do not match',
+                    'options' => array(
                         'attr' => array(
                             'class' => 'select_wide')
                         )
