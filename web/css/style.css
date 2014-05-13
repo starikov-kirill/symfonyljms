@@ -67,7 +67,7 @@ label.error{
 .alert-error {
 	text-align: left;
 	font-size: 14px;
-	margin-left: 100px;
+	text-align: center;
 }
 /* ----- Header ----- */
 #header {
@@ -503,6 +503,13 @@ tbody .quarter {
 	margin-left: 8px;
 	float: left;
 }
+.action_select input{
+	float: right;
+}
+.action_select form{
+	float: left;
+}
+
 .title_form {
 	color: #777777;
 	font-size: 18px;

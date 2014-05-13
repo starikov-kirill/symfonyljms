@@ -73,4 +73,28 @@ class DivisionRepository extends EntityRepository
         return $divisionsList;
        
     }
+    public function massActionDelete($data)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->delete('LjmsGeneralBundle:Divisions', 'd')
+            ->where('d.id IN (:id)')
+            ->setParameter('id',  $data['ids'])            
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
+    public function massActionStatus($data)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->update('LjmsGeneralBundle:Divisions', 'd')
+            ->where('d.id IN (:id)')
+            ->setParameter('id',  $data['ids']) 
+            ->set('d.status', '?1') 
+            ->setParameter(1, $data['status'])          
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
 }

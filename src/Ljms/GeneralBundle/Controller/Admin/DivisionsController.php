@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\DivisionType;
 use Ljms\GeneralBundle\Form\Type\DivisionFilterType;
+use Ljms\GeneralBundle\Form\Type\MassActionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,6 +32,10 @@ class DivisionsController extends Controller {
 
         $form->handleRequest($request);
 
+        $massActionDD = $this->createForm(new MassActionType());
+
+        $massActionDD->handleRequest($request);
+
         // get filtration data
         $data = $form->getData();
 
@@ -52,9 +57,10 @@ class DivisionsController extends Controller {
         $pagination = $helper-> calculateHash($divisions, $this->get('request')->query->get('page', 1),  $limitRows);
 
         return array(
-            'form'      => $form->createView(), 
-            'divisions' => $pagination, 
-            'limit'     => $limit
+            'massActionDD' => $massActionDD->createView(),
+            'form'         => $form->createView(), 
+            'divisions'    => $pagination, 
+            'limit'        => $limit
         );        
     }
 
@@ -146,5 +152,38 @@ class DivisionsController extends Controller {
         {
             return new Response($e);
         }        
-    }        
+    } 
+
+    /**
+     * @Route("/admin/mass_action", name="divisionMassAction")
+     */      
+    public function massAction(Request $request)
+    {    
+        // get id's and action from POST
+        $data['ids'] = $request->request->get('division_ids');
+        $action = $request->request->get('action');
+        $action = $action['action'];
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        if ($action == 'delete')
+        {
+            $result = $em->getRepository('LjmsGeneralBundle:Divisions')->massActionDelete($data);
+        } elseif ($action == 'active')
+        {
+            $data['status'] = '1';
+            $result = $em->getRepository('LjmsGeneralBundle:Divisions')->massActionStatus($data);
+        } elseif ($action == 'inactive')
+        {
+            $data['status'] = '0';
+            $result = $em->getRepository('LjmsGeneralBundle:Divisions')->massActionStatus($data);
+        }
+        // if db return 0, set flash massege this error
+        if (!$result)
+        {
+            $this->get('session')->getFlashBag()->add('notice', 'Database error or incorrect command!');
+        }
+
+        return $this->redirect($this->generateUrl('divisions'));
+    }              
 }

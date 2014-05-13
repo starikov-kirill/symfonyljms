@@ -38,7 +38,7 @@
         protected $league_type_id;
         /**
          * @ORM\ManyToOne(targetEntity="Divisions", inversedBy="teams")
-         * @ORM\JoinColumn(name="divisions_id", referencedColumnName="id")
+         * @ORM\JoinColumn(name="divisions_id", referencedColumnName="id", onDelete="CASCADE")
          */
         protected $division_id;
 

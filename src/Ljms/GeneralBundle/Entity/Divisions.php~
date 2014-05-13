@@ -68,7 +68,7 @@ class Divisions	{
     protected $logo;
 
     /**
-     * @ORM\OneToMany(targetEntity="Teams", mappedBy="division_id")
+     * @ORM\OneToMany(targetEntity="Teams", mappedBy="division_id", cascade={"all"})
      */
     protected $teams;
 

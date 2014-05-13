@@ -9,7 +9,7 @@ $(document).ready(function() {
     	process_ids();
     });
     function process_ids() {  
-        model_name = current_method.substring(0, current_method.length - 1); 
+        model_name = class_name; 
         // removal of all existing INPUT this information about selected fields 
     	$('input[name="'+model_name+'_ids[]"]').remove();
         // create a hidden field with the data from the selected field for all active checkbox
