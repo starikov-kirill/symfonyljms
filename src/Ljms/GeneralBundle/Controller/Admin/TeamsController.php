@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\TeamType;
 use Ljms\GeneralBundle\Form\Type\TeamFilterType;
+use Ljms\GeneralBundle\Form\Type\MassActionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -33,6 +34,16 @@ class TeamsController extends Controller {
 
         $form->handleRequest($request);
 
+        // generate url for form action
+        $currentUrl = $this->getRequest()->getUri();
+        $pos = strpos($currentUrl, '/admin/');
+        $rest['url'] = (substr($currentUrl, 0, $pos)).'/admin/teams';
+
+
+        $massActionDD = $this->createForm(new MassActionType(), $rest);
+
+        $massActionDD->handleRequest($request);
+
         // get filtration data
         $data = $form->getData();
 
@@ -54,6 +65,7 @@ class TeamsController extends Controller {
         $pagination = $helper-> calculateHash($teams, $this->get('request')->query->get('page', 1),  $limitRows);
 
         return array(
+            'massActionDD' => $massActionDD->createView(),
             'form' => $form->createView(),
             'teams' => $pagination,
             'limit' => $limit
@@ -148,4 +160,37 @@ class TeamsController extends Controller {
             return new Response($e);
         }        
     }
+
+    /**
+     * @Route("/admin/teams/mass_action", name="divisionMassAction")
+     */      
+    public function massAction(Request $request)
+    {    
+        // get id's and action from POST
+        $data['ids'] = $request->request->get('team_ids');
+        $action = $request->request->get('action');
+        $action = $action['action'];
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        if ($action == 'delete')
+        {
+            $result = $em->getRepository('LjmsGeneralBundle:Teams')->massActionDelete($data);
+        } elseif ($action == 'active')
+        {
+            $data['status'] = '1';
+            $result = $em->getRepository('LjmsGeneralBundle:Teams')->massActionStatus($data);
+        } elseif ($action == 'inactive')
+        {
+            $data['status'] = '0';
+            $result = $em->getRepository('LjmsGeneralBundle:Teams')->massActionStatus($data);
+        }
+        // if db return 0, set flash massege this error
+        if (!$result)
+        {
+            $this->get('session')->getFlashBag()->add('notice', 'Database error or incorrect command!');
+        }
+
+        return $this->redirect($this->generateUrl('teams'));
+    }              
 }

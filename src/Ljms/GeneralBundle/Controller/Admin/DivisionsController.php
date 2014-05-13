@@ -32,7 +32,13 @@ class DivisionsController extends Controller {
 
         $form->handleRequest($request);
 
-        $massActionDD = $this->createForm(new MassActionType());
+        // generate url for form action
+        $currentUrl = $this->getRequest()->getUri();
+        $pos = strpos($currentUrl, '/admin/');
+        $rest['url'] = (substr($currentUrl, 0, $pos)).'/admin/divisions';
+
+
+        $massActionDD = $this->createForm(new MassActionType(), $rest);
 
         $massActionDD->handleRequest($request);
 
@@ -155,7 +161,7 @@ class DivisionsController extends Controller {
     } 
 
     /**
-     * @Route("/admin/mass_action", name="divisionMassAction")
+     * @Route("/admin/divisions/mass_action", name="divisionMassAction")
      */      
     public function massAction(Request $request)
     {    

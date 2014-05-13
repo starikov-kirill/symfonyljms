@@ -84,6 +84,7 @@ class DivisionRepository extends EntityRepository
             return $qb;       
        
     }
+    
     public function massActionStatus($data)
     {
         $qb = $this->createQueryBuilder('d')

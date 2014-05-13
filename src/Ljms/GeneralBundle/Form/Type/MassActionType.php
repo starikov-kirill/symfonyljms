@@ -19,9 +19,12 @@ class MassActionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $action = $this->action;
+
+        $data = $builder->getData();
+        $url = $data['url'];
         
 		$builder->setMethod('POST')
-            ->setAction('mass_action')
+            ->setAction($url.'/mass_action')
             ->add('action', 'choice', array(
                 'choices'  => $action,
                 'required' => false,

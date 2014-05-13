@@ -9,6 +9,12 @@
 			<div class="admin_menu_info">
 				<h2>Teams</h2>
 			</div>
+			
+			{% for flashMessage in app.session.flashbag.get('notice') %}
+			    <div class="alert-error">
+			        {{ flashMessage }}
+			    </div>
+			{% endfor %}
 
 			<div class="filter">
 				{{ form_start(form, {'method': 'GET'}) }}
@@ -32,6 +38,15 @@
 				<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('teams', { 'limit': 30}) }}">30</a>
 				<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('teams', { 'limit': 'all'}) }}">All</a>
 			</div>
+
+			{{ form_start(massActionDD,{'attr': {'id': 'action_select'}}) }}
+				<div class="action_select">
+
+					{{ form_widget(massActionDD.action) }}
+
+					<input type="submit" class="inactiv" id = 'mass_action_button'onclick="return confirm('Are you sure?')" value="Action" disabled>
+				</div>
+			{{ form_end(massActionDD) }}
 
 			<table class="full_width_table">
 				<thead>

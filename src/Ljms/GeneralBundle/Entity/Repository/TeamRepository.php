@@ -46,5 +46,31 @@ class TeamRepository extends EntityRepository
 
         return $limitRows;
     }
+
+    public function massActionDelete($data)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->delete('LjmsGeneralBundle:Teams', 't')
+            ->where('t.id IN (:id)')
+            ->setParameter('id',  $data['ids'])            
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
+
+    public function massActionStatus($data)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->update('LjmsGeneralBundle:Teams', 't')
+            ->where('t.id IN (:id)')
+            ->setParameter('id',  $data['ids']) 
+            ->set('t.status', '?1') 
+            ->setParameter(1, $data['status'])          
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
 }
 
