@@ -123,4 +123,30 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
         return $id;
     }
+
+    public function massActionDelete($data)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->delete('LjmsGeneralBundle:User', 'u')
+            ->where('u.id IN (:id)')
+            ->setParameter('id',  $data['ids'])            
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
+
+    public function massActionStatus($data)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->update('LjmsGeneralBundle:User', 'u')
+            ->where('u.id IN (:id)')
+            ->setParameter('id',  $data['ids']) 
+            ->set('u.isActive', '?1') 
+            ->setParameter(1, $data['status'])          
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
 }

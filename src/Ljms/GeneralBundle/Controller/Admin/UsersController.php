@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\UserType;
 use Ljms\GeneralBundle\Form\Type\UserFilterType;
+use Ljms\GeneralBundle\Form\Type\MassActionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -39,6 +40,16 @@ class UsersController extends Controller {
 
         $form->handleRequest($request);
 
+        // generate url for form action
+        $currentUrl = $this->getRequest()->getUri();
+        $pos = strpos($currentUrl, '/admin/');
+        $rest['url'] = (substr($currentUrl, 0, $pos)).'/admin/users';
+
+
+        $massActionDD = $this->createForm(new MassActionType(), $rest);
+
+        $massActionDD->handleRequest($request);
+
         // get filtration data
         $data = $form->getData();
 
@@ -60,6 +71,7 @@ class UsersController extends Controller {
         $pagination = $helper-> calculateHash($users, $this->get('request')->query->get('page', 1),  $limitRows);
 
         return array(
+            'massActionDD' => $massActionDD->createView(),
             'form' => $form->createView(),
             'users' => $pagination,
             'limit' => $limit
@@ -193,5 +205,38 @@ class UsersController extends Controller {
         }       
          
     }
+
+    /**
+     * @Route("/admin/users/mass_action", name="userMassAction")
+     */      
+    public function massAction(Request $request)
+    {    
+        // get id's and action from POST
+        $data['ids'] = $request->request->get('user_ids');
+        $action = $request->request->get('action');
+        $action = $action['action'];
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        if ($action == 'delete')
+        {
+            $result = $em->getRepository('LjmsGeneralBundle:User')->massActionDelete($data);
+        } elseif ($action == 'active')
+        {
+            $data['status'] = '1';
+            $result = $em->getRepository('LjmsGeneralBundle:User')->massActionStatus($data);
+        } elseif ($action == 'inactive')
+        {
+            $data['status'] = '0';
+            $result = $em->getRepository('LjmsGeneralBundle:User')->massActionStatus($data);
+        }
+        // if db return 0, set flash massege this error
+        if (!$result)
+        {
+            $this->get('session')->getFlashBag()->add('notice', 'Database error or incorrect command!');
+        }
+
+        return $this->redirect($this->generateUrl('users'));
+    }   
 
 }
