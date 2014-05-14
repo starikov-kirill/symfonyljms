@@ -191,5 +191,23 @@ class DivisionsController extends Controller {
         }
 
         return $this->redirect($this->generateUrl('divisions'));
-    }              
+    }  
+
+    /**
+     * @Route("/admin/divisions/delete_logo/{id}", requirements={"id" = "\d+"}, name="deletelogo")
+     */      
+    public function deleteLogoAction($id)
+    {    
+        try 
+        {   
+            $em = $this->getDoctrine()->getManager();
+            $divisionsList = $em->getRepository('LjmsGeneralBundle:Divisions')->deleteLogo($id);
+
+            return new Response('TRUE');
+
+        } catch(Exception $e) 
+        {
+            return new Response($e);
+        }
+    }             
 }

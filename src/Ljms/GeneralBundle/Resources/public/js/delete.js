@@ -10,11 +10,12 @@ $(document).ready(function(){
 	       var elem = $(this);
 	       //sending a request to the controller
 	       $.post(baseUrl+'/admin/delete_'+class_name+'/'+id, function(del) {
-	           if (del == "ERROR"){
-	               alert("Server error. Not deleted!");
-	               return
-	           }
-	           elem.parents("tr").animate({ opacity: "hide" }, "slow");
+				if (del)
+				{	
+					// delete image without rebooting
+					elem.parents("tr").animate({ opacity: "hide" }, "slow");
+					return
+				}	           
 	       });
 	   }
 	});
@@ -25,8 +26,12 @@ $(document).ready(function(){
 		e.preventDefault();
 		var division_id = $(this).data("item-id");
 		//sending a request to the controller
-		$.post(base_url+'admin/divisions/delete_logo', {division_id: division_id});
-		//delete image without rebooting
-		$(".logo").fadeOut();
+		$.post(baseUrl+'/admin/divisions/delete_logo/'+division_id, function(del) {
+	           if (del){
+	           	   // delete image without rebooting
+	               $(".logo").fadeOut();
+	               return
+	           }	           
+	       });
 	}); 
 });

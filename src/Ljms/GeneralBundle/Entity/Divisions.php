@@ -3,10 +3,12 @@ namespace Ljms\GeneralBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="divisions")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\DivisionRepository")
  */
 class Divisions	{
@@ -62,10 +64,12 @@ class Divisions	{
      */
     protected $addon_fee;
 
-	/**
-     * @ORM\Column(type="string", length=100, nullable=true)
+    /**
+     * @var string $image
+     * @Assert\File( maxSize = "1024k", mimeTypesMessage = "Please upload a valid Image")
+     * @ORM\Column(name="image", type="string", length=255)
      */
-    protected $logo;
+    protected $image;
 
     /**
      * @ORM\OneToMany(targetEntity="Teams", mappedBy="division_id", cascade={"all"})
@@ -276,26 +280,7 @@ class Divisions	{
         return $this->addon_fee;
     }
 
-    /**
-     *
-     * @param string $logo
-     * @return Divisions
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
 
-        return $this;
-    }
-
-    /**
-     *
-     * @return string 
-     */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
     public function isAge_check()
     {
         return ($this->age_from < $this->age_to);
@@ -315,6 +300,24 @@ class Divisions	{
 
     /**
      *
+     * @param string $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+ 
+    /**
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     *
      * @param \Ljms\GeneralBundle\Entity\Teams $teams
      */
     public function removeTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
@@ -329,5 +332,35 @@ class Divisions	{
     public function getTeams()
     {
         return $this->teams;
+    }
+        public function getFullImagePath() {
+        return null === $this->image ? null : $this->getUploadRootDir(). $this->image;
+    }
+ 
+    protected function getUploadRootDir() {
+        // the absolute directory path where uploaded documents should be saved
+        return $this->getTmpUploadRootDir().$this->getId()."/";
+    }
+ 
+    protected function getTmpUploadRootDir() {
+        // the absolute directory path where uploaded documents should be saved
+        return __DIR__ . '/../../../../web/upload/';
+    }
+ 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function uploadImage() {
+        // the file property can be empty if the field is not required
+        if (null === $this->image) {
+            return;
+        }
+        if(!$this->id){
+            $this->image->move($this->getTmpUploadRootDir(), $this->image->getClientOriginalName());
+        }else{
+            $this->image->move($this->getUploadRootDir(), $this->image->getClientOriginalName());
+        }
+        $this->setImage($this->image->getClientOriginalName());
     }
 }

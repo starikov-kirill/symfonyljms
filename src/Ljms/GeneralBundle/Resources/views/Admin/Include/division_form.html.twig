@@ -56,9 +56,15 @@
 
 				<div class="form-group">
 					<div class="leftpart"><label>Logo</label></div>
-					<div class="rightpart"></div>
+					<div class="rightpart">{{ form_widget(form.image) }}
+						{% block deletelogo %}{% endblock %}
+					</div>
 				</div>
+				{% block logo %}{% endblock %}
 			</div>
+
+
+
 			
 			<div class="text_center">
 				{{ form_widget(form.save) }}

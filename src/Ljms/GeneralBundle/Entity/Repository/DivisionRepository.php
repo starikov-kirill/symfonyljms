@@ -98,4 +98,17 @@ class DivisionRepository extends EntityRepository
             return $qb;       
        
     }
+    public function deleteLogo($id)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->update('LjmsGeneralBundle:Divisions', 'd')
+            ->where('d.id IN (:id)')
+            ->setParameter('id',  $id) 
+            ->set('d.image', '?1') 
+            ->setParameter(1, '')          
+            ->getQuery()
+            ->execute(); 
+            return $qb;       
+       
+    }
 }

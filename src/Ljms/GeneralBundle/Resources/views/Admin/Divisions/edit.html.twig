@@ -1,3 +1,22 @@
 {% extends 'LjmsGeneralBundle:Admin/Include:division_form.html.twig' %}
 {% block page_name %}Edit Division{% endblock %}
 {% block fall_ball %}{% endblock %}
+
+{% block deletelogo %}
+	{% if division.image|length > 0 %}
+		<a href="#delete_logo" data-item-id={{ id }} class="button logo">Delete current image</a>
+	{% endif %}
+{% endblock %}
+
+{% block logo %}
+	{% if division.image|length > 0 %}
+	<div class="form-group logo">
+		<div class="leftpart"><label>Prewiev</label></div>
+		<div class="rightpart">
+			<img src="{{ asset('upload/' ~ division.id ~'/' ~ division.image)}}" alt="" height="100"/>		
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+      
