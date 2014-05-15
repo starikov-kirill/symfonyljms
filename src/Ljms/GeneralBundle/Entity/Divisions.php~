@@ -260,6 +260,31 @@ class Divisions	{
     }
 
     /**
+     * @param string $image
+     * @return Divisions
+     */
+    public function setImage($image)
+    {
+        if($image !== null)
+        {
+            $this->image = $image;
+
+            return $this;
+        } else {
+            return $this->image;
+        }
+    }
+
+ 
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      *
      * @param float $addonFee
      * @return Divisions
@@ -300,24 +325,6 @@ class Divisions	{
 
     /**
      *
-     * @param string $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
- 
-    /**
-     *
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     *
      * @param \Ljms\GeneralBundle\Entity\Teams $teams
      */
     public function removeTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
@@ -333,16 +340,19 @@ class Divisions	{
     {
         return $this->teams;
     }
-        public function getFullImagePath() {
+    public function getFullImagePath() 
+    {
         return null === $this->image ? null : $this->getUploadRootDir(). $this->image;
     }
  
-    protected function getUploadRootDir() {
+    protected function getUploadRootDir()
+    {
         // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir().$this->getId()."/";
     }
  
-    protected function getTmpUploadRootDir() {
+    protected function getTmpUploadRootDir()
+    {
         // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../../../web/upload/';
     }
@@ -351,7 +361,8 @@ class Divisions	{
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
-    public function uploadImage() {
+    public function uploadImage()
+    {
         // the file property can be empty if the field is not required
         if (null === $this->image) {
             return;

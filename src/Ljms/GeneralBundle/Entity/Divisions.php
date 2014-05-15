@@ -65,8 +65,7 @@ class Divisions	{
     protected $addon_fee;
 
     /**
-     * @var string $image
-     * @Assert\File( maxSize = "1024k", mimeTypesMessage = "Please upload a valid Image")
+     * @var string $image`
      * @ORM\Column(name="image", type="string", length=255)
      */
     protected $image;
@@ -260,6 +259,27 @@ class Divisions	{
     }
 
     /**
+     * @param string $image
+     * @return Divisions
+     */
+    public function setImage($image)
+    {
+        if($image !== null) {
+            $this->image = $image;
+
+            return $this;
+        } 
+    }
+ 
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      *
      * @param float $addonFee
      * @return Divisions
@@ -300,24 +320,6 @@ class Divisions	{
 
     /**
      *
-     * @param string $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
- 
-    /**
-     *
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     *
      * @param \Ljms\GeneralBundle\Entity\Teams $teams
      */
     public function removeTeam(\Ljms\GeneralBundle\Entity\Teams $teams)
@@ -333,16 +335,12 @@ class Divisions	{
     {
         return $this->teams;
     }
-        public function getFullImagePath() {
+    public function getFullImagePath() 
+    {
         return null === $this->image ? null : $this->getUploadRootDir(). $this->image;
     }
  
-    protected function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
-        return $this->getTmpUploadRootDir().$this->getId()."/";
-    }
- 
-    protected function getTmpUploadRootDir() {
+    protected function getTmpUploadRootDir(){
         // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../../../web/upload/';
     }
@@ -352,15 +350,21 @@ class Divisions	{
      * @ORM\PreUpdate()
      */
     public function uploadImage() {
-        // the file property can be empty if the field is not required
-        if (null === $this->image) {
+        // if file upload $pos >= 0
+        $pos = strpos($this->image, '/');
+
+        if ($pos === false)
+        {
             return;
+        } else 
+        {
+            $rnd = mt_rand();
+            $format = substr($this->image->getClientOriginalName(), strrpos($this->image->getClientOriginalName(), '.'));
+            $name = $rnd.$format;
+
+            $this->image->move($this->getTmpUploadRootDir(), $name);
+
+            $this->setImage($name);
         }
-        if(!$this->id){
-            $this->image->move($this->getTmpUploadRootDir(), $this->image->getClientOriginalName());
-        }else{
-            $this->image->move($this->getUploadRootDir(), $this->image->getClientOriginalName());
-        }
-        $this->setImage($this->image->getClientOriginalName());
     }
 }

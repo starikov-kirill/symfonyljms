@@ -7,3 +7,4 @@
 !app/logs/.gitkeep
 /build/
 /composer.phar
+/web/upload/

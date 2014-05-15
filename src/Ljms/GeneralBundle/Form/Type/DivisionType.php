@@ -75,7 +75,9 @@ class DivisionType extends AbstractType
                     )
                 )
                 ->add('image', 'file', array(
-                    'data_class' => null)
+                    'data_class' => null,
+                    'required' => false
+                    )
                 )
     		    ->add('save', 'submit', array(
                     'attr' => array(

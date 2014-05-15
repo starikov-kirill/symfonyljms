@@ -1,24 +1,30 @@
 Ljms\GeneralBundle\Entity\Divisions:
     properties:
-        name:
-            - NotBlank: ~
-        status:
-            - NotBlank: ~
-        age_to:
-            - NotBlank: ~
-        age_from:
-            - NotBlank: ~
-        base_fee:
-            - Type:
-                type: digit
-                message: "Base fee value should be of type digit"
-        addon_fee:
-            - Type: 
-                type: digit
-                message: "Addon fee value should be of type digit"
-    getters:
-        age_check:
-            - "True": { message: "Incorrect years interval!" }
+    #     name:
+    #         - NotBlank:
+    #             message: "Divisions name field is required."
+    #     status:
+    #         - NotBlank:
+    #             message: "Status field is required."
+    #     age_to:
+    #         - NotBlank: ~
+    #     age_from:
+    #         - NotBlank: ~
+    #     base_fee:
+    #         - Type:
+    #             type: digit
+    #             message: "Base fee value should be of type digit"
+    #     addon_fee:
+    #         - Type: 
+    #             type: digit
+    #             message: "Addon fee value should be of type digit"
+    # getters:
+    #     age_check:
+    #         - "True": { message: "Incorrect years interval!" }
+    #     image:
+    #         - Image: ~
+    #         - File:
+    #             maxSize: 1024k
 
 Ljms\GeneralBundle\Entity\Teams:
     properties:
