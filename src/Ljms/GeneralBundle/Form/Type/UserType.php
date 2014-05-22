@@ -98,7 +98,7 @@ class UserType extends AbstractType
                     'property' => 'name',
                     'expanded' => true,
                     'multiple' => true,
-                    //'attr'=> array('style'=>'display:none')
+                    'attr'=> array('style'=>'display:none')
                     )
                 )
                 ->add('teamsManagers', 'entity', array(
@@ -106,7 +106,7 @@ class UserType extends AbstractType
                     'property' => 'name',
                     'expanded' => true,
                     'multiple' => true,
-                    //'attr'=> array('style'=>'display:none')
+                    'attr'=> array('style'=>'display:none')
                     )
                 )
                 ->add('teamsCoachs', 'entity', array(
@@ -114,7 +114,7 @@ class UserType extends AbstractType
                     'property' => 'name',
                     'expanded' => true,
                     'multiple' => true,
-                    //'attr'=> array('style'=>'display:none')
+                    'attr'=> array('style'=>'display:none')
                     )
                 )
                 ->add('divisions', 'entity', array(
@@ -122,7 +122,7 @@ class UserType extends AbstractType
                     'property' => 'name',
                     'expanded' => true,
                     'multiple' => true,
-                    //'attr'=> array('style'=>'display:none')
+                    'attr'=> array('style'=>'display:none')
                     )
                 );
 

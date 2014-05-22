@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 var template_data = {};
+//alert(userId);
 
 //+++++++++++++++++++++++ Add user roles to page +++++++++++++++++++++++//
 
@@ -160,12 +161,7 @@ $.post(baseUrl+'/admin/link_teams_and_divisions', function(link_divisions_and_te
 
         } 
     });
-/*
-   if ($('#user_roles_1').prop('checked')){
-    alert('dsg');
-   }
 
-*/
     $(".teams_dd").change(function() {
          var team_id = $(this).val();
          if (team_id) {
@@ -280,24 +276,45 @@ $.post(baseUrl+'/admin/link_teams_and_divisions', function(link_divisions_and_te
             }
 
         }
-        
-        // verify the existence of the role
-       /* $.post(base_url+'admin/system_users/role_check', {
-            div_id:  template_data.division_id,
-            role_id: template_data.role_id, 
-            team_id: template_data.team_id,
-            user_id: user_id,
+        template_data.role_to_user_id = '';
 
-             }, function(roles){
-                // if role exists
-                if (roles=="TRUE") {
-                    alert("Role already exists")
-                // add if the role free
-                } else {*/
+        if ((template_data.role_id == 1) || (template_data.role_id == 5)) {
+
+            //++++++++++++++++++++++++++++ add template ++++++++++++++++++++++++++++//
+
+            for(var placeholder_name in template_data) {
+                role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+            }
+            $(role_row_template).appendTo($("thead + tbody"));
+
+            //++++++++++++++++++++++++++++ work this checkbox ++++++++++++++++++++++++++++//
+
+            $("#user_roles_"+template_data.role_id).prop('checked', true);
+
+            // if role = director - checked checkbox this divisions
+            if (template_data.role_id == 2) {
+
+                $("#user_divisions_"+template_data.division_id).prop('checked', true);
+            } else if (template_data.role_id == 3) {
+
+                $("#user_teamsCoachs_"+template_data.team_id).prop('checked', true);
+
+            } else if (template_data.role_id == 4){
+
+                $("#user_teamsManagers_"+template_data.team_id).prop('checked', true);
+
+            }
+        }
+
+        // if added director role
+        if (template_data.role_id == 2) {
+            $.post(baseUrl+'/admin/users/role_check/'+template_data.role_id+'/'+template_data.division_id, function(id){
+                if ((id !=0) && (id != userId)) {
+                     alert("Role already exists");
+                    return;
+                } else {
 
                     //++++++++++++++++++++++++++++ add template ++++++++++++++++++++++++++++//
-
-                    template_data.role_to_user_id = '';
 
                     for(var placeholder_name in template_data) {
                         role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
@@ -321,20 +338,59 @@ $.post(baseUrl+'/admin/link_teams_and_divisions', function(link_divisions_and_te
                         $("#user_teamsManagers_"+template_data.team_id).prop('checked', true);
 
                     }
-       /*         }
-        });*/
+
+                }
+
+            })
+        }
+
+        // if added coach or manager role
+        if ((template_data.role_id == 3) || (template_data.role_id == 4)) {
+            $.post(baseUrl+'/admin/users/role_check/'+template_data.role_id+'/'+template_data.team_id, function(id){
+                if ((id !=0) && (id != userId)) {
+                     alert("Role already exists");
+                    return;
+                } else {
+
+                    //++++++++++++++++++++++++++++ add template ++++++++++++++++++++++++++++//
+
+                    for(var placeholder_name in template_data) {
+                        role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+                    }
+                    $(role_row_template).appendTo($("thead + tbody"));
+
+                    //++++++++++++++++++++++++++++ work this checkbox ++++++++++++++++++++++++++++//
+
+                    $("#user_roles_"+template_data.role_id).prop('checked', true);
+
+                    // if role = director - checked checkbox this divisions
+                    if (template_data.role_id == 2) {
+
+                        $("#user_divisions_"+template_data.division_id).prop('checked', true);
+                    } else if (template_data.role_id == 3) {
+
+                        $("#user_teamsCoachs_"+template_data.team_id).prop('checked', true);
+
+                    } else if (template_data.role_id == 4){
+
+                        $("#user_teamsManagers_"+template_data.team_id).prop('checked', true);
+
+                    }
+                }
+            })
+        }
 
     }); 
 
-    // delete role from db
+
+
+
+
+    // delete role 
     $(document).on("click", "a[href='#delete_role']", function(e){
         e.preventDefault();
         if(confirm('Are you sure want to delete this role?')) {
             var role_id = $(this).data("item-id");
-            // if role savein bd
-    /*        if (role_id) {
-                $.post(base_url+'admin/system_users/delete_role', {id: role_id});
-            }*/
 
             // get delete role
             var deleterole = $(this).parents("tr").find("input[name=role]").val();

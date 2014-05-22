@@ -149,7 +149,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             return $qb;       
        
     }
-
+/*
     public function getDivisionsWhereDirectorById($id)
     {
         $qb = $this->createQueryBuilder('u')
@@ -203,7 +203,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $roles;       
        
     }
-
+*/
     public function getAllDivisionsWhereDirectorAlreadyHas()
     {
         $qb = $this->createQueryBuilder('u')
@@ -282,4 +282,69 @@ class UserRepository extends EntityRepository implements UserProviderInterface
        
     }
 
+    public function checkDirectorForDivision($id)
+    {   
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin ('u.divisions', 'd')
+            ->setParameter('id',  $id)
+            ->where('d.id = :id')
+            ->select('u.id');
+
+        $qb = $qb->getQuery();
+        $qb = $qb->getResult();
+
+        // if division have director - return director ID, else return 0
+        if (array_key_exists('0', $qb))
+        {
+            $qb = $qb[0]['id'];
+        } else
+        {
+            $qb = '0';
+        }
+        return $qb; 
+    }
+
+    public function checkCoachForTeam($id)
+    {   
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin ('u.teamsCoachs', 'tc')
+            ->setParameter('id',  $id)
+            ->where('tc.id = :id')
+            ->select('u.id');
+
+        $qb = $qb->getQuery();
+        $qb = $qb->getResult();
+
+        // if team have coach - return coach ID, else return 0
+        if (array_key_exists('0', $qb))
+        {
+            $qb = $qb[0]['id'];
+        } else
+        {
+            $qb = '0';
+        }
+        return $qb; 
+    }
+
+    public function checkManagerForTeam($id)
+    {   
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin ('u.teamsManagers', 'tm')
+            ->setParameter('id',  $id)
+            ->where('tm.id = :id')
+            ->select('u.id');
+
+        $qb = $qb->getQuery();
+        $qb = $qb->getResult();
+
+        // if team have manager - return manager ID, else return 0
+        if (array_key_exists('0', $qb))
+        {
+            $qb = $qb[0]['id'];
+        } else
+        {
+            $qb = '0';
+        }
+        return $qb; 
+    }
 }

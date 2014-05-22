@@ -209,7 +209,6 @@ class UsersController extends Controller {
         } 
 
         return array(
-//            'roles' => $roles,
             'rolesForm' => $rolesForm->createView(),
             'form' => $form->createView(),
             'id' => $id,
@@ -298,6 +297,30 @@ class UsersController extends Controller {
         }
 
         return $this->redirect($this->generateUrl('users'));
+    }   
+
+    /**
+         * @Route("/admin/users/role_check/{role_id}/{id}", requirements={"role_id" = "\d+"}, requirements={"id" = "\d+"}, name="roleCheck")
+     */      
+    public function roleCheckAction(Request $request, $role_id, $id)
+    {   
+        $em = $this->getDoctrine()->getManager();
+
+        if ($role_id == 2)
+        {
+            $userid = $em->getRepository('LjmsGeneralBundle:User')->checkDirectorForDivision($id);
+            return new Response($userid);
+
+        } elseif ($role_id == 3)
+        {
+            $userid = $em->getRepository('LjmsGeneralBundle:User')->checkCoachForTeam($id);
+            return new Response($userid);
+        } elseif ($role_id == 4)
+        {
+            $userid = $em->getRepository('LjmsGeneralBundle:User')->checkManagerForTeam($id);
+            return new Response($userid);
+        }
+        
     }   
 
 }

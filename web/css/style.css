@@ -461,8 +461,7 @@ label.error{
 }
 .user_roles thead .quarter {
 	width: 25%;
-	font-size: 12px;
-	padding-top: 5px;
+	font-size: 14px;
 }
 .action_col img{
 	padding-right: 10px;
@@ -516,10 +515,10 @@ label.error{
 	font-family: Arial, "MS Trebuchet", sans-serif;
 	font-weight: bold;
 }
-#roles_block {
+.roles_block {
 	height: 30px;
 }
-#roles_block .button {
+.roles_block .button {
 	padding: 3px 15px 3px 15px;
 }
 
