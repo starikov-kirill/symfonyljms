@@ -65,8 +65,7 @@ class Divisions	{
     protected $addon_fee;
 
     /**
-     * @var string $image
-     * @Assert\File( maxSize = "1024k", mimeTypesMessage = "Please upload a valid Image")
+     * @var string $image`
      * @ORM\Column(name="image", type="string", length=255)
      */
     protected $image;
@@ -265,16 +264,12 @@ class Divisions	{
      */
     public function setImage($image)
     {
-        if($image !== null)
-        {
+        if($image !== null) {
             $this->image = $image;
 
             return $this;
-        } else {
-            return $this->image;
-        }
+        } 
     }
-
  
     /**
      * @return string
@@ -340,19 +335,8 @@ class Divisions	{
     {
         return $this->teams;
     }
-    public function getFullImagePath() 
-    {
-        return null === $this->image ? null : $this->getUploadRootDir(). $this->image;
-    }
  
-    protected function getUploadRootDir()
-    {
-        // the absolute directory path where uploaded documents should be saved
-        return $this->getTmpUploadRootDir().$this->getId()."/";
-    }
- 
-    protected function getTmpUploadRootDir()
-    {
+    protected function getTmpUploadRootDir(){
         // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../../../web/upload/';
     }
@@ -361,17 +345,48 @@ class Divisions	{
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
-    public function uploadImage()
-    {
-        // the file property can be empty if the field is not required
-        if (null === $this->image) {
+    public function uploadImage() {
+        // if file upload $pos >= 0
+        $pos = strpos($this->image, '/');
+
+        if ($pos === false)
+        {
             return;
+        } else 
+        {
+
+            $rnd = mt_rand();
+            $format = substr($this->image->getClientOriginalName(), strrpos($this->image->getClientOriginalName(), '.'));
+
+            // get random name + file format
+            $name = $rnd.$format;
+
+            $this->image->move($this->getTmpUploadRootDir(), $name);
+
+            $this->setImage($name);
         }
-        if(!$this->id){
-            $this->image->move($this->getTmpUploadRootDir(), $this->image->getClientOriginalName());
-        }else{
-            $this->image->move($this->getUploadRootDir(), $this->image->getClientOriginalName());
-        }
-        $this->setImage($this->image->getClientOriginalName());
+    }
+
+    /**
+     * Set director_id
+     *
+     * @param \Ljms\GeneralBundle\Entity\User $directorId
+     * @return Divisions
+     */
+    public function setDirectorId(\Ljms\GeneralBundle\Entity\User $directorId = null)
+    {
+        $this->director_id = $directorId;
+
+        return $this;
+    }
+
+    /**
+     * Get director_id
+     *
+     * @return \Ljms\GeneralBundle\Entity\User 
+     */
+    public function getDirectorId()
+    {
+        return $this->director_id;
     }
 }

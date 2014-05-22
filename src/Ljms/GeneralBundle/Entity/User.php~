@@ -13,6 +13,8 @@
      * @ORM\Table(name="users")
      * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\UserRepository")
      * @UniqueEntity(fields="email", message="Sorry, this email address is already in use.")
+     * @UniqueEntity(fields="divisions", message="Sorry, this division is already in use.")
+     * @UniqueEntity(fields="teamsManagers", message="Sorry, this teamsManagers is already in use.")
      */
     class User implements AdvancedUserInterface, \Serializable {
 
@@ -119,10 +121,40 @@
          */
         private $zipcode;
 
+        /**
+         * @ORM\ManyToMany(targetEntity="Divisions")
+         * @ORM\JoinTable(name="directors_divisions",
+         * joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+         * inverseJoinColumns={@ORM\JoinColumn(name="division_id", referencedColumnName="id", unique=true)}
+         * )
+         */
+        private $divisions;
+
+        /**
+         * @ORM\ManyToMany(targetEntity="Teams")
+         * @ORM\JoinTable(name="teams_managers",
+         * joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+         * inverseJoinColumns={@ORM\JoinColumn(name="team_id", referencedColumnName="id", unique=true)}
+         * )
+         */
+        private $teamsManagers;
+
+        /**
+         * @ORM\ManyToMany(targetEntity="Teams")
+         * @ORM\JoinTable(name="teams_coachs",
+         * joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+         * inverseJoinColumns={@ORM\JoinColumn(name="team_id", referencedColumnName="id", unique=true)}
+         * )
+         */
+        private $teamsCoachs;
+
 
         public function __construct()
         {
-    		$this->roles = new ArrayCollection();
+            $this->roles = new ArrayCollection();
+            $this->divisions = new ArrayCollection();
+            $this->teamsManagers = new ArrayCollection();
+            $this->teamsCoachs = new ArrayCollection();
         }
 
         /**
@@ -616,5 +648,104 @@
     public function getNewpassword()
     {
         return $this->newpassword;
+    }
+
+    /**
+     * Add divisions
+     *
+     * @param \Ljms\GeneralBundle\Entity\Divisions $divisions
+     * @return User
+     */
+    public function addDivision(\Ljms\GeneralBundle\Entity\Divisions $divisions)
+    {
+        $this->divisions[] = $divisions;
+
+        return $this;
+    }
+
+    /**
+     * Remove divisions
+     *
+     * @param \Ljms\GeneralBundle\Entity\Divisions $divisions
+     */
+    public function removeDivision(\Ljms\GeneralBundle\Entity\Divisions $divisions)
+    {
+        $this->divisions->removeElement($divisions);
+    }
+
+    /**
+     * Get divisions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDivisions()
+    {
+        return $this->divisions;
+    }
+
+    /**
+     * Add teamsManagers
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teamsManagers
+     * @return User
+     */
+    public function addTeamsManager(\Ljms\GeneralBundle\Entity\Teams $teamsManagers)
+    {
+        $this->teamsManagers[] = $teamsManagers;
+
+        return $this;
+    }
+
+    /**
+     * Remove teamsManagers
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teamsManagers
+     */
+    public function removeTeamsManager(\Ljms\GeneralBundle\Entity\Teams $teamsManagers)
+    {
+        $this->teamsManagers->removeElement($teamsManagers);
+    }
+
+    /**
+     * Get teamsManagers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeamsManagers()
+    {
+        return $this->teamsManagers;
+    }
+
+    /**
+     * Add teamsCoachs
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teamsCoachs
+     * @return User
+     */
+    public function addTeamsCoach(\Ljms\GeneralBundle\Entity\Teams $teamsCoachs)
+    {
+        $this->teamsCoachs[] = $teamsCoachs;
+
+        return $this;
+    }
+
+    /**
+     * Remove teamsCoachs
+     *
+     * @param \Ljms\GeneralBundle\Entity\Teams $teamsCoachs
+     */
+    public function removeTeamsCoach(\Ljms\GeneralBundle\Entity\Teams $teamsCoachs)
+    {
+        $this->teamsCoachs->removeElement($teamsCoachs);
+    }
+
+    /**
+     * Get teamsCoachs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeamsCoachs()
+    {
+        return $this->teamsCoachs;
     }
 }

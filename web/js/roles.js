@@ -4,28 +4,60 @@ var template_data = {};
 
 //+++++++++++++++++++++++ Add user roles to page +++++++++++++++++++++++//
 
-// add fields if admin or guardian
-$('#user_roles input').each(function(){
-    if ($(this).prop('checked')) {
-        var existing_role = $(this).val();
+$.post(baseUrl+'/admin/link_teams_and_divisions', function(link_divisions_and_teams){
+    // add fields if admin or guardian
+    $('#user_roles input').each(function(){
+        if ($(this).prop('checked')) {
+            var existing_role = $(this).val();
 
-        template_data.role_id   = existing_role;
+            template_data.role_id   = existing_role;
 
-        if ((existing_role == 1) || (existing_role == 5)) {            
+            if ((existing_role == 1) || (existing_role == 5)) {            
 
-            template_data.role_name = 'Admin';
+                template_data.role_name = 'Admin';
 
-            if (existing_role == 5) template_data.role_name = 'Guardian';            
+                if (existing_role == 5) template_data.role_name = 'Guardian';            
+
+                template_data.team_name = ''; 
+                template_data.team_id   = '';
+
+                template_data.division_name = ''; 
+                template_data.division_id   = '';
+
+                template_data.div_input  = '';
+                template_data.team_input = '';
+
+                template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
+
+                var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
+
+                for(var placeholder_name in template_data) {
+                    role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+                }
+                $(role_row_template).appendTo($("thead + tbody"));
+
+            }  
+        }
+    })
+
+    // add fields if director
+    $('#user_divisions input').each(function(){
+        if ($(this).prop('checked')) {
+
+            var existing_division_id = $(this).val();
+            var existing_division_name = $("label[for=user_divisions_"+existing_division_id+"]").text();
+
+            template_data.role_name = 'Director';
+            template_data.role_id   = 2;
 
             template_data.team_name = ''; 
             template_data.team_id   = '';
-
-            template_data.division_name = ''; 
-            template_data.division_id   = '';
-
-            template_data.div_input  = '';
             template_data.team_input = '';
 
+            template_data.division_id   = existing_division_id;
+            template_data.division_name = existing_division_name;
+
+            template_data.div_input  = '<input type="hidden" value="'+template_data.division_id+'" name="div">';
             template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
 
             var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
@@ -34,96 +66,67 @@ $('#user_roles input').each(function(){
                 role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
             }
             $(role_row_template).appendTo($("thead + tbody"));
-
-        }  
-    }
-})
-
-// add fields if director
-$('#user_divisions input').each(function(){
-    if ($(this).prop('checked')) {
-
-        var existing_division_id = $(this).val();
-        var existing_division_name = $("label[for=user_divisions_"+existing_division_id+"]").text();
-
-        template_data.role_name = 'Director';
-        template_data.role_id   = 2;
-
-        template_data.team_name = ''; 
-        template_data.team_id   = '';
-
-        template_data.division_id   = existing_division_id;
-        template_data.division_name = existing_division_name;
-
-        template_data.div_input  = '<input type="hidden" value="'+template_data.division_id+'" name="div">';
-        template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
-
-        var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
-
-        for(var placeholder_name in template_data) {
-            role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
         }
-        $(role_row_template).appendTo($("thead + tbody"));
-    }
-})
+    })
 
-//add field if coach
-$('#user_teamsCoachs input').each(function(){
-    if ($(this).prop('checked')) {
+    //add field if coach
+    $('#user_teamsCoachs input').each(function(){
+        if ($(this).prop('checked')) {
 
-        var existing_team_id = $(this).val();
-        var existing_team_name = $("label[for=user_teamsCoachs_"+existing_team_id+"]").text();
+            var existing_team_id = $(this).val();
+            var existing_team_name = $("label[for=user_teamsCoachs_"+existing_team_id+"]").text();
 
-        template_data.role_name = 'Coach';
-        template_data.role_id   = 3;
+            template_data.role_name = 'Coach';
+            template_data.role_id   = 3;
 
-        template_data.team_name = existing_team_name; 
-        template_data.team_id   = existing_team_id;
+            template_data.team_name = existing_team_name; 
+            template_data.team_id   = existing_team_id;
 
-        template_data.division_id   = '';
-        template_data.division_name = '';
+            template_data.division_id   = '';
+            template_data.division_name = link_divisions_and_teams[existing_team_id];
 
-        template_data.div_input  = '';
-        template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
-        template_data.team_input = '<input type="hidden" value="'+template_data.team_id+'" name="team">';
+            template_data.div_input  = '';
+            template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
+            template_data.team_input = '<input type="hidden" value="'+template_data.team_id+'" name="team">';
 
-        var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
+            var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
 
-        for(var placeholder_name in template_data) {
-            role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+            for(var placeholder_name in template_data) {
+                role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+            }
+            $(role_row_template).appendTo($("thead + tbody"));
         }
-        $(role_row_template).appendTo($("thead + tbody"));
-    }
-})
+    })
 
-//add field if manager
-$('#user_teamsManagers input').each(function(){
-    if ($(this).prop('checked')) {
+    //add field if manager
+    $('#user_teamsManagers input').each(function(){
+        if ($(this).prop('checked')) {
 
-        var existing_team_id = $(this).val();
-        var existing_team_name = $("label[for=user_teamsManagers_"+existing_team_id+"]").text();
+            var existing_team_id = $(this).val();
+            var existing_team_name = $("label[for=user_teamsManagers_"+existing_team_id+"]").text();
 
-        template_data.role_name = 'Manager';
-        template_data.role_id   = 4;
+            template_data.role_name = 'Manager';
+            template_data.role_id   = 4;
 
-        template_data.team_name = existing_team_name; 
-        template_data.team_id   = existing_team_id;
+            template_data.team_name = existing_team_name; 
+            template_data.team_id   = existing_team_id;
 
-        template_data.division_id   = '';
-        template_data.division_name = '';
+            template_data.division_id   = '';
+            template_data.division_name = link_divisions_and_teams[existing_team_id];
 
-        template_data.div_input  = '';
-        template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
-        template_data.team_input = '<input type="hidden" value="'+template_data.team_id+'" name="team">';
+            template_data.div_input  = '';
+            template_data.role_input = '<input type="hidden" value="'+template_data.role_id+'" name="role">';
+            template_data.team_input = '<input type="hidden" value="'+template_data.team_id+'" name="team">';
 
-        var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
+            var role_row_template = '<tr class="roles_block">' + $('.roles_block').html() + '</tr>';
 
-        for(var placeholder_name in template_data) {
-            role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+            for(var placeholder_name in template_data) {
+                role_row_template = role_row_template.replace('{' + placeholder_name + '}', template_data[placeholder_name]);
+            }
+            $(role_row_template).appendTo($("thead + tbody"));
         }
-        $(role_row_template).appendTo($("thead + tbody"));
-    }
-})
+    })
+}) 
 
 //+++++++++++++++++++++++ end add roles for page +++++++++++++++++++++++//
 

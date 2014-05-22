@@ -87,3 +87,6 @@ services:
   ljms.helper.encryptPassword:
     class: Ljms\GeneralBundle\Helper\EncryptPasswordHelper
     arguments: [@service_container]
+  ljms.helper.validationRole:
+    class: Ljms\GeneralBundle\Helper\ValidationRoleHelper
+    arguments: [@service_container]

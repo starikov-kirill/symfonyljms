@@ -149,4 +149,137 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             return $qb;       
        
     }
+
+    public function getDivisionsWhereDirectorById($id)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id IN (:id)')
+            ->setParameter('id', $id)
+            ->leftJoin ('u.divisions', 'd')
+            ->select('d.id')
+            ->addselect('d.name');
+
+        $roles = $qb->getQuery();
+        $roles = $roles->getResult();         
+ 
+        return $roles;       
+       
+    }
+
+    public function getTeamsWhereCoachById($id)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id IN (:id)')
+            ->setParameter('id', $id)
+            ->leftJoin ('u.teamsCoachs', 'tc')
+            ->select('tc.id')
+            ->leftJoin('LjmsGeneralBundle:Teams', 't', \Doctrine\ORM\Query\Expr\Join::WITH, 't.id = tc.id')
+            ->leftJoin ('t.division_id', 'd')
+            ->addselect('d.name as divisionName')
+            ->addselect('tc.name');
+
+        $roles = $qb->getQuery();
+        $roles = $roles->getResult();         
+ 
+        return $roles;       
+       
+    }
+
+    public function getTeamsWhereManagerById($id)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id IN (:id)')
+            ->setParameter('id', $id)
+            ->leftJoin ('u.teamsManagers', 'tm')
+            ->select('tm.id')
+            ->leftJoin('LjmsGeneralBundle:Teams', 't', \Doctrine\ORM\Query\Expr\Join::WITH, 't.id = tm.id')
+            ->leftJoin ('t.division_id', 'd')
+            ->addselect('d.name as divisionName')
+            ->addselect('tm.name');
+
+        $roles = $qb->getQuery();
+        $roles = $roles->getResult();         
+ 
+        return $roles;       
+       
+    }
+
+    public function getAllDivisionsWhereDirectorAlreadyHas()
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id >(:id)')
+            ->setParameter('id', 1)
+            ->leftJoin ('u.divisions', 'd')
+            ->select('d.id as divisionID')
+            ->addselect('u.id as userID');
+
+        $roles = $qb->getQuery();
+        $roles = $roles->getResult(); 
+
+     foreach ($roles as $key => $value)
+        {
+            if ($roles[$key]['divisionID'])
+            {
+                $divisionsList[$roles[$key]['divisionID']] = $roles[$key]['userID'];
+            }
+            
+        }        
+ 
+        return $divisionsList;       
+       
+    }
+
+    public function getAllTeamsWhereCoachAlreadyHas()
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id >(:id)')
+            ->setParameter('id', 1)
+            ->leftJoin ('u.teamsCoachs', 'tc')
+            ->select('tc.id as teamID')
+            ->addselect('u.id as userID');
+
+        $roles = $qb->getQuery();
+        $roles = $roles->getResult(); 
+       
+        $teamsList = array();
+
+        foreach ($roles as $key => $value)
+        {
+            if ($roles[$key]['teamID'])
+            {
+                $teamsList[$roles[$key]['teamID']] = $roles[$key]['userID'];
+            }
+            
+        }        
+ 
+        return $teamsList;       
+       
+    }
+    public function getAllTeamsWhereManagerAlreadyHas()
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.id >(:id)')
+            ->setParameter('id', 1)
+            ->leftJoin ('u.teamsManagers', 'tm')
+            ->select('tm.id as teamID')
+            ->addselect('u.id as userID');
+
+        $roles = $qb->getQuery();
+        $roles = $roles->getResult(); 
+       
+        $teamsList = array();
+
+        foreach ($roles as $key => $value)
+        {
+            if ($roles[$key]['teamID'])
+            {
+                $teamsList[$roles[$key]['teamID']] = $roles[$key]['userID'];
+            }
+            
+        }        
+ 
+        return $teamsList;       
+       
+    }
+
 }

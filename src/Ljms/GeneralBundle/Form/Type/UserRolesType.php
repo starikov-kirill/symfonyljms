@@ -5,7 +5,7 @@ namespace Ljms\GeneralBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class UserFilterType extends AbstractType
+class UserRolesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {        
@@ -14,25 +14,29 @@ class UserFilterType extends AbstractType
 		$builder->setMethod('GET')
             ->add('divisions', 'choice', array(
                 'choices'   => $data['divisionsList'],
+                'empty_value' => 'Select',
                 'required'  => false,
-                'empty_value' => 'All',
                 'attr' => array(
-                    'class' => 'select_100px'
+                    'disabled' => true,
+                    'class' => 'divisions_dd select_100px'
                     )
                 )
             )
             ->add('roles', 'choice', array(
                 'choices' => $data['roleList'],
-                'empty_value' => 'All',
                 'required'  => false,
+                'empty_value' => 'Select',
                 'attr' => array(
-                    'class' => 'select_100px'
+                    'class' => 'roles_dd select_100px'
                     )
                 )
             )
-            ->add('filter', 'submit', array(
+            ->add('teams', 'choice', array(
+                'required'  => false,
+                'empty_value' => 'Select',
                 'attr' => array(
-                    'class' => 'button'
+                    'disabled' => true,
+                    'class' => 'teams_dd select_100px'
                     )
                 )
             );
@@ -40,6 +44,6 @@ class UserFilterType extends AbstractType
 
     public function getName()
     {
-        return 'divisionfilter';
+        return 'divisionrole';
     }
 }

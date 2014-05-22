@@ -14,8 +14,6 @@ class RoleRepository extends EntityRepository
 		$roles = $qb->getQuery();
 		$roles = $roles->getResult();
 
-		$rolesList[''] = 'All';
-
         foreach ($roles as $key => $value)
         {
             $rolesList[$roles[$key]['id']] = $roles[$key]['name'];

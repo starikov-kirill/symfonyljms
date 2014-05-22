@@ -1,6 +1,11 @@
 {% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
 {% block title %}LJMS{% endblock %}
 
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('js/roles.js') }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block centre%}
 <div class="column full_width">
 	<div class="content">
@@ -24,6 +29,7 @@
 			{{ form_errors(form.alt_last_name) }}
 			{{ form_errors(form.alt_email) }}
 			{{ form_errors(form.alt_phone_2) }}
+			{{ form_errors(form.divisions) }}
 		</div>
 		<div class="add_form">
 		<h3 class="title_form">User information</h3>
@@ -122,33 +128,38 @@
 			<div class="form-group">
 				<div class="hilf_width_col">
 					<div class="hilf_width_col">
-						<label>Assign Roles</label>
+						{{ form_label(rolesForm.roles, 'Assign Roles')}}
 					</div>
 					<div class="hilf_width_col">
-						
+						{{ form_widget(rolesForm.roles) }}
+						{{ form_widget(form.roles) }}
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="hilf_width_col">
 					<div class="hilf_width_col">
-						<label>Assign Divisions</label>
+						{{ form_label(rolesForm.divisions, 'Assign Divisions') }}
 					</div>
 					<div class="hilf_width_col">
-						
+						{{ form_widget(rolesForm.divisions) }}	
+						{{ form_widget(form.divisions) }}					
 					</div>
 				</div>
 				<div class="hilf_width_col">
 					<div class="hilf_width_col">
-						<label>Assign Teams</label>
+						{{ form_label(rolesForm.teams, 'Assign Teams')}}
 					</div>
 					<div class="hilf_width_col">
-						
+						{{ form_widget(rolesForm.teams) }}
+						<br/>
+						+++++++coach++++++ {{ form_widget(form.teamsCoachs) }}
+						++++++manager++++++ {{ form_widget(form.teamsManagers) }}								
 					</div>
 				</div>
 			</div>
 				<table style="display: none">
-					
+					{% include 'LjmsGeneralBundle:Admin/Include:role_block.html.twig' %}
 				</table>
 				<table class="user_roles">
 					<thead>
@@ -160,6 +171,9 @@
 						</tr>
 					</thead>
 					<tbody>
+						{% block userRoles %}{% endblock %}
+
+						
 					</tbody>
 				</table>
 				<a class="add_role_btn">Add Role</a>

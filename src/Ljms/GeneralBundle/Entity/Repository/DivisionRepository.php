@@ -63,8 +63,6 @@ class DivisionRepository extends EntityRepository
 		$divisions = $qb->getQuery();
 		$divisions = $divisions->getResult();
 
-		$divisionsList[''] = 'All';
-
         foreach ($divisions as $key => $value)
         {
             $divisionsList[$divisions[$key]['id']] = $divisions[$key]['name'];

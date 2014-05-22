@@ -1,53 +1,53 @@
 <?php 
-	namespace Ljms\GeneralBundle\Entity;
+    namespace Ljms\GeneralBundle\Entity;
 
-	use Symfony\Component\Security\Core\Role\RoleInterface;
-	use Doctrine\Common\Collections\ArrayCollection;
-	use Doctrine\ORM\Mapping as ORM;
+    use Symfony\Component\Security\Core\Role\RoleInterface;
+    use Doctrine\Common\Collections\ArrayCollection;
+    use Doctrine\ORM\Mapping as ORM;
 
-	/**
-	 * @ORM\Table(name="roles")
-	 * @ORM\Entity()
+    /**
+     * @ORM\Table(name="roles")
+     * @ORM\Entity()
      * @ORM\Entity(repositoryClass="Ljms\GeneralBundle\Entity\Repository\RoleRepository")
-	 */
-	class Role implements RoleInterface	{
-	    /**
-	     * @ORM\Column(name="id", type="integer")
-	     * @ORM\Id()
-	     * @ORM\GeneratedValue(strategy="AUTO")
-	     */
-	    private $id;
+     */
+    class Role implements RoleInterface {
+        /**
+         * @ORM\Column(name="id", type="integer")
+         * @ORM\Id()
+         * @ORM\GeneratedValue(strategy="AUTO")
+         */
+        private $id;
 
-	    /**
-	     * @ORM\Column(name="name", type="string", length=30)
-	     */
-	    private $name;
+        /**
+         * @ORM\Column(name="name", type="string", length=30)
+         */
+        private $name;
 
-	    /**
-	     * @ORM\Column(name="role", type="string", length=20, unique=true)
-	     */
-	    private $role;
+        /**
+         * @ORM\Column(name="role", type="string", length=20, unique=true)
+         */
+        private $role;
 
-	    /**
-	     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
-	     */
-	    private $users;
+        /**
+         * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
+         */
+        private $users;
 
-	    public function __construct()
-	    {
-	        $this->users = new ArrayCollection();
-	    }
+        public function __construct()
+        {
+            $this->users = new ArrayCollection();
+        }
 
-	    /**
-	     * @see RoleInterface
-	     */
-	    public function getRole()
-	    {
-	        return $this->role;
-	    }
+        /**
+         * @see RoleInterface
+         */
+        public function getRole()
+        {
+            return $this->role;
+        }
 
-	    // ... getters and setters for each property
-	
+        // ... getters and setters for each property
+    
     /**
      * Get id
      *

@@ -13,6 +13,7 @@ use Ljms\GeneralBundle\Form\Type\MassActionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class TeamsController extends Controller {
@@ -162,7 +163,7 @@ class TeamsController extends Controller {
     }
 
     /**
-     * @Route("/admin/teams/mass_action", name="divisionMassAction")
+     * @Route("/admin/teams/mass_action", name="teamMassAction")
      */      
     public function massAction(Request $request)
     {    
@@ -192,5 +193,56 @@ class TeamsController extends Controller {
         }
 
         return $this->redirect($this->generateUrl('teams'));
-    }              
+    } 
+
+    /**
+     * @Route("/admin/teams_for_division/{id}", requirements={"id" = "\d+"}, name="teams_for_division")
+     */  
+    public function GetTeamsForDivisionAction($id) {  
+        
+        // get object from db by id
+        $division = $this->getDoctrine()->getRepository('LjmsGeneralBundle:Divisions')->find($id);
+
+        // if an object no exists
+        if (!$division)
+        {
+            throw $this->createNotFoundException('No division found for id '.$id);
+        }
+
+        try
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            // get divisions list
+            $teams = $em->getRepository('LjmsGeneralBundle:Teams')->findTeamsForDivision($id);
+
+            return new JsonResponse($teams);
+
+
+        } catch(Exception $e)
+        {
+            return new Response($e);
+        }        
+    } 
+
+    /**
+     * @Route("/admin/link_teams_and_divisions", name="link_teams_and_division")
+     */  
+    public function GetLinkTeamsAndDivisionAction() {  
+        
+            $em = $this->getDoctrine()->getManager();
+        try
+        {
+            // get divisions list
+            $link = $em->getRepository('LjmsGeneralBundle:Teams')->findLinkTeamsAndDivision();
+
+            return new JsonResponse($link);
+
+
+        } catch(Exception $e)
+        {
+            return new Response($e);
+        }        
+    } 
+
 }

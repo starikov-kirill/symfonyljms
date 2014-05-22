@@ -30,16 +30,17 @@ class DivisionFilterType extends AbstractType
 		$builder->setMethod('GET')
             ->add('divisions', 'choice', array(
                 'choices'   => $data, 
+                'empty_value' => 'All',
                 'required'  => false, 
                 'attr' => array(
-                    'class' => 'select_wide')
+                    'class' => 'select_100px')
                 )
             )
             ->add('status', 'choice', array(
-                'choices'   => $statusFilter, 
+                'choices'   => $statusFilter,
                 'required'  => false,
                 'attr' => array(
-                    'class' => 'select_wide'
+                    'class' => 'select_100px'
                     )
                 )
             )
@@ -47,7 +48,7 @@ class DivisionFilterType extends AbstractType
                 'choices' => $seasonFilter,
                 'required'  => false, 
                 'attr' => array(
-                    'class' => 'select_wide')
+                    'class' => 'select_100px')
                 )
             )
             ->add('filter', 'submit', array(

@@ -1,0 +1,104 @@
+{% extends 'LjmsGeneralBundle:Include:basetemplate.html.twig' %}
+{% block title %}LJMS{% endblock %}
+{% block class %}game{% endblock %}
+{% block centre%}
+	<div class="column full_width">
+		<div class="content">
+			{% include 'LjmsGeneralBundle:Admin/Include:admin_menu.html.twig' %}
+
+			<div class="admin_menu_info">
+				<h2>Game schedule</h2>
+			</div>
+
+			{% for flashMessage in app.session.flashbag.get('notice') %}
+			    <div class="alert-error">
+			        {{ flashMessage }}
+			    </div>
+			{% endfor %}
+
+			<div class="filter">
+				{{ form_start(form, {'method': 'GET'}) }}
+					<b>Filter by:</b> Division:
+						{{ form_widget(form.divisions) }}
+					Teams:
+						{{ form_widget(form.teams) }}
+					League type:
+						{{ form_widget(form.league) }}
+					Date:
+						{{ form_widget(form.date) }}
+					{{ form_widget(form.filter) }}
+				{{ form_end(form) }}
+			</div>
+
+			<div class="right_button">
+				<a class="button" href="{{ path('add_division') }}">Add game</a>
+			</div>
+
+			<div class="right_button pagination total_rows">
+				<a {% if (limit == 10) %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 10}) }}">10</a>
+				<a {% if (limit == 20) %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 20}) }}">20</a>
+				<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 30}) }}">30</a>
+				<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 'all'}) }}">All</a>
+			</div>
+			
+			{{ form_start(massActionDD,{'attr': {'id': 'action_select'}}) }}
+				<div class="action_select">
+
+					{{ form_widget(massActionDD.action) }}
+
+					<input type="submit" class="inactiv" id = 'mass_action_button'onclick="return confirm('Are you sure?')" value="Action" disabled>
+				</div>
+			{{ form_end(massActionDD) }}
+
+			<table class="full_width_table">
+				<thead>
+					<tr>
+						<th class ="checkbox_col" ><input class="check_all" type="checkbox" name="#"></th>
+						<th><p>DATE</p></th>
+						<th><p>TIME</p></th>
+						<th><p>DIVISION</p></th>
+						<th><p>HOME</p></th>
+						<th><p>VISITOR</p></th>
+						<th><p>PRACTICE</p></th>
+						<th><p>LOCATION</p></th>
+						<th><p>ACTION</p></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for entity in games %}
+						<tr {% if (entity.status == 0) %} class="inactive" {% endif %}>
+							<td><input data-item-id={{ entity.id }} class="check_one" type="checkbox"></td>
+							<td><p>{{ entity.date|date('l') }}</br>{{ entity.date|date('d/m/Y') }}</p></td>
+							<td><p>{{ entity.time|date('H:i')}}</p></td>
+							<td><p>{{ entity.division }}</p></td>
+
+							<td><p>#</p></td>
+							<td><p>#</p></td>
+							<td>
+								<p>
+									{% if (entity.practice == 0) %}
+										NO
+									{% else %}
+										YES
+									{% endif %}
+								</p>
+							</td>
+							<td><p>{{ entity.location }}</p></td>
+							<td>								
+								<a href="{{ path('edit_game', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
+								<a href="#delete" data-item-id={{ entity.id }} data-item-page="games" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="pagination">
+				{{ knp_pagination_render(games) }}
+			</div>		
+		</div>
+	</div>
+{% endblock %}
+
+

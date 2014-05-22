@@ -335,10 +335,6 @@ class Divisions	{
     {
         return $this->teams;
     }
-    public function getFullImagePath() 
-    {
-        return null === $this->image ? null : $this->getUploadRootDir(). $this->image;
-    }
  
     protected function getTmpUploadRootDir(){
         // the absolute directory path where uploaded documents should be saved
@@ -358,13 +354,39 @@ class Divisions	{
             return;
         } else 
         {
+
             $rnd = mt_rand();
             $format = substr($this->image->getClientOriginalName(), strrpos($this->image->getClientOriginalName(), '.'));
+
+            // get random name + file format
             $name = $rnd.$format;
 
             $this->image->move($this->getTmpUploadRootDir(), $name);
 
             $this->setImage($name);
         }
+    }
+
+    /**
+     * Set director_id
+     *
+     * @param \Ljms\GeneralBundle\Entity\User $directorId
+     * @return Divisions
+     */
+    public function setDirectorId(\Ljms\GeneralBundle\Entity\User $directorId = null)
+    {
+        $this->director_id = $directorId;
+
+        return $this;
+    }
+
+    /**
+     * Get director_id
+     *
+     * @return \Ljms\GeneralBundle\Entity\User 
+     */
+    public function getDirectorId()
+    {
+        return $this->director_id;
     }
 }

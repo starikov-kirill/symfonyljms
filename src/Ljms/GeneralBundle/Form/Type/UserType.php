@@ -4,12 +4,12 @@ namespace Ljms\GeneralBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-       print_r($options['action']);
 
 		$builder->add('username', 'text', array(
                     'attr' => array(
@@ -92,7 +92,41 @@ class UserType extends AbstractType
                     'attr' => array(
                         'class' => 'button')
                     )
+                )
+                ->add('roles', 'entity', array(
+                    'class' => 'LjmsGeneralBundle:Role',
+                    'property' => 'name',
+                    'expanded' => true,
+                    'multiple' => true,
+                    //'attr'=> array('style'=>'display:none')
+                    )
+                )
+                ->add('teamsManagers', 'entity', array(
+                    'class' => 'LjmsGeneralBundle:Teams',
+                    'property' => 'name',
+                    'expanded' => true,
+                    'multiple' => true,
+                    //'attr'=> array('style'=>'display:none')
+                    )
+                )
+                ->add('teamsCoachs', 'entity', array(
+                    'class' => 'LjmsGeneralBundle:Teams',
+                    'property' => 'name',
+                    'expanded' => true,
+                    'multiple' => true,
+                    //'attr'=> array('style'=>'display:none')
+                    )
+                )
+                ->add('divisions', 'entity', array(
+                    'class' => 'LjmsGeneralBundle:Divisions',
+                    'property' => 'name',
+                    'expanded' => true,
+                    'multiple' => true,
+                    //'attr'=> array('style'=>'display:none')
+                    )
                 );
+
+
         if ($options['block_name'] == 'updating')
         {
             $builder->add('newpassword', 'repeated', array(
@@ -120,6 +154,12 @@ class UserType extends AbstractType
                 );
         }
 
+    }
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Ljms\GeneralBundle\Entity\User',
+        ));
     }
 
     public function getName()

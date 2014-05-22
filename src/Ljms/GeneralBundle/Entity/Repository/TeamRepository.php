@@ -72,5 +72,67 @@ class TeamRepository extends EntityRepository
             return $qb;       
        
     }
+
+    public function findAllTeams()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb ->select('t.id')
+            ->addSelect('t.name')
+            ->add('orderBy', 't.id ASC');
+
+        $teams = $qb->getQuery();
+        $teams = $teams->getResult();
+
+        foreach ($teams as $key => $value)
+        {
+            $teamsList[$teams[$key]['id']] = $teams[$key]['name'];
+        }
+
+        return $teamsList;
+       
+    }
+
+    public function findTeamsForDivision($id)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb ->select('t.id')
+            ->addSelect('t.name')
+            ->andWhere('t.division_id='.$id)
+            ->add('orderBy', 't.id ASC');
+
+        $teams = $qb->getQuery();
+        $teams = $teams->getResult();
+        $teamsList = array();
+
+        foreach ($teams as $key => $value)
+        {
+            $teamsList[$teams[$key]['id']] = $teams[$key]['name'];
+        }
+        
+        return $teamsList;
+       
+    }
+
+    public function findLinkTeamsAndDivision()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb ->select('t.id')
+            ->leftJoin('LjmsGeneralBundle:Divisions', 'd', \Doctrine\ORM\Query\Expr\Join::WITH, 'd.id = t.division_id')
+            ->addSelect('d.name')
+            ->add('orderBy', 't.id ASC');
+
+        $teams = $qb->getQuery();
+        $teams = $teams->getResult();
+
+        $link = array();
+
+        foreach ($teams as $key => $value)
+        {
+            $link[$teams[$key]['id']] = $teams[$key]['name'];
+        }
+
+        return $link;
+       
+    }
 }
 

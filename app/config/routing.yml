@@ -10,3 +10,6 @@ teams:
 users:
     resource: "@LjmsGeneralBundle/Controller/Admin/UsersController.php"
     type:     annotation
+games:
+    resource: "@LjmsGeneralBundle/Controller/Admin/GamesController.php"
+    type:     annotation

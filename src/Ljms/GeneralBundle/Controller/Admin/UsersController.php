@@ -11,10 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ljms\GeneralBundle\Form\Type\UserType;
 use Ljms\GeneralBundle\Form\Type\UserFilterType;
+use Ljms\GeneralBundle\Form\Type\UserRolesType;
 use Ljms\GeneralBundle\Form\Type\MassActionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormError;
 
 
 class UsersController extends Controller {
@@ -87,9 +89,38 @@ class UsersController extends Controller {
         
         $user = new User();
 
+        $em = $this->getDoctrine()->getManager();
+
+        // get divisions list
+        $formData['divisionsList'] = $em->getRepository('LjmsGeneralBundle:Divisions')->findAllDevisions();
+
+        // get teams list
+        $formData['teamsList'] = $em->getRepository('LjmsGeneralBundle:Teams')->findAllTeams();
+
+        // get roles list
+        $formData['roleList'] = $em->getRepository('LjmsGeneralBundle:Role')->findAllRoles();
+
+        $rolesForm = $this->createForm(new UserRolesType(), $formData);
+
+        $rolesForm->handleRequest($request);
+
         $form = $this->createForm(new UserType(), $user, array('block_name' => 'creating'));
 
         $form->handleRequest($request);
+
+        // get sended data
+        $data = $request->request->get('user');
+
+        // validation user roles 
+        if ($data)
+        {
+            $error = $this->get('ljms.helper.validationRole')-> ValidateRole($data, '', $formData);
+
+            foreach ($error as $key => $value) {
+
+               $form->get('divisions')->addError(new FormError($value));
+            }
+        }
        
         // process data and save if form valid
         if ($form->isValid()) {
@@ -100,7 +131,6 @@ class UsersController extends Controller {
             // install user is active by default
             $user->setIsActive('1');
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
@@ -108,7 +138,8 @@ class UsersController extends Controller {
         } 
 
         return array(
-            'form' => $form->createView(),
+            'rolesForm' => $rolesForm->createView(),
+            'form' => $form->createView()
         );
     }
 
@@ -119,7 +150,9 @@ class UsersController extends Controller {
     public function editAction(Request $request, $id)
     {   
 
-        // get object from db by id
+        $em = $this->getDoctrine()->getManager();
+
+        // get object from db by id */
         $user = $this->getDoctrine()->getRepository('LjmsGeneralBundle:User')->find($id);
 
         // if an object no exists
@@ -127,6 +160,19 @@ class UsersController extends Controller {
         {
             return $this->redirect($this->generateUrl('users'));
         }
+        // get divisions list
+        $formData['divisionsList'] = $em->getRepository('LjmsGeneralBundle:Divisions')->findAllDevisions();
+
+        // get teams list
+        $formData['teamsList'] = $em->getRepository('LjmsGeneralBundle:Teams')->findAllTeams();
+
+        // get roles list
+        $formData['roleList'] = $em->getRepository('LjmsGeneralBundle:Role')->findAllRoles();
+
+
+        $rolesForm = $this->createForm(new UserRolesType(), $formData);
+
+        $rolesForm->handleRequest($request);
 
         $form = $this->createForm(new UserType(), $user, array('block_name' => 'updating'));
 
@@ -134,6 +180,20 @@ class UsersController extends Controller {
 
         // get the password entered in the form 
         $newPassword = $user->getNewpassword();
+
+        // get sended data
+        $data = $request->request->get('user');
+
+        // validation user roles 
+        if ($data)
+        {
+            $error = $this->get('ljms.helper.validationRole')-> ValidateRole($data, $id, $formData);
+
+            foreach ($error as $key => $value) {
+
+               $form->get('divisions')->addError(new FormError($value));
+            }
+        }
 
         if ($form->isValid()) {
             // if the password has been entered 
@@ -143,13 +203,14 @@ class UsersController extends Controller {
                 $password = $this->get('ljms.helper.encryptPassword')-> encryptPassword($user, 'edit');
             }
 
-            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             return $this->redirect($this->generateUrl('users'));
         } 
 
         return array(
+//            'roles' => $roles,
+            'rolesForm' => $rolesForm->createView(),
             'form' => $form->createView(),
             'id' => $id,
             'user' => $user
