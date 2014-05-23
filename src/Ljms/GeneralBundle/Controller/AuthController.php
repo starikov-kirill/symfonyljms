@@ -14,7 +14,7 @@ class AuthController extends Controller
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
             return $this->redirect($this->generateUrl('divisions'));
         }
-        if ($this->get('security.context')->isGranted('ROLE_DIRECTOR')) {
+        if (($this->get('security.context')->isGranted('ROLE_DIRECTOR')) || ($this->get('security.context')->isGranted('ROLE_COACH'))) {
             return $this->redirect($this->generateUrl('games'));
         }
         

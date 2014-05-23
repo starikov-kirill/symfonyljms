@@ -67,23 +67,21 @@ class UserRepository extends EntityRepository implements UserProviderInterface
                      'u.email'
                      )
             ->groupBy('u.id');
-            /*if ($data) 
+            if ($data) 
             {
                 if (isset($data['divisions'])) 
                 {
-                    $query->andWhere('d.id='.$data['divisions']);
+                    $query->leftJoin ('u.divisions', 'd')
+                          ->andWhere('d.id='.$data['divisions']);
                 }
 
-                if (isset($data['season']) && strlen($data['season'])) 
+                if (isset($data['roles'])) 
                 {   
-                    $query->andWhere('d.fall_ball='.$data['season']);
+                    $query->leftJoin ('u.roles', 'r')
+                          ->andWhere('r.id='.$data['roles']);
                 }
 
-                if (isset($data['status']) && strlen($data['status']))
-                {   
-                    $query->andWhere('d.status='.$data['status']);
-                }
-            }*/
+            }
             $query->getQuery();
 
         return $query;

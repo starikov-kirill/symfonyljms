@@ -55,7 +55,7 @@ class UsersController extends Controller {
         // get filtration data
         $data = $form->getData();
 
-        // get filtration users
+        // get filtration users list
         $users = $em->getRepository('LjmsGeneralBundle:User')->findAllThisFilter($data);
 
         // number of rows
