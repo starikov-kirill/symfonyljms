@@ -11,8 +11,11 @@ class AuthController extends Controller
     public function loginAction(Request $request)
     {
 
-       if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
             return $this->redirect($this->generateUrl('divisions'));
+        }
+        if ($this->get('security.context')->isGranted('ROLE_DIRECTOR')) {
+            return $this->redirect($this->generateUrl('games'));
         }
         
     	$request = $this->getRequest();

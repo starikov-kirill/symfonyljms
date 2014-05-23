@@ -30,9 +30,13 @@
 				{{ form_end(form) }}
 			</div>
 
-			<div class="right_button">
-				<a class="button" href="{{ path('add_division') }}">Add game</a>
-			</div>
+			{% if is_granted('ROLE_ADMIN') %}
+
+				<div class="right_button">
+					<a class="button" href="{{ path('add_division') }}">Add game</a>
+				</div>
+
+			{% endif %}
 
 			<div class="right_button pagination total_rows">
 				<a {% if (limit == 10) %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 10}) }}">10</a>
@@ -40,15 +44,19 @@
 				<a {% if (limit == 30) %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 30}) }}">30</a>
 				<a {% if (limit == 'all') %} class="active_limit" {% endif %} href= "{{ path('games', { 'limit': 'all'}) }}">All</a>
 			</div>
+
+			{% if is_granted('ROLE_ADMIN') %}	
 			
-			{{ form_start(massActionDD,{'attr': {'id': 'action_select'}}) }}
-				<div class="action_select">
+				{{ form_start(massActionDD,{'attr': {'id': 'action_select'}}) }}
+					<div class="action_select">
 
-					{{ form_widget(massActionDD.action) }}
+						{{ form_widget(massActionDD.action) }}
 
-					<input type="submit" class="inactiv" id = 'mass_action_button'onclick="return confirm('Are you sure?')" value="Action" disabled>
-				</div>
-			{{ form_end(massActionDD) }}
+						<input type="submit" class="inactiv" id = 'mass_action_button'onclick="return confirm('Are you sure?')" value="Action" disabled>
+					</div>
+				{{ form_end(massActionDD) }}
+
+			{% endif %}
 
 			<table class="full_width_table">
 				<thead>
@@ -85,9 +93,11 @@
 								</p>
 							</td>
 							<td><p>{{ entity.location }}</p></td>
-							<td>								
-								<a href="{{ path('edit_game', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>
-								<a href="#delete" data-item-id={{ entity.id }} data-item-page="games" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+							<td>	
+								{% if is_granted('ROLE_ADMIN') %}							
+									<a href="{{ path('edit_game', { 'id': entity.id }) }}" class="edit"><img src="{{ asset('images/edit.png') }}"></a>								
+									<a href="#delete" data-item-id={{ entity.id }} data-item-page="games" class="delete"><img src="{{ asset('images/delete.png') }}"></a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}

@@ -1,17 +1,20 @@
-<div id="admin_navbar">
-	<ul class="menu">
-		<li><a href={{ path('users' ) }}>System users</a></li>
-		<li><a class="inactiv_link">Guardians</a></li>
-		<li><a class="inactiv_link">Players</a></li>
-		<li><a href={{ path('divisions' ) }}>Divisions</a></li>
-		<li><a href={{ path('teams' ) }}>Teams</a></li>
-		<li><a href={{ path('games' ) }}>Game schedule</a></li>
-		<li><a class="inactiv_link">Volunteer Duties</a></li>
-		<li><a class="inactiv_link">Fundraiser</a></li>
-		<li><a class="inactiv_link">Sponsors</a></li>
-		<li><a class="inactiv_link">Events</a></li>
-		<li><a class="inactiv_link">CMS</a></li>
-		<li><a class="inactiv_link">Reports</a></li>
-		<li><a class="inactiv_link">Setup</a></li>
-	</ul>
-</div>
+{% if is_granted('ROLE_ADMIN') %}
+
+	<div id="admin_navbar">
+		<ul class="menu">
+			<li><a href={{ path('users' ) }}>System users</a></li>
+			<li><a href={{ path('divisions' ) }}>Divisions</a></li>
+			<li><a href={{ path('teams' ) }}>Teams</a></li>
+			<li><a href={{ path('games' ) }}>Game schedule</a></li>
+		</ul>
+	</div>
+
+{% else %}
+
+	<div id="admin_navbar">
+		<ul class="menu text_center">
+			<li><a href={{ path('games' ) }}>Game schedule</a></li>
+		</ul>
+	</div>
+
+{% endif %}
